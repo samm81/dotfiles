@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/opt/oh-my-zsh
+export ZSH=/home/sam/src/oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -82,6 +82,6 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
-# powerline
-# powerline-daemon -q
-# . $HOME/.local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
+# autojump
+[[ -s /home/sam/.autojump/etc/profile.d/autojump.sh ]] && source /home/sam/.autojump/etc/profile.d/autojump.sh
+autoload -U compinit && compinit -u
