@@ -87,6 +87,7 @@ eval "$(fasd --init auto)"
 
 # k
 source ~/src/k/k.sh
+alias k="k -h"
 alias ka="k -a"
 alias kl="k -l"
 
