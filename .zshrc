@@ -82,6 +82,19 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
-# autojump
-[[ -s /home/sam/.autojump/etc/profile.d/autojump.sh ]] && source /home/sam/.autojump/etc/profile.d/autojump.sh
-autoload -U compinit && compinit -u
+# fasd
+eval "$(fasd --init auto)"
+
+# k
+source ~/src/k/k.sh
+alias ka="k -a"
+alias kl="k -l"
+
+# thefuck
+eval "$(thefuck --alias ff)"
+
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# reminders
+PROMPT="fasd fzf k ff v $PROMPT"
