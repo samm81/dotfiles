@@ -4,6 +4,9 @@ set tabstop=4
 set shiftwidth=4
 set noexpandtab
 
+" highlight on search
+set hlsearch
+
 " numberline on the side
 set number
 set relativenumber
