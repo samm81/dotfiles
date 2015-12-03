@@ -4,9 +4,6 @@ set tabstop=4
 set shiftwidth=4
 set noexpandtab
 
-" highlight on search
-set hlsearch
-
 " numberline on the side
 set number
 set relativenumber
@@ -30,3 +27,13 @@ set laststatus=2
 
 " fzf
 set rtp+=~/src/fzf
+nnoremap <C-P> :FZF<CR>
+
+" trying to save with W and quit with Q makes me feel dumb
+:command WQ wq
+:command Wq wq
+:command W w
+:command Q q
+
+" easier than hitting shift
+nnoremap ; :

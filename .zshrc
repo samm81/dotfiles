@@ -87,6 +87,9 @@ export PATH="/usr/local/heroku/bin:$PATH"
 # fasd
 eval "$(fasd --init auto)"
 
+# psueod v
+alias v="f -e vim"
+
 # k
 source ~/src/k/k.sh
 alias k="k -h"
@@ -100,4 +103,4 @@ eval "$(thefuck --alias ff)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # reminders
-PROMPT="fasd fzf k ff v $PROMPT"
+PROMPT="fasd fzf k ff $PROMPT"

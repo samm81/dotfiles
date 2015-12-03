@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/home/sam/fitbit-ut/templates'
+let g:netrw_dirhist_2='/home/sam/os'
+let g:netrw_dirhist_3='/home/sam/os/maynard_cs439h_f15_p7'
+let g:netrw_dirhist_4='/home/sam/os/maynard_cs439h_f15_p7/kernel'
+let g:netrw_dirhist_5='/home/sam/src/swm'
+let g:netrw_dirhist_6='/home/sam/os/maynard_cs439h_f15_pd/fat439'
