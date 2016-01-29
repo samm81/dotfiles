@@ -80,9 +80,14 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 alias clip="xclip -selection c"
+alias theme="source ~/.zshrc"
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
+# go
+export GOPATH="$HOME/go"
+export PATH="$HOME/go/bin:$PATH"
 
 # fasd
 eval "$(fasd --init auto)"
@@ -103,4 +108,4 @@ eval "$(thefuck --alias ff)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # reminders
-PROMPT="fasd fzf k ff $PROMPT"
+PROMPT="fasd fzf k ff noti $PROMPT"
