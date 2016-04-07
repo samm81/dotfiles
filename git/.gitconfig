@@ -1,0 +1,7 @@
+[push]
+	default = simple
+[user]
+	name = samm81
+	email = samwmaynard@gmail.com
+[core]
+	pager = less -x4
