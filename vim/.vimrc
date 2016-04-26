@@ -7,6 +7,7 @@ call plug#begin()
 Plug 'junegunn/fzf', { 'dir': '~/src/fzf', 'do': 'yes \| ./install' }
 Plug 'altercation/vim-colors-solarized'
 Plug 'leshill/vim-json'
+Plug 'lambdatoast/elm.vim'
 Plug 'godlygeek/tabular'
 Plug 'tpope/vim-surround'
 
