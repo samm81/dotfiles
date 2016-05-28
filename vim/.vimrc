@@ -4,12 +4,21 @@ set encoding=utf-8
 " :PlugInstall to install new plugins
 call plug#begin()
 
-Plug 'junegunn/fzf', { 'dir': '~/src/fzf', 'do': 'yes \| ./install' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --no-update-rc > /dev/null' }
 Plug 'altercation/vim-colors-solarized'
 Plug 'leshill/vim-json'
-Plug 'lambdatoast/elm.vim'
 Plug 'godlygeek/tabular'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-sleuth'
+Plug 'danro/rename.vim'
+
+Plug 'othree/yajs.vim', { 'for': 'javascript' }
+Plug 'cakebaker/scss-syntax.vim', { 'for': ['sass', 'scss'] }
+
+Plug 'lambdatoast/elm.vim', { 'for': 'elm' }
+Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 
 call plug#end()
 
@@ -27,13 +36,6 @@ nnoremap <C-P> :FZF<CR>
 syntax on
 set background=dark
 colorscheme solarized
-
-" tabs
-set tabstop=4
-set softtabstop=0
-set shiftwidth=4
-set noexpandtab
-set smartindent
 
 " .md is markdown
 au BufRead,BufNewFile *.md set filetype=markdown
@@ -67,3 +69,7 @@ nnoremap ; :
 " don't put me at the bottom of the screen
 set scrolloff=5
 set sidescrolloff=5
+
+" permanent undo
+set undofile
+set undodir=~/.vimundo

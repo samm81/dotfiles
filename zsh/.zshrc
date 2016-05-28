@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/home/sam/src/oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -22,7 +22,8 @@ ZSH_THEME="random"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git common-aliases fasd lwd pip pylint python rand-quote tmux)
+plugins=(git fasd lwd pip python tmux ruby)
+plugins+=(k fzf)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -33,28 +34,6 @@ export MANPATH="/usr/local/man:$MANPATH"
 
 # preferred editor
 export EDITOR='vim'
-
-# heroku toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-
-# go
-export GOPATH="$HOME/go"
-export PATH="$HOME/go/bin:$PATH"
-
-# ruby
-export PATH="$HOME/.gem/ruby/2.3.0/bin:$PATH"
-
-# psueod v
-alias v="f -e vim"
-
-# k
-source ~/src/k/k.sh
-alias k="k -h"
-alias ka="k -a"
-alias kl="k -l"
-
-# fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # ssh-agent
 # set environment variables if user's agent already exists
@@ -78,9 +57,6 @@ if [ -z "$SSH_TTY" ] ; then                     # if not using ssh
     fi
   fi
 fi
-
-# reminders
-PROMPT="fasd k noti pylint $PROMPT"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh

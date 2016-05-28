@@ -1,5 +1,6 @@
 [push]
-	default = simple
+	config = default
+	default = current
 [user]
 	name = samm81
 	email = samwmaynard@gmail.com
