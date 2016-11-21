@@ -22,8 +22,8 @@ ZSH_THEME="random"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git fasd lwd pip python tmux ruby)
-plugins+=(k fzf)
+plugins=(git fasd lwd pip python tmux ruby colored-man-pages)
+plugins+=(k fzf) # non-built in
 
 source $ZSH/oh-my-zsh.sh
 

@@ -48,12 +48,6 @@ set relativenumber
 set splitbelow
 set splitright
 
-" undo
-set undodir=~/.vim/undo
-set undofile
-set undolevels=1000
-set undoreload=10000
-
 " show commands as they're being typed
 set showcmd
 

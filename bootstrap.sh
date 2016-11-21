@@ -43,6 +43,7 @@ stow k
 sudo apt-get install tmux
 stow tmux
 tmux new "$HOME/.tmux/plugins/tpm/bindings/install_plugins"
+sudo pip install tmuxp
 
 if [[ -f $HOME/.bashrc ]]; then
 	mv $HOME/.bashrc $HOME/._bashrc
