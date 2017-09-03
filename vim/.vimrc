@@ -7,25 +7,25 @@ call plug#begin()
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --no-update-rc > /dev/null' }
 Plug 'altercation/vim-colors-solarized'
 Plug 'leshill/vim-json'
-Plug 'godlygeek/tabular'
+" Plug 'godlygeek/tabular'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'tpope/vim-obsession'
-Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-surround'
 Plug 'tpope/vim-sleuth'
 Plug 'danro/rename.vim'
 
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'cakebaker/scss-syntax.vim', { 'for': ['sass', 'scss'] }
 
-Plug 'lambdatoast/elm.vim', { 'for': 'elm' }
+Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 
 call plug#end()
 
 " powerline
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
+python3 from powerline.vim import setup as powerline_setup
+python3 powerline_setup()
+python3 del powerline_setup
 " Always show statusline
 set laststatus=2
 

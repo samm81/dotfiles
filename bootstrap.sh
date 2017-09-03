@@ -16,8 +16,8 @@ git submodule init
 git submodule update
 
 # powerline
-sudo apt-get install python-pip
-sudo pip install powerline-status
+sudo apt-get install python-pip3
+sudo pip3 install powerline-status
 stow powerline
 sudo apt-get install fontconfig
 fc-cache -vf ~/.fonts/
