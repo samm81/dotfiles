@@ -16,8 +16,9 @@ git submodule init
 git submodule update
 
 # powerline
-sudo apt-get install python-pip3
+sudo apt-get install python3-pip
 sudo pip3 install powerline-status
+sudo apt-get install stow
 stow powerline
 sudo apt-get install fontconfig
 fc-cache -vf ~/.fonts/
@@ -36,14 +37,14 @@ if [[ -f $HOME/.zshrc ]]; then
 fi
 stow zsh
 mkdir -p $HOME/.oh-my-zsh/custom/plugins/fzf/
-ln -s $HOME/.fzf.zsh $HOME/.oh-my-zsh/custom/plugins/fzf/fzf.plugin.zsh
+ln -sf $HOME/.fzf.zsh $HOME/.oh-my-zsh/custom/plugins/fzf/fzf.plugin.zsh
 stow k
 
 # tmux
 sudo apt-get install tmux
 stow tmux
 tmux new "$HOME/.tmux/plugins/tpm/bindings/install_plugins"
-sudo pip install tmuxp
+sudo pip3 install tmuxp
 
 if [[ -f $HOME/.bashrc ]]; then
 	mv $HOME/.bashrc $HOME/._bashrc
