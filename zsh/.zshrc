@@ -29,8 +29,11 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export MANPATH="/usr/local/man:$MANPATH"
+export PATH=$HOME/.local/bin:$PATH
+export PATH=/usr/local/bin:$PATH
+export PATH=$HOME/.gem/ruby/2.3.0/bin:$PATH
+export PATH=$HOME/bin:$PATH
+export MANPATH=/usr/local/man:$MANPATH
 
 # preferred editor
 export EDITOR='vim'
@@ -69,6 +72,16 @@ setopt hist_ignore_all_dups
 # For a full list of active aliases, run `alias`.
 
 alias clip="xclip -selection c"
+alias python=python3
+alias pip=pip3
 
 # vi mode
 bindkey -v
+
+# ctrl-r search backwards
+bindkey '^R' history-incremental-search-backward
+
+# for tmuxp
+export DISABLE_AUTO_TITLE='true'
+
+echo "xargs find jq awk tldr"
