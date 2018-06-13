@@ -23,7 +23,7 @@ ZSH_THEME="random"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git fasd lwd pip python tmux ruby colored-man-pages)
-plugins+=(k fzf) # non-built in
+plugins+=(k) # non-built in
 
 source $ZSH/oh-my-zsh.sh
 
@@ -33,7 +33,9 @@ export PATH=$HOME/.local/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 export PATH=$HOME/.gem/ruby/2.3.0/bin:$PATH
 export PATH=$HOME/bin:$PATH
+export PATH=$HOME/.npm-packages/bin:$PATH
 export MANPATH=/usr/local/man:$MANPATH
+export MANPATH=$HOME/.npm-packages/share/man:$MANPATH
 
 # preferred editor
 export EDITOR='vim'
@@ -74,6 +76,7 @@ setopt hist_ignore_all_dups
 alias clip="xclip -selection c"
 alias python=python3
 alias pip=pip3
+alias lkjh="source ~/.zshrc" # give me a new theme
 
 # vi mode
 bindkey -v
@@ -84,4 +87,4 @@ bindkey '^R' history-incremental-search-backward
 # for tmuxp
 export DISABLE_AUTO_TITLE='true'
 
-echo "xargs find jq awk tldr"
+echo "xargs find jq awk tldr \$!"

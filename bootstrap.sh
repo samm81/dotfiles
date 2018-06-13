@@ -36,8 +36,6 @@ if [[ -f $HOME/.zshrc ]]; then
 	mv $HOME/.zshrc $HOME/._zshrc
 fi
 stow zsh
-mkdir -p $HOME/.oh-my-zsh/custom/plugins/fzf/
-ln -sf $HOME/.fzf.zsh $HOME/.oh-my-zsh/custom/plugins/fzf/fzf.plugin.zsh
 stow k
 
 # tmux

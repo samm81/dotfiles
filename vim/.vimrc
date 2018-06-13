@@ -5,7 +5,6 @@ set encoding=utf-8
 call plug#begin()
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --no-update-rc > /dev/null' }
-Plug 'altercation/vim-colors-solarized'
 Plug 'leshill/vim-json'
 " Plug 'godlygeek/tabular'
 Plug 'ntpeters/vim-better-whitespace'
@@ -18,7 +17,9 @@ Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'cakebaker/scss-syntax.vim', { 'for': ['sass', 'scss'] }
 
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
-Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
+Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
+
+Plug 'Glench/Vim-Jinja2-Syntax'
 
 call plug#end()
 
@@ -32,13 +33,11 @@ set laststatus=2
 " fzf
 nnoremap <C-P> :FZF<CR>
 
-" solarized
 syntax on
-set background=dark
-colorscheme solarized
 
-" .md is markdown
-au BufRead,BufNewFile *.md set filetype=markdown
+" solarized
+" set background=dark
+" colorscheme solarized
 
 " numberline on the side
 set number
@@ -67,3 +66,13 @@ set sidescrolloff=5
 " permanent undo
 set undofile
 set undodir=~/.vimundo
+
+" default tabs to 4 spaces
+set tabstop=4
+set shiftwidth=4
+set noexpandtab
+
+" .jinja is jinja.html
+autocmd BufNewFile,BufRead *.jinja set syntax=jinja.html
+" .md is markdown
+au BufRead,BufNewFile *.md set filetype=markdown
