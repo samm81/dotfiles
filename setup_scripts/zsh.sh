@@ -29,7 +29,7 @@ stow zsh
 # oh-my-zsh
 # https://github.com/robbyrussell/oh-my-zsh
 # adapted from https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
-if ! test -n "$ZSH"; then
+if ! test -n "${ZSH-}"; then
 	ZSH=~/.oh-my-zsh
 fi
 

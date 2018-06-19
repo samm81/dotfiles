@@ -9,11 +9,11 @@ fi
 shopt -s nullglob globstar
 
 # checks
-if ! test "$(tmux -v)"; then
+if ! test "$(command -v tmux)"; then
 	echo "tmux is not installed, please install tmux and then retry"
 	exit 1
 fi
-if ! test "$(git -v)"; then
+if ! test "$(command -v tmux)"; then
 	echo "git is not installed, please install git and then retry"
 	exit 1
 fi
@@ -28,6 +28,6 @@ fi
 stow tmux
 
 # tmux pacakge manager
-git clone https://github.com/tmux-plugins/tpm tmux/.tmux/plugins/tpm
+#git clone https://github.com/tmux-plugins/tpm tmux/.tmux/plugins/tpm
 
 # tmuxp...?
