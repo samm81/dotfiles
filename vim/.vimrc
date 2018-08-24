@@ -5,7 +5,6 @@ set encoding=utf-8
 call plug#begin()
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --no-update-rc > /dev/null' }
-Plug 'leshill/vim-json'
 " Plug 'godlygeek/tabular'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'tpope/vim-obsession'
@@ -13,13 +12,8 @@ Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-sleuth'
 Plug 'danro/rename.vim'
 
-Plug 'othree/yajs.vim', { 'for': 'javascript' }
-Plug 'cakebaker/scss-syntax.vim', { 'for': ['sass', 'scss'] }
-
-Plug 'ElmCast/elm-vim', { 'for': 'elm' }
-Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
-
-Plug 'Glench/Vim-Jinja2-Syntax'
+" any and all languages, *automagically*!
+Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
@@ -34,10 +28,6 @@ set laststatus=2
 nnoremap <C-P> :FZF<CR>
 
 syntax on
-
-" solarized
-" set background=dark
-" colorscheme solarized
 
 " numberline on the side
 set number
