@@ -79,7 +79,7 @@ alias pip=pip3
 alias lkjh="source ~/.zshrc" # give me a new theme
 
 # vi mode
-bindkey -v
+# bindkey -v
 
 # ctrl-r search backwards
 bindkey '^R' history-incremental-search-backward
