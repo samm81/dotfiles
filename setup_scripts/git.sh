@@ -15,4 +15,4 @@ fi
 
 # go to root of git directory
 cd "$(git rev-parse --show-toplevel)"
-stow emacs
+stow git
