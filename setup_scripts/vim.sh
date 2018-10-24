@@ -13,6 +13,11 @@ if ! test "$(command -v stow)"; then
 	echo "stow is not installed, please install stow and then retry"
 	exit 1
 fi
+if ! test "$(command -v curl)"; then
+	echo "curl is not installed, please install stow and then retry"
+	exit 1
+fi
+
 # go to root of git directory
 cd "$(git rev-parse --show-toplevel)"
 
