@@ -9,12 +9,16 @@ fi
 shopt -s nullglob globstar
 
 # checks
-if ! test "$(command -v tmux)"; then
-	echo "tmux is not installed, please install tmux and then retry"
+if ! test "$(command -v stow)"; then
+	echo "stow is not installed, please install stow and then retry"
+	exit 1
+fi
+if ! test "$(command -v git)"; then
+	echo "git is not installed, please install git and then retry"
 	exit 1
 fi
 if ! test "$(command -v tmux)"; then
-	echo "git is not installed, please install git and then retry"
+	echo "tmux is not installed, please install tmux and then retry"
 	exit 1
 fi
 
