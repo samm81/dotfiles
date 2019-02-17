@@ -30,8 +30,26 @@
 
 (setq org-agenda-custom-commands
  `(;; match unscheduled/undeadlined TODOs
-  ("u" "[u]nschduled/undeadlined TODOs" tags "-DEADLINE={.+}-SCHEDULED={.+}/!+TODO")))
+   ("u" "[u]nschduled/undeadlined TODOs" tags "-DEADLINE={.+}-SCHEDULED={.+}/!+TODO")
+   ;; match all closed items in the past week
+   ("c" "[c]losed in past week" tags
+    (concat "+CLOSED>=\"" (format-time-string "[%Y-%m-%d]"
+					      (time-subtract (current-time) (days-to-time 7)))
+	    "\""))))
 
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(org-directory "~/org-mode")
- '(org-agenda-files (list org-directory)))
+ '(org-agenda-files
+   (quote
+    ("~/org-mode/todo.org" "~/org-mode/travel.org" "~/org-mode/notes.org" "~/org-mode/china-blog.org" "~/org-mode/blog.org"))))
+
+;; capture
+(setq org-default-notes-file (concat org-directory "/capture.org"))
+(define-key global-map "\C-c[" 'org-capture)
+(setq org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
+; (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
+; (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
