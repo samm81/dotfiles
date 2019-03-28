@@ -28,7 +28,7 @@ plugins+=(k) # non-built in
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
+export SHELL=$(which zsh)
 export PATH=$HOME/.local/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 export PATH=$HOME/.gem/ruby/2.3.0/bin:$PATH
@@ -84,7 +84,16 @@ alias lkjh="source ~/.zshrc" # give me a new theme
 # ctrl-r search backwards
 bindkey '^R' history-incremental-search-backward
 
+# enable tmux continuum
+export TMUX_CONTINUUM='true'
+
 # for tmuxp
 export DISABLE_AUTO_TITLE='true'
+
+# Base16 Shell
+BASE16_SHELL="$HOME/.config/base16-shell/"
+[ -n "$PS1" ] && \
+  [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+    eval "$("$BASE16_SHELL/profile_helper.sh")"
 
 echo "xargs find jq awk tldr \$!"

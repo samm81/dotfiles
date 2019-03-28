@@ -21,9 +21,6 @@ fi
 # go to root of git directory
 cd "$(git rev-parse --show-toplevel)"
 
-if ! test -f vim/.vim/autoload/plug.vim; then
-	curl -fLo vim/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-fi
 if test -f "$HOME/.vimrc"; then
 	echo "existing .vimrc file detected, moving it to ~/._vimrc"
 	mv "$HOME/.vimrc" "$HOME/._vimrc"

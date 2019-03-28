@@ -1,9 +1,17 @@
 set encoding=utf-8
 
 " vim-plug
+" auto install
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 " :PlugInstall to install new plugins
 call plug#begin()
 
+" allows for `:help plug-options`
+Plug 'junegunn/vim-plug'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --no-update-rc > /dev/null' }
 " Plug 'godlygeek/tabular'
 Plug 'ntpeters/vim-better-whitespace'
@@ -15,9 +23,14 @@ Plug 'danro/rename.vim'
 " any and all languages, *automagically*!
 Plug 'sheerun/vim-polyglot'
 
+if filereadable(expand("~/.vimrc_background"))
+  Plug 'chriskempson/base16-vim'
+endif
+
 call plug#end()
 
 " powerline
+" TODO check if `python3` exists
 "python3 from powerline.vim import setup as powerline_setup
 "python3 powerline_setup()
 "python3 del powerline_setup
@@ -47,7 +60,7 @@ set showcmd
 :command Q q
 
 " easier than hitting shift
-nnoremap ; :
+"nnoremap ; :
 
 " don't put me at the bottom of the screen
 set scrolloff=5
@@ -62,7 +75,17 @@ set tabstop=4
 set shiftwidth=4
 set noexpandtab
 
+" incremental search
+set incsearch
+
 " .jinja is jinja.html
 autocmd BufNewFile,BufRead *.jinja set syntax=jinja.html
 " .md is markdown
-au BufRead,BufNewFile *.md set filetype=markdown
+autocmd BufRead,BufNewFile *.md set filetype=markdown
+
+autocmd FileType text setl textwidth=80
+
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif

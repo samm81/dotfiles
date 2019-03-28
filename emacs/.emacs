@@ -8,7 +8,7 @@
 
 ;; xdg-open is a great browser
 (setq browse-url-browser-function 'browse-url-generic
- browse-url-generic-program "/usr/bin/xdg-open")
+ browse-url-generic-program "xdg-open")
 
 ;; please wrap lines
 (visual-line-mode t)
@@ -23,10 +23,14 @@
 (global-set-key "\C-ca" 'org-agenda)
 ;; add a CLOSED stamp whenever a TOOD item is marked DONE
 (setq org-log-done 'time)
+;; and put it in LOGBOOK
+(setq org-log-into-drawer t)
 ;; don't split line on M-RET
 (setq org-M-RET-may-split-line nil)
 ;; org-indent-mode
 (setq org-startup-indented t)
+;; don't add newlines after a heading
+(setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
 
 (setq org-agenda-custom-commands
  `(;; match unscheduled/undeadlined TODOs
@@ -42,10 +46,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-directory "~/org-mode")
  '(org-agenda-files
    (quote
-    ("~/org-mode/todo.org" "~/org-mode/travel.org" "~/org-mode/notes.org" "~/org-mode/china-blog.org" "~/org-mode/blog.org"))))
+    ("~/org-mode/2019.org" "~/org-mode/capture.org" "~/org-mode/todo.org" "~/org-mode/travel.org" "~/org-mode/notes.org" "~/org-mode/china-blog.org" "~/org-mode/blog.org")))
+ '(org-directory "~/org-mode"))
 
 ;; capture
 (setq org-default-notes-file (concat org-directory "/capture.org"))
