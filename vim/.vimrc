@@ -22,6 +22,8 @@ Plug 'danro/rename.vim'
 
 " any and all languages, *automagically*!
 Plug 'sheerun/vim-polyglot'
+" ...except elixir it seems
+Plug 'elixir-editors/vim-elixir'
 
 if filereadable(expand("~/.vimrc_background"))
   Plug 'chriskempson/base16-vim'

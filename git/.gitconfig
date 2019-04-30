@@ -7,9 +7,5 @@
 [core]
 	pager = less -x4
 	excludesfile = /home/maynard/.gitignore
-	autocrlf = input
-[alias]
-	edit-unmerged = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; vim -p `f`"
-	add-unmerged = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; git add `f`"
 [fetch]
 	prune = true

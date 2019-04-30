@@ -28,10 +28,10 @@ plugins+=(k) # non-built in
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-export SHELL=$(which zsh)
+
 export PATH=$HOME/.local/bin:$PATH
 export PATH=/usr/local/bin:$PATH
-export PATH=$HOME/.gem/ruby/2.3.0/bin:$PATH
+export PATH=$HOME/.gem/ruby/2.5.0/bin:$PATH
 export PATH=$HOME/bin:$PATH
 export PATH=$HOME/.npm-packages/bin:$PATH
 export MANPATH=/usr/local/man:$MANPATH
@@ -77,6 +77,7 @@ alias clip="xclip -selection c"
 alias python=python3
 alias pip=pip3
 alias lkjh="source ~/.zshrc" # give me a new theme
+alias tmuxd="tmux new -s \${PWD##*/}"
 
 # vi mode
 # bindkey -v
@@ -96,4 +97,5 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
   [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
     eval "$("$BASE16_SHELL/profile_helper.sh")"
 
-echo "xargs find jq awk tldr \$!"
+echo "xargs find jq awk tldr \$! neofetch"
+echo "cht.sh ss-local tsocks shellcheck"
