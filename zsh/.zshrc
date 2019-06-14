@@ -97,5 +97,8 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
   [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
     eval "$("$BASE16_SHELL/profile_helper.sh")"
 
+# iex
+export ERL_AFLAGS="-kernel shell_history enabled"
+
 echo "xargs find jq awk tldr \$! neofetch"
 echo "cht.sh ss-local tsocks shellcheck"
