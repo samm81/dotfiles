@@ -46,6 +46,8 @@
    '(org-agenda-files '("~/org-mode"))
    '(org-directory "~/org-mode"))
 
+  (setq org-todo-keywords '((sequence "TODO" "|" "DONE" "DISCARDED")))
+
   ;; capture
   (setq org-default-notes-file (concat org-directory "/capture.org"))
   (define-key global-map "\C-c[" 'org-capture)
