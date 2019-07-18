@@ -1,0 +1,5 @@
+tmux/.tmux
+vim/.vim/.netrwhist
+vim/.vim/autoload/
+vim/.vim/plugged/
+vim/.vim/spell/
