@@ -1,29 +1,10 @@
 #!/usr/bin/env bash
-if test "$BASH" = "" || "$BASH" -uc "a=();true \"\${a[@]}\"" 2>/dev/null; then
-	# Bash 4.4, Zsh
-	set -euo pipefail
-else
-	# Bash 4.3 and older chokes on empty arrays with set -u.
-	set -eo pipefail
-fi
-shopt -s nullglob globstar
+. util/header.sh
 
-# checks
-if ! test "$(command -v zsh)"; then
-	echo "zsh is not installed, please install zsh and then retry"
-	exit 1
-fi
-if ! test "$(command -v git)"; then
-	echo "git is not installed, please install git and then retry"
-	exit 1
-fi
-if ! test "$(command -v stow)"; then
-	echo "stow is not installed, please install stow and then retry"
-	exit 1
-fi
+check_installed zsh
+check_installed git
+check_installed stow
 
-# go to root of git directory
-cd "$(git rev-parse --show-toplevel)"
 stow zsh
 
 # oh-my-zsh

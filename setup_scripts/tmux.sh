@@ -1,33 +1,12 @@
 #!/usr/bin/env bash
-if test "$BASH" = "" || "$BASH" -uc "a=();true \"\${a[@]}\"" 2>/dev/null; then
-	# Bash 4.4, Zsh
-	set -euo pipefail
-else
-	# Bash 4.3 and older chokes on empty arrays with set -u.
-	set -eo pipefail
-fi
-shopt -s nullglob globstar
+. util/header.sh
 
-# checks
-if ! test "$(command -v stow)"; then
-	echo "stow is not installed, please install stow and then retry"
-	exit 1
-fi
-if ! test "$(command -v git)"; then
-	echo "git is not installed, please install git and then retry"
-	exit 1
-fi
-if ! test "$(command -v tmux)"; then
-	echo "tmux is not installed, please install tmux and then retry"
-	exit 1
-fi
+check_installed stow
+check_installed tmux
 
-# go to root of git directory
-cd "$(git rev-parse --show-toplevel)"
-
-if test -f "$HOME/.tmux.conf"; then
+if [[ -f "${HOME}/.tmux.conf" ]]; then
 	echo "existing .tmux.conf file detected, moving it to ~/._tmux.conf"
-	mv "$HOME/.tmux.conf" "$HOME/._tmux.conf"
+	mv "${HOME}/.tmux.conf" "${HOME}/._tmux.conf"
 fi
 stow tmux
 
