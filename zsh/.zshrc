@@ -23,7 +23,10 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git fasd lwd pip python tmux ruby colored-man-pages)
-plugins+=(k) # non-built in
+#plugins+=(k) # non-built in
+plugins+=(zsh-autosuggestions)
+# make zsh-autosuggestions play nice with st
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=11"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -73,14 +76,22 @@ setopt hist_ignore_all_dups
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 
-alias clip="xclip -selection c"
-alias python=python3
-alias pip=pip3
-alias lkjh="source ~/.zshrc" # give me a new theme
-alias tmuxd="tmux new -s \${PWD##*/}"
+function check_installed() {
+    test "$(command -v ${1})"
+}
 
-# vi mode
-# bindkey -v
+check_installed "xclip" && alias clip="xclip -selection c"
+check_installed "python3" && alias python="python3"
+check_installed "pip3" && alias pip="pip3"
+check_installed "bat" && alias cat="bat"
+check_installed "exa" && \
+  alias ls="exa"
+  alias ll="exa --long --header --git" && \
+  alias la="exa --long --header --git --all"
+check_installed "tmux" && alias tmuxd="tmux new -s \${PWD##*/}"
+check_installed "pcmanfm" && alias files="pcmanfm"
+check_installed "brave-browser-dev" && alias bbd="brave-browser-dev"
+alias lkjh="source ~/.zshrc" # give me a new theme
 
 # ctrl-r search backwards
 bindkey '^R' history-incremental-search-backward
@@ -99,6 +110,11 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
 
 # iex
 export ERL_AFLAGS="-kernel shell_history enabled"
+
+export PYTHONDONTWRITEBYTECODE="plsno"
+
+# zsh-autosuggest
+bindkey '^\' autosuggest-execute
 
 echo "xargs find jq awk tldr \$! neofetch"
 echo "cht.sh ss-local tsocks shellcheck"
