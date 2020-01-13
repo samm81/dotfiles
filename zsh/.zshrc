@@ -24,9 +24,12 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git fasd lwd pip python tmux ruby colored-man-pages)
 #plugins+=(k) # non-built in
-plugins+=(zsh-autosuggestions)
+# from https://github.com/zsh-users
+plugins+=(zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
 # make zsh-autosuggestions play nice with st
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=11"
+# for zsh-completions
+autoload -U compinit && compinit
 
 source $ZSH/oh-my-zsh.sh
 

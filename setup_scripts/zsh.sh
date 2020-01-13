@@ -62,3 +62,21 @@ else
 	echo "installing zsh-autosuggestions to ${ZSH_AUTOSUGGESTIONS}"
 	env git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions ${ZSH_AUTOSUGGESTIONS}
 fi
+
+# zsh-completions for... more completions I guess
+ZSH_COMPLETIONS="${ZSH_CUSTOM}/plugins/zsh-completions"
+if test -d "$ZSH_COMPLETIONS"; then
+	echo "zsh-completions already installed, skipping..."
+else
+	echo "installing zsh-completions to ${ZSH_COMPLETIONS}"
+	env git clone --depth=1 https://github.com/zsh-users/zsh-completions ${ZSH_COMPLETIONS}
+fi
+
+# zsh-syntax-highlighting for fish like highlighting
+ZSH_SYNTAX_HIGHLIGHTING="${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting"
+if test -d "$ZSH_SYNTAX_HIGHLIGHTING"; then
+	echo "zsh-syntax-highlighting already installed, skipping..."
+else
+	echo "installing zsh-syntax-highlighting to ${ZSH_SYNTAX_HIGHLIGHTING}"
+	env git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_SYNTAX_HIGHLIGHTING}
+fi
