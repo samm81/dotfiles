@@ -25,6 +25,9 @@ Plug 'sheerun/vim-polyglot'
 " ...except elixir it seems
 Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
 
+Plug 'nvie/vim-flake8'
+Plug 'NikolayFrantsev/jshint2.vim'
+
 if filereadable(expand("~/.vimrc_background"))
   Plug 'chriskempson/base16-vim'
 endif
@@ -58,10 +61,10 @@ set splitright
 set showcmd
 
 " trying to save with W and quit with Q makes me feel dumb
-:command WQ wq
-:command Wq wq
-:command W w
-:command Q q
+:command! WQ wq
+:command! Wq wq
+:command! W w
+:command! Q q
 
 " easier than hitting shift
 "nnoremap ; :
@@ -77,7 +80,7 @@ set undodir=~/.vimundo
 " default tabs to 4 spaces
 set tabstop=4
 set shiftwidth=4
-set noexpandtab
+set expandtab
 
 " incremental search
 set incsearch
@@ -93,3 +96,23 @@ if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
   source ~/.vimrc_background
 endif
+
+" flake8
+" autorun
+"autocmd BufWritePost *.py call flake8#Flake8()
+" manually run
+nnoremap <Leader>8 :call flake8#Flake8()<CR>
+
+" jshint2
+let jshint2_read = 1
+let jshint2_save = 1
+
+" don't let n00bs use arrow keys
+noremap  <Up>    <nop>
+noremap! <Up>    <nop>
+noremap  <Down>  <nop>
+noremap! <Down>  <nop>
+noremap  <Left>  <nop>
+noremap! <Left>  <nop>
+noremap  <Right> <nop>
+noremap! <Right> <nop>
