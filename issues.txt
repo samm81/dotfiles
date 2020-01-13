@@ -1,3 +1,0 @@
-is tpm automatically installed...?
-if so, should also install plugins
-should have logic to check if powerline is installed or not in both .vimrc and .tmux.conf

@@ -1,0 +1,9 @@
+is tpm automatically installed...?
+if so, should also install plugins
+should have logic to check if powerline is installed or not in both .vimrc and .tmux.conf
+
+should separate out aliases and such in .zshrc into a neutral aliases file that
+.bashrc and .zhsrc can both grab
+
+should have files check for and source a "local configuration" file, like
+.zshrc_local
