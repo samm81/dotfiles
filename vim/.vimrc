@@ -118,3 +118,7 @@ noremap  <Left>  <nop>
 noremap! <Left>  <nop>
 noremap  <Right> <nop>
 noremap! <Right> <nop>
+
+" autoreload changed buffers
+set autoread
+autocmd FocusGained,BufEnter * :checktime
