@@ -9,3 +9,9 @@
 	excludesfile = /home/maynard/.gitignore
 [fetch]
 	prune = true
+[color]
+	ui = true
+[diff]
+	wsErrorHighlight = all
+[commit]
+    verbose = true
