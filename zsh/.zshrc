@@ -7,9 +7,6 @@ export ZSH=$HOME/.oh-my-zsh
 # time that oh-my-zsh is loaded.
 ZSH_THEME="random"
 
-# Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
-
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
@@ -32,6 +29,10 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=11"
 autoload -U compinit && compinit
 
 source $ZSH/oh-my-zsh.sh
+
+# only autocorrect commands
+unsetopt correct_all
+setopt correct
 
 # User configuration
 
