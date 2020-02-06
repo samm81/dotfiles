@@ -28,6 +28,8 @@ Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
 Plug 'nvie/vim-flake8'
 Plug 'NikolayFrantsev/jshint2.vim'
 
+Plug 'tmux-plugins/vim-tmux-focus-events'
+
 if filereadable(expand("~/.vimrc_background"))
   Plug 'chriskempson/base16-vim'
 endif
