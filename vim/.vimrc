@@ -62,12 +62,10 @@ nnoremap <C-P> :FZF<CR>
 syntax on
 
 " numberline on the side
-set number
-set relativenumber
+set number relativenumber
 
 " better splitting
-set splitbelow
-set splitright
+set splitbelow splitright
 
 " show commands as they're being typed
 set showcmd
@@ -82,17 +80,13 @@ set showcmd
 "nnoremap ; :
 
 " don't put me at the bottom of the screen
-set scrolloff=5
-set sidescrolloff=5
+set scrolloff=5 sidescrolloff=5
 
 " permanent undo
-set undofile
-set undodir=~/.vimundo
+set undofile undodir=~/.vimundo
 
 " default tabs to 4 spaces
-set tabstop=4
-set shiftwidth=4
-set expandtab
+set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab
 
 " incremental search
 set incsearch
