@@ -13,11 +13,10 @@ call plug#begin()
 " allows for `:help plug-options`
 Plug 'junegunn/vim-plug'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --no-update-rc > /dev/null' }
-" Plug 'godlygeek/tabular'
 Plug 'ntpeters/vim-better-whitespace'
+" :StringWhitespace to clean extra whitepsace
 Plug 'tpope/vim-obsession'
-" Plug 'tpope/vim-surround'
-Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-surround'
 Plug 'danro/rename.vim'
 
 " any and all languages, *automagically*!
@@ -25,16 +24,16 @@ Plug 'sheerun/vim-polyglot'
 " ...except elixir it seems
 Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
 
-Plug 'nvie/vim-flake8'
-Plug 'NikolayFrantsev/jshint2.vim'
+Plug 'nvie/vim-flake8', { 'for': 'python' }
+Plug 'vim-scripts/HTML-AutoCloseTag'
+Plug 'NikolayFrantsev/jshint2.vim', { 'for': 'javascript.jsx' }
+"Plug 'chrisbra/csv.vim'
 
 Plug 'tmux-plugins/vim-tmux-focus-events'
 
 if filereadable(expand("~/.vimrc_background"))
   Plug 'chriskempson/base16-vim'
 endif
-
-Plug 'chrisbra/csv.vim', { 'for': 'cvs' }
 
 call plug#end()
 
