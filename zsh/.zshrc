@@ -121,6 +121,10 @@ export PYTHONDONTWRITEBYTECODE="plsno"
 # zsh-autosuggest
 bindkey '^\' autosuggest-execute
 
+function battery_tcp_prompt {
+    echo ""
+}
+
 echo "xargs find jq awk tldr \$! neofetch"
 echo "cht.sh ss-local tsocks shellcheck"
 echo "style diction"
