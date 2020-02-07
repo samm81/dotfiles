@@ -97,6 +97,7 @@ check_installed "pcmanfm" && alias files="pcmanfm"
 check_installed "brave-browser-dev" && alias bbd="brave-browser-dev"
 check_installed "rg" && alias grep="rg" \
     && export FZF_DEFAULT_COMMAND="rg --files"
+alias less="less -N"
 alias lkjh="source ~/.zshrc" # give me a new theme
 
 # enable tmux continuum
