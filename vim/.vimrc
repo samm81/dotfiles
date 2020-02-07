@@ -37,6 +37,14 @@ endif
 
 call plug#end()
 
+" whitespace config
+let g:better_whitespace_filetypes_blacklist = ['diff', 'gitcommit', 'help']
+let g:strip_whitelines_at_eof=1
+let g:show_spaces_that_precede_tabs=1
+" there's some bug with vim-better-whitespace, shouldn't need to do this...
+nnoremap <Leader>s :StripWhitespace<CR>
+vnoremap <Leader>s :StripWhitespace<CR>
+
 " powerline
 " TODO check if `python3` exists
 "python3 from powerline.vim import setup as powerline_setup
