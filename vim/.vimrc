@@ -97,6 +97,7 @@ autocmd BufNewFile,BufRead *.jinja set syntax=jinja.html
 autocmd BufRead,BufNewFile *.md set filetype=markdown
 
 autocmd FileType text setl textwidth=80
+autocmd FileType markdown setl textwidth=120
 
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
