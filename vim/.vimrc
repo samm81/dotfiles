@@ -37,6 +37,9 @@ endif
 
 call plug#end()
 
+nnoremap <Leader>ve :tabe $MYVIMRC<CR>
+nnoremap <Leader>vs :source $MYVIMRC<CR>
+
 " whitespace config
 let g:better_whitespace_filetypes_blacklist = ['diff', 'gitcommit', 'help']
 let g:strip_whitelines_at_eof=1
