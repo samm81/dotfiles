@@ -49,10 +49,18 @@ nnoremap <Leader>s :StripWhitespace<CR>
 vnoremap <Leader>s :StripWhitespace<CR>
 
 " powerline
-" TODO check if `python3` exists
-"python3 from powerline.vim import setup as powerline_setup
-"python3 powerline_setup()
-"python3 del powerline_setup
+if has('python3')
+" not indented because python hated indentation
+python3 << EOF
+import importlib
+powerline = importlib.util.find_spec("powerline")
+del importlib
+if powerline:
+    from powerline.vim import setup as powerline_setup
+    powerline_setup()
+    del powerline_setup
+EOF
+endif
 " Always show statusline
 set laststatus=2
 
