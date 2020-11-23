@@ -7,3 +7,5 @@ should separate out aliases and such in .zshrc into a neutral aliases file that
 
 should have files check for and source a "local configuration" file, like
 .zshrc_local
+
+`tput` in setup scripts does not always exist - termux on android.

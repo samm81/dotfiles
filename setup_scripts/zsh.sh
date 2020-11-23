@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck source=../util/header.sh
 . util/header.sh
 
 check_installed zsh
@@ -63,20 +64,25 @@ else
 	env git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions ${ZSH_AUTOSUGGESTIONS}
 fi
 
+function install_zsh_plugin {
+    plugin_url="${1}"
+    plugin_name="${plugin_url##*/}"
+    plugin_dir="${ZSH_CUSTOM}/plugins/${plugin_name}"
+    if test -d "${plugin_dir}"; then
+        echo "${plugin_name} already installed, skipping..."
+    else
+        echo "installing ${plugin_name} to ${plugin_dir}"
+        env git clone --depth=1 "${plugin_url}" "${plugin_dir}"
+    fi
+}
+
 # zsh-completions for... more completions I guess
-ZSH_COMPLETIONS="${ZSH_CUSTOM}/plugins/zsh-completions"
-if test -d "$ZSH_COMPLETIONS"; then
-	echo "zsh-completions already installed, skipping..."
-else
-	echo "installing zsh-completions to ${ZSH_COMPLETIONS}"
-	env git clone --depth=1 https://github.com/zsh-users/zsh-completions ${ZSH_COMPLETIONS}
-fi
+install_zsh_plugin https://github.com/zsh-users/zsh-completions
 
 # zsh-syntax-highlighting for fish like highlighting
-ZSH_SYNTAX_HIGHLIGHTING="${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting"
-if test -d "$ZSH_SYNTAX_HIGHLIGHTING"; then
-	echo "zsh-syntax-highlighting already installed, skipping..."
-else
-	echo "installing zsh-syntax-highlighting to ${ZSH_SYNTAX_HIGHLIGHTING}"
-	env git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_SYNTAX_HIGHLIGHTING}
-fi
+install_zsh_plugin https://github.com/zsh-users/zsh-syntax-highlighting
+
+# zsh-auto-notify to notify when long running commands complete
+install_zsh_plugin https://github.com/MichaelAquilina/zsh-auto-notify
+# zsh-auto-notify is a special snowflake that wants to be called just "auto-notify", but this breaks importing
+mv ${ZSH_CUSTOM}/plugins/zsh-auto-notify/auto-notify.plugin.zsh ${ZSH_CUSTOM}/plugins/zsh-auto-notify/zsh-auto-notify.plugin.zsh

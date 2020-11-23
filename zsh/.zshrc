@@ -1,5 +1,20 @@
+# instrumentation for profiling
+# https://esham.io/2018/02/zsh-profiling
+#zmodload zsh/datetime
+#setopt PROMPT_SUBST
+#PS4='+$EPOCHREALTIME %N:%i> '
+#
+#logfile=$(mktemp zsh_profile.XXXXXXXX)
+#echo "Logging to $logfile"
+#exec 3>&2 2>$logfile
+#
+#setopt XTRACE
+
+zmodload zsh/zprof
+
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+export ZSH="${HOME}/.oh-my-zsh"
+export ZSHRC="${HOME}/.zshrc"
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -19,17 +34,17 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git fasd lwd pip python tmux ruby colored-man-pages)
-#plugins+=(k) # non-built in
+plugins=(git) # pip python tmux ruby colored-man-pages)
+plugins+=(zsh-auto-notify) # non-built in
 # from https://github.com/zsh-users
 plugins+=(zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
 # make zsh-autosuggestions play nice with st
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=11"
-# for zsh-completions
-autoload -U compinit && compinit
 
 source $ZSH/oh-my-zsh.sh
 
+# for zsh-completions
+#autoload -Uz compinit && compinit
 # only autocorrect commands
 unsetopt correct_all
 setopt correct
@@ -89,7 +104,7 @@ check_installed "python3" && alias python="python3"
 check_installed "pip3" && alias pip="pip3"
 check_installed "bat" && alias cat="bat"
 check_installed "exa" && \
-  alias ls="exa"
+  alias ls="exa" && \
   alias ll="exa --long --header --git" && \
   alias la="exa --long --header --git --all"
 check_installed "tmux" && alias tmuxd="tmux new -s \${PWD##*/}"
@@ -98,7 +113,8 @@ check_installed "brave-browser-dev" && alias bbd="brave-browser-dev"
 check_installed "rg" && alias grep="rg" \
     && export FZF_DEFAULT_COMMAND="rg --files"
 alias less="less -N"
-alias lkjh="source ~/.zshrc" # give me a new theme
+alias lkjh="exec zsh" # give me a new theme
+alias feh="feh -. --auto-rotate"
 
 # enable tmux continuum
 export TMUX_CONTINUUM='true'
@@ -115,16 +131,49 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
 # iex
 export ERL_AFLAGS="-kernel shell_history enabled"
 
+# hledger
+export LEDGER_FILE="${HOME}/scratch/$(date +%Y).ledger"
+
 # python
 export PYTHONDONTWRITEBYTECODE="plsno"
+
+# pipenv
+export PIPENV_VENV_IN_PROJECT=1
+# (really slow)
+#check_installed "pipenv" && eval "$(pipenv --completion)"
 
 # zsh-autosuggest
 bindkey '^\' autosuggest-execute
 
-function battery_tcp_prompt {
-    echo ""
-}
+# fix some zsh themes
+function battery_tcp_prompt { echo "" }
+function zsh_path { echo "" }
+function rvm-prompt { echo "" }
+function rbenv { echo "" }
+function jenv_prompt_info { echo "" }
 
-echo "xargs find jq awk tldr \$! neofetch"
-echo "cht.sh ss-local tsocks shellcheck"
-echo "style diction"
+# asdf
+ASDF="${HOME}/.asdf"
+[[ -d ${ASDF} ]] && source "${ASDF}/asdf.sh"
+#[[ -d ${ASDF} ]] && source "${ASDF}/completions/asdf.bash"
+
+# nix
+NIX="${HOME}/.nix-profile/etc/profile.d/nix.sh"
+[[ -e "${NIX}" ]] && source "${NIX}"
+
+# zsh-auto-ignore
+AUTO_NOTIFY_IGNORE+=("git", "tmux", "./go", "docker run")
+export AUTO_NOTIFY_EXPIRE_TIME=4000
+
+alias ze="${EDITOR} ${ZSHRC}"
+
+echo 'xargs find jq awk tldr !$ neofetch'
+echo "cht.sh shellcheck style diction C-x C-e"
+
+#unsetopt XTRACE
+#exec 2>&3 3>&-
+
+# https://blog.mattclemente.com/2020/06/26/oh-my-zsh-slow-to-load.html
+# https://github.com/zdharma/zinit#calling-compinit-without-turbo-mode
+# https://www.google.com/search?hl=en&q=zsh%20init%20compdump
+# https://github.com/zsh-users/zsh-completions
