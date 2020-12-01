@@ -146,7 +146,7 @@ export PIPENV_VENV_IN_PROJECT=1
 bindkey '^\' autosuggest-execute
 
 # fix some zsh themes
-function battery_tcp_prompt { echo "" }
+function battery_pct_prompt { echo "" }
 function zsh_path { echo "" }
 function rvm-prompt { echo "" }
 function rbenv { echo "" }

@@ -170,12 +170,12 @@ let g:ale_fix_on_save = 1
 let g:ale_linters = {}
 "let g:ale_lint_on_text_changed = 'never'
 "let g:ale_lint_on_insert_leave = 0
-"
+
 "let g:ale_set_quickfix = 1
 "let g:ale_open_list = 0
-"
-"let g:ale_sign_error = '✘'
-"let g:ale_sign_warning = '⚠'
+
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
 "highlight ALEErrorSign ctermbg=NONE ctermfg=red
 "highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 
@@ -194,15 +194,14 @@ let g:ale_linters = {}
 "nnoremap [r :ALEPreviousWrap<CR>
 
 " ale and elixir-ls
-"let g:ale_linters.elixir = ['elixir-ls']
-let g:ale_linters.elixir = []
+let g:ale_linters.elixir = ['elixir-ls']
 let g:ale_fixers.elixir = ['mix_format']
-"let g:ale_elixir_elixir_ls_release = expand('/home/maynard/src/elixir-ls/release')
-"let g:ale_elixir_elixir_ls_config = {
-"\ 'elixirLS': {
-"\   'dialyzerEnabled': v:false
-"\ }
-"\}
+let g:ale_elixir_elixir_ls_release = $HOME . '/src/elixir-ls/release'
+let g:ale_elixir_elixir_ls_config = {
+\ 'elixirLS': {
+\   'dialyzerEnabled': v:false
+\ }
+\}
 
 " tabular
 if exists(":Tabularize")
