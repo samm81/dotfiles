@@ -177,3 +177,5 @@ echo "cht.sh shellcheck style diction C-x C-e"
 # https://github.com/zdharma/zinit#calling-compinit-without-turbo-mode
 # https://www.google.com/search?hl=en&q=zsh%20init%20compdump
 # https://github.com/zsh-users/zsh-completions
+
+alias fctix="${EDITOR} /home/maynard/.config/fcitx/data/QuickPhrase.mb"
