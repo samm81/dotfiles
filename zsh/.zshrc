@@ -16,6 +16,13 @@ zmodload zsh/zprof
 export ZSH="${HOME}/.oh-my-zsh"
 export ZSHRC="${HOME}/.zshrc"
 
+# fix some zsh themes
+function battery_pct_prompt { echo "" }
+function zsh_path { echo "" }
+function rvm-prompt { echo "" }
+function rbenv { echo "" }
+function jenv_prompt_info { echo "" }
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -55,12 +62,17 @@ export PATH=$HOME/.local/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 export PATH=$HOME/.gem/ruby/2.5.0/bin:$PATH
 export PATH=$HOME/bin:$PATH
+export PATH=$HOME/scripts:$PATH
 export PATH=$HOME/.npm-packages/bin:$PATH
 export MANPATH=/usr/local/man:$MANPATH
 export MANPATH=$HOME/.npm-packages/share/man:$MANPATH
 
 # preferred editor
 export EDITOR='vim'
+
+function check_installed() {
+    test "$(command -v ${1})"
+}
 
 # ssh-agent
 # set environment variables if user's agent already exists
@@ -75,12 +87,14 @@ if [ -z $SSH_AGENT_PID ] && [ -z $SSH_TTY ]; then  # if no agent & not in ssh
 fi
 
 # setup addition of keys when needed
-if [ -z "$SSH_TTY" ] ; then                     # if not using ssh
-  ssh-add -l > /dev/null                        # check for keys
-  if [ $? -ne 0 ] ; then
-    alias ssh='ssh-add -l > /dev/null || ssh-add && unalias ssh ; ssh'
-    if [ -f "/usr/lib/ssh/x11-ssh-askpass" ] ; then
-      SSH_ASKPASS="/usr/lib/ssh/x11-ssh-askpass" ; export SSH_ASKPASS
+if check_installed "ssh-add"; then
+  if [ -z "$SSH_TTY" ] ; then                     # if not using ssh
+    ssh-add -l > /dev/null                        # check for keys
+    if [ $? -ne 0 ] ; then
+      alias ssh='ssh-add -l > /dev/null || ssh-add && unalias ssh ; ssh'
+      if [ -f "/usr/lib/ssh/x11-ssh-askpass" ] ; then
+        SSH_ASKPASS="/usr/lib/ssh/x11-ssh-askpass" ; export SSH_ASKPASS
+      fi
     fi
   fi
 fi
@@ -94,10 +108,6 @@ setopt hist_ignore_all_dups
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-
-function check_installed() {
-    test "$(command -v ${1})"
-}
 
 check_installed "xclip" && alias clip="xclip -selection c"
 check_installed "python3" && alias python="python3"
@@ -145,13 +155,6 @@ export PIPENV_VENV_IN_PROJECT=1
 # zsh-autosuggest
 bindkey '^\' autosuggest-execute
 
-# fix some zsh themes
-function battery_pct_prompt { echo "" }
-function zsh_path { echo "" }
-function rvm-prompt { echo "" }
-function rbenv { echo "" }
-function jenv_prompt_info { echo "" }
-
 # asdf
 ASDF="${HOME}/.asdf"
 [[ -d ${ASDF} ]] && source "${ASDF}/asdf.sh"
@@ -162,7 +165,7 @@ NIX="${HOME}/.nix-profile/etc/profile.d/nix.sh"
 [[ -e "${NIX}" ]] && source "${NIX}"
 
 # zsh-auto-ignore
-AUTO_NOTIFY_IGNORE+=("git", "tmux", "./go", "docker run")
+AUTO_NOTIFY_IGNORE+=("git", "tmux", "docker run")
 export AUTO_NOTIFY_EXPIRE_TIME=4000
 
 alias ze="${EDITOR} ${ZSHRC}"
@@ -179,3 +182,5 @@ echo "cht.sh shellcheck style diction C-x C-e"
 # https://github.com/zsh-users/zsh-completions
 
 alias fctix="${EDITOR} /home/maynard/.config/fcitx/data/QuickPhrase.mb"
+
+alias gif="echo 'peek'"

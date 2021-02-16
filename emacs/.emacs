@@ -101,14 +101,6 @@
 	   (concat
 	    (format-agenda-closed-filter ">=" (time-subtract (last-sunday) (days-to-time 6)))
 	    (format-agenda-closed-filter "<=" (time-add (last-sunday) (days-to-time 1)))))
-	  ;; filter out whittle.org
-	  ("p" "[p]ersonal"
-	   ((agenda ""))
-	   ((org-agenda-tag-filter-preset '("-whittle"))))
-	  ("w" "[w]hittle"
-	   ((agenda ""))
-	   ((org-agenda-tag-filter-preset '("+whittle")))
-	   ((org-agenda-files (remove "whittle.org" org-agenda-files))))
 	  ("d" "closed to[d]ay" tags
 	   (concat "+CLOSED>=\""
 		   (format-time-string "[%Y-%m-%d]" (current-time))
@@ -124,8 +116,6 @@
   (setq org-default-notes-file (concat org-directory "/capture.org"))
   (define-key global-map "\C-c[" 'org-capture)
   (setq org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
-					; (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
-					; (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
 
   ;; https://www.reddit.com/r/emacs/comments/4golh1/how_to_auto_export_html_when_saving_in_orgmode/
   (defun toggle-org-html-export-on-save ()
@@ -163,16 +153,16 @@
 
 ;;;; hledger-mode configuration
 ;; To open files with .journal extension in hledger-mode
-					;(add-to-list 'auto-mode-alist '("\\.journal\\'" . hledger-mode))
-					;(add-to-list 'auto-mode-alist '("\\.ledger\\'" . hledger-mode))
-					;(add-to-list 'auto-mode-alist '("\\.hledger\\'" . hledger-mode))
-					;(with-eval-after-load 'hledger-mode
-					;  ;; path to journal file
-					;  (setq hledger-jfile (getenv "LEDGER_FILE"))
-					;  ;;; Auto-completion for account names
-					;  ;; For company-mode users
-					;  (add-to-list 'company-backends 'hledger-company)
-					;  (company-mode))
+;(add-to-list 'auto-mode-alist '("\\.journal\\'" . hledger-mode))
+;(add-to-list 'auto-mode-alist '("\\.ledger\\'" . hledger-mode))
+;(add-to-list 'auto-mode-alist '("\\.hledger\\'" . hledger-mode))
+;(with-eval-after-load 'hledger-mode
+;  ;; path to journal file
+;  (setq hledger-jfile (getenv "LEDGER_FILE"))
+;  ;;; Auto-completion for account names
+;  ;; For company-mode users
+;  (add-to-list 'company-backends 'hledger-company)
+;  (company-mode))
 
 ;;;; company-mode config
 (with-eval-after-load 'company-mode
@@ -209,7 +199,7 @@
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)"))))
- '(org-agenda-files (quote ("~/org-mode")))
+ '(org-agenda-files '("~/org-mode"))
  '(org-directory "~/org-mode")
  '(org-pomodoro-audio-player "/usr/bin/play -q -V0 -v2")
  '(org-pomodoro-finished-sound "/home/maynard/org-mode/gong.mp3")
