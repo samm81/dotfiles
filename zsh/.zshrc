@@ -42,7 +42,7 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git) # pip python tmux ruby colored-man-pages)
-plugins+=(zsh-auto-notify) # non-built in
+#plugins+=(zsh-auto-notify) # non-built in
 # from https://github.com/zsh-users
 plugins+=(zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
 # make zsh-autosuggestions play nice with st
@@ -119,7 +119,6 @@ check_installed "exa" && \
   alias la="exa --long --header --git --all"
 check_installed "tmux" && alias tmuxd="tmux new -s \${PWD##*/}"
 check_installed "pcmanfm" && alias files="pcmanfm"
-check_installed "brave-browser-dev" && alias bbd="brave-browser-dev"
 check_installed "rg" && alias grep="rg" \
     && export FZF_DEFAULT_COMMAND="rg --files"
 alias less="less -N"
@@ -165,8 +164,8 @@ NIX="${HOME}/.nix-profile/etc/profile.d/nix.sh"
 [[ -e "${NIX}" ]] && source "${NIX}"
 
 # zsh-auto-ignore
-AUTO_NOTIFY_IGNORE+=("git", "tmux", "docker run")
-export AUTO_NOTIFY_EXPIRE_TIME=4000
+#AUTO_NOTIFY_IGNORE+=("git", "tmux", "docker run")
+#export AUTO_NOTIFY_EXPIRE_TIME=4000
 
 alias ze="${EDITOR} ${ZSHRC}"
 
@@ -184,3 +183,10 @@ echo "cht.sh shellcheck style diction C-x C-e"
 alias fctix="${EDITOR} /home/maynard/.config/fcitx/data/QuickPhrase.mb"
 
 alias gif="echo 'peek'"
+
+# asdf and direnv
+eval "$(direnv hook zsh)"
+# shortcut for asdf managed direnv
+direnv() { asdf exec direnv "$@"; }
+
+eval $(keychain --eval id_rsa)
