@@ -23,7 +23,6 @@
 (setq vc-follow-symlinks t)
 
 ;; autosave properly (not with the #file# method)
-;; requires emacs 26.1
 (when (version<= "26.1" emacs-version)
   (add-hook 'org-mode-hook 'auto-save-visited-mode))
 
@@ -199,14 +198,16 @@
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)"))))
- '(org-agenda-files '("~/org-mode"))
+ '(org-agenda-files (quote ("~/org-mode")))
  '(org-directory "~/org-mode")
  '(org-pomodoro-audio-player "/usr/bin/play -q -V0 -v2")
  '(org-pomodoro-finished-sound "/home/maynard/org-mode/gong.mp3")
  '(org-pomodoro-long-break-sound "/home/maynard/org-mode/long-gong.mp3")
  '(org-pomodoro-short-break-sound "/home/maynard/org-mode/gong.mp3")
  '(org-pomodoro-start-sound "/home/maynard/org-mode/gong.mp3")
- '(package-selected-packages (quote (## ledger-mode company org-pomodoro org))))
+ '(package-selected-packages
+   (quote
+    (org-cliplink ## ledger-mode company org-pomodoro org))))
 
 (defun birthday (year month day remind name)
   (interactive "*nYear: \nnMonth: \nnDay: \nnWarning period: \nMName: ")
@@ -244,3 +245,24 @@
       (setq end (point-max))
       (setq daylight (buffer-substring start end))
       (concat sunset " " daylight))))
+
+;; org-cliplink
+(defun system-keyboard ()
+  "Returns current content of system keyboard"
+  (shell-command-to-string "xclip -out -selection clipboard"))
+(defun cliplink-system-keyboard ()
+  "Puts system clipboard in killring, then calls `org-cliplink`"
+  (interactive)
+  (kill-new (system-keyboard))
+  (org-cliplink))
+(global-set-key (kbd "C-x p i") 'cliplink-system-keyboard)
+(setq org-capture-templates
+ '(("K" "Cliplink capture task" entry (file "")
+    "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
