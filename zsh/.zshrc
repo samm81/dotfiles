@@ -190,3 +190,6 @@ eval "$(direnv hook zsh)"
 direnv() { asdf exec direnv "$@"; }
 
 eval $(keychain --eval id_rsa)
+
+# heroku autocomplete setup
+HEROKU_AC_ZSH_SETUP_PATH=/home/maynard/.cache/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
