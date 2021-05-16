@@ -56,7 +56,6 @@
 (with-eval-after-load 'org
   (setq org-modules '(org-habit))
   (org-load-modules-maybe t)
-  ;; see next-spec-day.el
   (load "~/org-mode/next-spec-day")
   (load "~/org-mode/meditation")
   ;; add a CLOSED stamp whenever a TOOD item is marked DONE
@@ -198,7 +197,9 @@
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)"))))
- '(org-agenda-files (quote ("~/org-mode")))
+ '(org-agenda-files
+   (quote
+    ("~/org-mode/calendar.org" "~/org-mode/projects.org" "~/org-mode/todo.org")))
  '(org-directory "~/org-mode")
  '(org-pomodoro-audio-player "/usr/bin/play -q -V0 -v2")
  '(org-pomodoro-finished-sound "/home/maynard/org-mode/gong.mp3")
