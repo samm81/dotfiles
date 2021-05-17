@@ -92,13 +92,23 @@
     (concat "+CLOSED" comparison-str "\"" (format-org-inactive-time-string time) "\""))
   (setq org-agenda-span 1) ;; show only today in agenda view
   (setq org-agenda-custom-commands
-	`(;; match unscheduled/undeadlined TODOs
-	  ("u" "[u]nschduled/undeadlined TODOs" tags "-DEADLINE={.+}-SCHEDULED={.+}/!+TODO")
-	  ;; match all closed items in the past week
+	`(("A" "[A]genda" agenda ""
+	   ((org-agenda-files
+	     (remove
+	      "~/org-mode/habits.org"
+	      (remove
+	       "~/org-mode/day.org"
+	       (remove
+		"~/org-mode/calendar.org"
+		org-agenda-files))))))
+	  ("u" "[u]nschduled/undeadlined TODOs"
+	   tags "-DEADLINE={.+}-SCHEDULED={.+}/!+TODO")
 	  ("c" "[c]losed past week" tags
 	   (concat
-	    (format-agenda-closed-filter ">=" (time-subtract (last-sunday) (days-to-time 6)))
-	    (format-agenda-closed-filter "<=" (time-add (last-sunday) (days-to-time 1)))))
+	    (format-agenda-closed-filter
+	     ">=" (time-subtract (last-sunday) (days-to-time 6)))
+	    (format-agenda-closed-filter
+	     "<=" (time-add (last-sunday) (days-to-time 1)))))
 	  ("d" "closed to[d]ay" tags
 	   (concat "+CLOSED>=\""
 		   (format-time-string "[%Y-%m-%d]" (current-time))
@@ -179,37 +189,6 @@
 (add-to-list 'auto-mode-alist '("\\.ledger$" . ledger-mode)); company-mode flymake-mode))
 (add-to-list 'auto-mode-alist '("\\.journal$" . ledger-mode)); company-mode flymake-mode))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(calendar-chinese-all-holidays-flag t)
- '(holiday-bahai-holidays nil)
- '(holiday-hebrew-holidays nil)
- '(holiday-islamic-holidays nil)
- '(ledger-post-account-alignment-column 2)
- '(ledger-post-amount-alignment-column 70)
- '(ledger-reports
-   (quote
-    (("dolbal" "ledger -l \"commodity == '$'\" bal")
-     ("bal" "%(binary) -f %(ledger-file) bal")
-     ("reg" "%(binary) -f %(ledger-file) reg")
-     ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
-     ("account" "%(binary) -f %(ledger-file) reg %(account)"))))
- '(org-agenda-files
-   (quote
-    ("~/org-mode/calendar.org" "~/org-mode/projects.org" "~/org-mode/todo.org")))
- '(org-directory "~/org-mode")
- '(org-pomodoro-audio-player "/usr/bin/play -q -V0 -v2")
- '(org-pomodoro-finished-sound "/home/maynard/org-mode/gong.mp3")
- '(org-pomodoro-long-break-sound "/home/maynard/org-mode/long-gong.mp3")
- '(org-pomodoro-short-break-sound "/home/maynard/org-mode/gong.mp3")
- '(org-pomodoro-start-sound "/home/maynard/org-mode/gong.mp3")
- '(package-selected-packages
-   (quote
-    (org-cliplink ## ledger-mode company org-pomodoro org))))
-
 (defun birthday (year month day remind name)
   (interactive "*nYear: \nnMonth: \nnDay: \nnWarning period: \nMName: ")
   (insert (format "%%%%(diary-remind '(org-anniversary %1$04d %2$02d %3$02d) %4$d) %5$s's %%d birthday" year month day remind name)))
@@ -260,6 +239,37 @@
 (setq org-capture-templates
  '(("K" "Cliplink capture task" entry (file "")
     "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(calendar-chinese-all-holidays-flag t)
+ '(holiday-bahai-holidays nil)
+ '(holiday-hebrew-holidays nil)
+ '(holiday-islamic-holidays nil)
+ '(ledger-post-account-alignment-column 2)
+ '(ledger-post-amount-alignment-column 70)
+ '(ledger-reports
+   (quote
+    (("dolbal" "ledger -l \"commodity == '$'\" bal")
+     ("bal" "%(binary) -f %(ledger-file) bal")
+     ("reg" "%(binary) -f %(ledger-file) reg")
+     ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
+     ("account" "%(binary) -f %(ledger-file) reg %(account)"))))
+ '(org-agenda-files
+   (quote
+    ("~/org-mode/calendar.org" "~/org-mode/day.org" "~/org-mode/habits.org" "~/org-mode/projects.org" "~/org-mode/todo.org")))
+ '(org-directory "~/org-mode")
+ '(org-pomodoro-audio-player "/usr/bin/play -q -V0 -v2")
+ '(org-pomodoro-finished-sound "/home/maynard/org-mode/gong.mp3")
+ '(org-pomodoro-long-break-sound "/home/maynard/org-mode/long-gong.mp3")
+ '(org-pomodoro-short-break-sound "/home/maynard/org-mode/gong.mp3")
+ '(org-pomodoro-start-sound "/home/maynard/org-mode/gong.mp3")
+ '(package-selected-packages
+   (quote
+    (org-cliplink ## ledger-mode company org-pomodoro org))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
