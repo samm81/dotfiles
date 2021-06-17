@@ -167,29 +167,23 @@ NIX="${HOME}/.nix-profile/etc/profile.d/nix.sh"
 #AUTO_NOTIFY_IGNORE+=("git", "tmux", "docker run")
 #export AUTO_NOTIFY_EXPIRE_TIME=4000
 
-alias ze="${EDITOR} ${ZSHRC}"
-
-echo 'xargs find jq awk tldr !$ neofetch'
-echo "cht.sh shellcheck style diction C-x C-e"
-
-#unsetopt XTRACE
-#exec 2>&3 3>&-
-
 # https://blog.mattclemente.com/2020/06/26/oh-my-zsh-slow-to-load.html
 # https://github.com/zdharma/zinit#calling-compinit-without-turbo-mode
 # https://www.google.com/search?hl=en&q=zsh%20init%20compdump
 # https://github.com/zsh-users/zsh-completions
+#unsetopt XTRACE
+#exec 2>&3 3>&-
 
 alias fctix="${EDITOR} /home/maynard/.config/fcitx/data/QuickPhrase.mb"
 
 alias gif="echo 'peek'"
 
 # asdf and direnv
-eval "$(direnv hook zsh)"
-# shortcut for asdf managed direnv
-direnv() { asdf exec direnv "$@"; }
+check_installed "direnv" && eval "$(direnv hook zsh)" && direnv() { asdf exec direnv "$@"; }
 
-eval $(keychain --eval id_rsa)
+check_installed "keychain" && eval $(keychain --eval id_rsa)
 
 # heroku autocomplete setup
 HEROKU_AC_ZSH_SETUP_PATH=/home/maynard/.cache/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
+
+alias ze="${EDITOR} ${ZSHRC}"
