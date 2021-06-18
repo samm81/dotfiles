@@ -104,27 +104,6 @@ export HISTSIZE=50000
 export SAVEHIST=$HISTSIZE
 setopt hist_ignore_all_dups
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-
-check_installed "xclip" && alias clip="xclip -selection c"
-check_installed "python3" && alias python="python3"
-check_installed "pip3" && alias pip="pip3"
-check_installed "bat" && alias cat="bat"
-check_installed "exa" && \
-  alias ls="exa" && \
-  alias ll="exa --long --header --git" && \
-  alias la="exa --long --header --git --all"
-check_installed "tmux" && alias tmuxd="tmux new -s \${PWD##*/}"
-check_installed "pcmanfm" && alias files="pcmanfm"
-check_installed "rg" && alias grep="rg" \
-    && export FZF_DEFAULT_COMMAND="rg --files"
-alias less="less -N"
-alias lkjh="exec zsh" # give me a new theme
-alias feh="feh -. --auto-rotate"
-
 # enable tmux continuum
 export TMUX_CONTINUUM='true'
 
@@ -170,15 +149,12 @@ NIX="${HOME}/.nix-profile/etc/profile.d/nix.sh"
 # https://blog.mattclemente.com/2020/06/26/oh-my-zsh-slow-to-load.html
 # https://github.com/zdharma/zinit#calling-compinit-without-turbo-mode
 # https://www.google.com/search?hl=en&q=zsh%20init%20compdump
-# https://github.com/zsh-users/zsh-completions
+
+# instrumentation for profiling
+# https://esham.io/2018/02/zsh-profiling
 #unsetopt XTRACE
 #exec 2>&3 3>&-
 
-alias fctix="${EDITOR} /home/maynard/.config/fcitx/data/QuickPhrase.mb"
-
-alias gif="echo 'peek'"
-
-# asdf and direnv
 check_installed "direnv" && eval "$(direnv hook zsh)" && direnv() { asdf exec direnv "$@"; }
 
 check_installed "keychain" && eval $(keychain --eval id_rsa)
@@ -186,4 +162,26 @@ check_installed "keychain" && eval $(keychain --eval id_rsa)
 # heroku autocomplete setup
 HEROKU_AC_ZSH_SETUP_PATH=/home/maynard/.cache/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
 
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+
+check_installed "xclip" && alias clip="xclip -selection c"
+check_installed "python3" && alias python="python3"
+check_installed "pip3" && alias pip="pip3"
+check_installed "bat" && alias cat="bat"
+check_installed "exa" && \
+  alias ls="exa" && \
+  alias ll="exa --long --header --git" && \
+  alias la="exa --long --header --git --all"
+check_installed "tmux" && alias tmuxd="tmux new -s \${PWD##*/}"
+check_installed "pcmanfm" && alias files="pcmanfm"
+check_installed "rg" && alias grep="rg" \
+    && export FZF_DEFAULT_COMMAND="rg --files"
+alias less="less -N"
+alias lkjh="exec zsh" # give me a new theme
+alias feh="feh -. --auto-rotate"
+alias fctix="${EDITOR} /home/maynard/.config/fcitx/data/QuickPhrase.mb"
+alias gif="echo 'peek'"
 alias ze="${EDITOR} ${ZSHRC}"
