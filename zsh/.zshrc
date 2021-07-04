@@ -171,14 +171,15 @@ check_installed "xclip" && alias clip="xclip -selection c"
 check_installed "python3" && alias python="python3"
 check_installed "pip3" && alias pip="pip3"
 check_installed "bat" && alias cat="bat"
-check_installed "exa" && \
-  alias ls="exa" && \
-  alias ll="exa --long --header --git" && \
-  alias la="exa --long --header --git --all"
+check_installed "exa" \
+  && alias ls="exa" \
+  && alias ll="exa --long --header --git" \
+  && alias la="exa --long --header --git --all"
 check_installed "tmux" && alias tmuxd="tmux new -s \${PWD##*/}"
 check_installed "pcmanfm" && alias files="pcmanfm"
 check_installed "rg" && alias grep="rg" \
     && export FZF_DEFAULT_COMMAND="rg --files"
+check_installed "delta" && alias diff="delta"
 alias less="less -N"
 alias lkjh="exec zsh" # give me a new theme
 alias feh="feh -. --auto-rotate"
