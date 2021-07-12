@@ -19,7 +19,6 @@ export ZSHRC="${HOME}/.zshrc"
 # fix some zsh themes
 function battery_pct_prompt { echo "" }
 function zsh_path { echo "" }
-function rvm-prompt { echo "" }
 function rbenv { echo "" }
 function jenv_prompt_info { echo "" }
 
@@ -163,29 +162,43 @@ check_installed "keychain" && eval $(keychain --eval id_rsa)
 HEROKU_AC_ZSH_SETUP_PATH=/home/maynard/.cache/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
 
 # bitwarden
-check_installed "bw" && eval "$(bw completion --shell zsh); compdef _bw bw;"
+check_installed 'bw' && eval "$(bw completion --shell zsh); compdef _bw bw;"
+
+# mcfly
+check_installed 'mcfly' \
+  && eval "$(mcfly init zsh)" \
+  && export MCFLY_KEY_SCHEME=vim \
+  && export MCFLY_RESULTS=30
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 
+function drop_in() {
+  ORIGINAL="${1:?must pass original command name to drop_in}"
+  NEW="${2:?must pass new command name to drop_in}"
+  HINT=${3:-}
+  [[ -n "$HINT" ]] && HINT="echo ${HINT};"
+  check_installed "$ORIGINAL" && alias "$ORIGINAL"="${HINT}${NEW}"
+}
+
+drop_in 'python' 'python3'
+drop_in 'pip' 'pip3'
+drop_in 'cat' 'bat'
+drop_in 'diff' 'delta'
+check_installed 'exa' \
+drop_in 'ls' 'exa' \
+  && alias ll='exa --long --header --git' \
+  && alias la='exa --long --header --git --all'
+drop_in 'grep' 'rg' && export FZF_DEFAULT_COMMAND='rg --files'
+alias less='less -N'
+drop_in 'find' 'fd' "find -iname '*PATTERN*'"
+
 check_installed "xclip" && alias clip="xclip -selection c"
-check_installed "python3" && alias python="python3"
-check_installed "pip3" && alias pip="pip3"
-check_installed "bat" && alias cat="bat"
-check_installed "exa" \
-  && alias ls="exa" \
-  && alias ll="exa --long --header --git" \
-  && alias la="exa --long --header --git --all"
-check_installed "tmux" && alias tmuxd="tmux new -s \${PWD##*/}"
-check_installed "pcmanfm" && alias files="pcmanfm"
-check_installed "rg" && alias grep="rg" \
-    && export FZF_DEFAULT_COMMAND="rg --files"
-check_installed "delta" && alias diff="delta"
-alias less="less -N"
-alias lkjh="exec zsh" # give me a new theme
-alias feh="feh -. --auto-rotate"
-alias fctix="${EDITOR} /home/maynard/.config/fcitx/data/QuickPhrase.mb"
-alias gif="echo 'peek'"
-alias ze="${EDITOR} ${ZSHRC}"
+check_installed 'tmux' && alias tmuxd='tmux new -s ${PWD##*/}'
+check_installed 'pcmanfm' && alias files='pcmanfm'
+alias feh='feh -. --auto-rotate'
+alias fctix='${EDITOR} /home/maynard/.config/fcitx/data/QuickPhrase.mb'
+alias gif='echo 'peek''
+alias ze='${EDITOR} ${ZSHRC}'

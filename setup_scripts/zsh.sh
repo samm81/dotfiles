@@ -18,11 +18,11 @@ umask g-w,o-w
 # oh-my-zsh
 # https://github.com/robbyrussell/oh-my-zsh
 # adapted from https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
-if ! test -n "${ZSH-}"; then
+if [[ ! -n "${ZSH-}" ]]; then
 	ZSH=~/.oh-my-zsh
 fi
 
-if test -d "${ZSH}"; then
+if [[ -d "${ZSH}" ]]; then
 	echo "You already have Oh My Zsh installed."
 	echo "You'll need to remove ${ZSH} if you want to re-install."
 else
@@ -46,29 +46,11 @@ fi
 # custom plugins
 ZSH_CUSTOM="${ZSH}/custom"
 
-# k is the new l
-#ZSH_K="${ZSH_CUSTOM}/plugins/k"
-#if test -d "$ZSH_K"; then
-#   echo "k already isntalled, skipping..."
-#else
-#   echo "installing k to ${ZSH_K}"
-#	env git clone --depth=1 https://github.com/supercrabtree/k ${ZSH_K}
-#fi
-
-# zsh-autosuggestions for fish like suggestions
-ZSH_AUTOSUGGESTIONS="${ZSH_CUSTOM}/plugins/zsh-autosuggestions"
-if test -d "$ZSH_AUTOSUGGESTIONS"; then
-	echo "zsh-autosuggestions already installed, skipping..."
-else
-	echo "installing zsh-autosuggestions to ${ZSH_AUTOSUGGESTIONS}"
-	env git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions ${ZSH_AUTOSUGGESTIONS}
-fi
-
 function install_zsh_plugin {
     plugin_url="${1}"
     plugin_name="${plugin_url##*/}"
     plugin_dir="${ZSH_CUSTOM}/plugins/${plugin_name}"
-    if test -d "${plugin_dir}"; then
+    if [[ -d "${plugin_dir}" ]]; then
         echo "${plugin_name} already installed, skipping..."
     else
         echo "installing ${plugin_name} to ${plugin_dir}"
@@ -76,13 +58,21 @@ function install_zsh_plugin {
     fi
 }
 
+# zsh-autosuggestions for fish like suggestions
+install_zsh_plugin 'https://github.com/zsh-users/zsh-autosuggestions'
+
 # zsh-completions for... more completions I guess
-install_zsh_plugin https://github.com/zsh-users/zsh-completions
+install_zsh_plugin 'https://github.com/zsh-users/zsh-completions'
 
 # zsh-syntax-highlighting for fish like highlighting
-install_zsh_plugin https://github.com/zsh-users/zsh-syntax-highlighting
+install_zsh_plugin 'https://github.com/zsh-users/zsh-syntax-highlighting'
 
 # zsh-auto-notify to notify when long running commands complete
-install_zsh_plugin https://github.com/MichaelAquilina/zsh-auto-notify
-# zsh-auto-notify is a special snowflake that wants to be called just "auto-notify", but this breaks importing
-mv ${ZSH_CUSTOM}/plugins/zsh-auto-notify/auto-notify.plugin.zsh ${ZSH_CUSTOM}/plugins/zsh-auto-notify/zsh-auto-notify.plugin.zsh
+install_zsh_plugin 'https://github.com/MichaelAquilina/zsh-auto-notify'
+# zsh-auto-notify is a special snowflake that wants to be called just "auto-notify"
+# but this breaks importing
+AUTO="${ZSH_CUSTOM}/plugins/zsh-auto-notify/auto-notify.plugin.zsh"
+ZSH_AUTO="${ZSH_CUSTOM}/plugins/zsh-auto-notify/zsh-auto-notify.plugin.zsh"
+[[ -e "$AUTO" ]] && mv "$AUTO" "$ZSH_AUTO"
+
+echo "done!"

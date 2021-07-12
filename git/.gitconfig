@@ -14,6 +14,9 @@
 [diff]
 	wsErrorHighlight = all
 [commit]
-    verbose = true
+  verbose = true
 [interactive]
-    diffFilter = delta --color-only
+  diffFilter = delta --color-only
+[delta]
+	side-by-side = true
+	hunk-header-decoration-style = none
