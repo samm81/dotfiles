@@ -18,5 +18,5 @@
 [interactive]
   diffFilter = delta --color-only
 [delta]
-	side-by-side = true
+#	side-by-side = true
 	hunk-header-decoration-style = none
