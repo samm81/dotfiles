@@ -164,12 +164,6 @@ HEROKU_AC_ZSH_SETUP_PATH=/home/maynard/.cache/heroku/autocomplete/zsh_setup && t
 # bitwarden
 check_installed 'bw' && eval "$(bw completion --shell zsh); compdef _bw bw;"
 
-# mcfly
-check_installed 'mcfly' \
-  && eval "$(mcfly init zsh)" \
-  && export MCFLY_KEY_SCHEME=vim \
-  && export MCFLY_RESULTS=30
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
