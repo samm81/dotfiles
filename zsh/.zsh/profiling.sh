@@ -7,7 +7,7 @@ profile_start() {
 
 	logfile=$(mktemp zsh_profile.XXXXXXXX)
 	echo "Logging to $logfile"
-	exec 3>&2 2>$logfile
+	exec 3>&2 2>"$logfile"
 
 	setopt XTRACE
 

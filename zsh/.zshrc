@@ -10,5 +10,6 @@ sourc '.zsh/check_installed.sh'
 sourc '.zsh/ssh-agent.sh'
 sourc '.zsh/main.sh'
 sourc '.zsh/256color.sh'
+sourc '.zsh/wayland.sh'
 sourc '.zsh/fo.sh'
 sourc "$HOME/.hints.sh"

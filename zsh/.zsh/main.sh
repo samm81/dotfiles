@@ -20,7 +20,9 @@ export DISABLE_AUTO_TITLE='true'
 check_installed 'iex' && export ERL_AFLAGS="-kernel shell_history enabled"
 
 # hledger
-check_installed 'hledger' && export LEDGER_FILE="${HOME}/scratch/$(date +%Y).ledger"
+check_installed 'hledger' \
+  && LEDGER_FILE="${HOME}/scratch/$(date +%Y).ledger" \
+  && export LEDGER_FILE
 
 # python
 check_installed 'python' && export PYTHONDONTWRITEBYTECODE="plsno"
@@ -31,23 +33,23 @@ check_installed 'pipenv' && export PIPENV_VENV_IN_PROJECT=1
 #check_installed "pipenv" && eval "$(pipenv --completion)"
 
 # asdf
-ASDF="${HOME}/.asdf"
-[[ -d ${ASDF} ]] && source "${ASDF}/asdf.sh"
-[[ -d ${ASDF} ]] && source "${ASDF}/completions/asdf.bash"
+ASDF="$HOME/.asdf"
+[ -d "$ASDF" ] && source "$ASDF/asdf.sh"
+[ -d "$ASDF" ] && source "$ASDF/completions/asdf.bash"
 
 # nix
 NIX="${HOME}/.nix-profile/etc/profile.d/nix.sh"
-[[ -e "${NIX}" ]] && source "${NIX}"
+[ -e "${NIX}" ] && source "${NIX}"
 
 check_installed "direnv" && eval "$(direnv hook zsh)" && direnv() { asdf exec direnv "$@"; }
 
-check_installed "keychain" && eval $(keychain --eval id_ed25519)
+check_installed "keychain" && eval "$(keychain --eval id_ed25519)"
 
 # heroku autocomplete setup
 check_installed 'heroku' && \
   HEROKU_AC_ZSH_SETUP_PATH="$HOME/.cache/heroku/autocomplete/zsh_setup" \
-  && test -f $HEROKU_AC_ZSH_SETUP_PATH \
-  && source $HEROKU_AC_ZSH_SETUP_PATH
+  && [ -f "$HEROKU_AC_ZSH_SETUP_PATH" ] \
+  && source "$HEROKU_AC_ZSH_SETUP_PATH"
 
 # bitwarden
 check_installed 'bw' && eval "$(bw completion --shell zsh); compdef _bw bw;"
@@ -73,11 +75,11 @@ fi
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 
-function drop_in() {
+drop_in() {
   ORIGINAL="${1:?must pass original command name to drop_in}"
   NEW="${2:?must pass new command name to drop_in}"
   HINT=${3:-}
-  [[ -n "$HINT" ]] && HINT="echo ${HINT};"
+  [ -n "$HINT" ] && HINT="echo ${HINT};"
   check_installed "$NEW" && alias "$ORIGINAL"="${HINT}${NEW}"
 }
 
@@ -94,6 +96,6 @@ check_installed 'tmux' && alias tmuxd='tmux new -s ${PWD##*/}'
 alias less='less -N'
 check_installed 'feh' && alias feh='feh -. --auto-rotate'
 
-check_installed cs && eval $(cs --completions zsh)
+check_installed cs && eval "$(cs --completions zsh)"
 
 check_installed kubectl && source <(kubectl completion zsh)

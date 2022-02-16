@@ -1,3 +1,3 @@
-function check_installed() {
-  test "$(command -v ${1})"
+check_installed() {
+  test "$(command -v "$1")"
 }
