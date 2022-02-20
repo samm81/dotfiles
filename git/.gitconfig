@@ -1,16 +1,16 @@
 [push]
-	config = default
-	default = current
+  config = default
+  default = current
 [user]
-	name = samm81
-	email = samwmaynard@gmail.com
+  name = samm81
+  email = samwmaynard@gmail.com
 [core]
-	excludesfile = /home/maynard/.gitignore
+  excludesfile = /home/maynard/.gitignore
 [fetch]
-	prune = true
+  prune = true
 [color]
-	ui = true
+  ui = true
 [diff]
-	wsErrorHighlight = all
+  wsErrorHighlight = all
 [commit]
   verbose = true
