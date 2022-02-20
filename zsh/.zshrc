@@ -13,5 +13,7 @@ sourc "$ZSH_DIR/ssh-agent.sh"
 sourc "$ZSH_DIR/main.sh"
 sourc "$ZSH_DIR/256color.sh"
 sourc "$ZSH_DIR/sway.sh"
-sourc "$ZSH_DIR/fo.sh"
+
+sourc "$ZSH_DIR/$(hostname).sh"
+
 sourc "$HOME/.hints.sh"
