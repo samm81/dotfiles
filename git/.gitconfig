@@ -5,7 +5,6 @@
 	name = samm81
 	email = samwmaynard@gmail.com
 [core]
-	pager = delta
 	excludesfile = /home/maynard/.gitignore
 [fetch]
 	prune = true
@@ -15,8 +14,3 @@
 	wsErrorHighlight = all
 [commit]
   verbose = true
-[interactive]
-  diffFilter = delta --color-only
-[delta]
-#	side-by-side = true
-	hunk-header-decoration-style = none
