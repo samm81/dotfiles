@@ -1,6 +1,6 @@
 sourc() {
-	ZSH_FILE="$1"
-	[ -f "$ZSH_FILE" ] && source "$ZSH_FILE"
+  ZSH_FILE="$1"
+  [ -f "$ZSH_FILE" ] && source "$ZSH_FILE"
 }
 
 ZSH_DIR="$HOME/.zsh"
