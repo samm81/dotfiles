@@ -1,9 +1,7 @@
 # User configuration
 
-#export PATH=$HOME/bin:$PATH
-#export PATH=$HOME/.local/bin:$PATH
-#export PATH=/usr/local/bin:$PATH
-#export MANPATH=/usr/local/man:$MANPATH
+export PATH=$HOME/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
 
 # long history
 export HISTSIZE=50000
