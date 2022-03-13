@@ -14,3 +14,5 @@
   wsErrorHighlight = all
 [commit]
   verbose = true
+[init]
+  defaultBranch = main
