@@ -25,6 +25,7 @@ swaynagmode=$(exists swaynagmode && echo 'true') || true
 statusbar=$([ -x "$STATUSBAR_SH" ] && echo 'true') || true
 adwaita=$(installed adwaita-icon-theme && echo 'true') || true
 pamixer=$(exists pamixer && echo 'true') || true
+brillo=$(exists brillo && echo 'true') || true
 mako=$(exists mako && echo 'true') || true
 swaylock=$(exists swaylock && echo 'true') || true
 grimshot=$(exists grimshot && echo 'true') || true
@@ -94,7 +95,7 @@ EOF
 
 touchpad=$(swaymsg -t get_inputs | grep 'Touchpad' | grep 'identifier' | cut -d '"' -f 4)
 [ -z "$touchpad" ] && echo 'warn: could not find a touchpad, skipping'
-[ -n "$touchpad" ] && cat <<EOF >> config
+[ -n "$touchpad" ] && cat >> config <<EOF && echo "info: configured touchpad $touchpad"
 
 ### Input configuration
 # You can get the names of your inputs by running: swaymsg -t get_inputs
@@ -108,7 +109,7 @@ input "$touchpad" {
 EOF
 
 [ -z "$swaynagmode" ] && echo 'warn: could not find `swaynagmode`, skipping'
-[ -n "$swaynagmode" ] && cat <<EOF >> config
+[ -n "$swaynagmode" ] && cat >> config <<EOF && echo 'info: added `swaynagmode`'
 
 # swaynagmode
 set \$nag         exec swaynagmode
@@ -167,13 +168,13 @@ cat <<EOF >> config
 EOF
 
 if [ -z "$swaynagmode" ]; then
-  cat <<EOF >> config
+  cat >> config <<EOF && echo 'info: added default exit binding'
 
     # Exit sway (logs you out of your Wayland session)
     bindsym \$mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 EOF
 else
-  cat <<EOF >> config
+  cat >> config <<EOF && echo 'info: added `swaynagmode` exit binding'
 
     # Exit sway (logs you out of your Wayland session)
     bindsym \$mod+Shift+e \$nag -t "warning" -m "Exit Sway?" -b "Exit" "swaymsg exit" -b "Reload" "swaymsg reload"
@@ -284,9 +285,6 @@ mode "resize" {
     bindsym Escape mode "default"
 }
 bindsym \$mod+r mode "resize"
-EOF
-
-cat <<EOF >> config
 
 #
 # Status Bar:
@@ -301,14 +299,14 @@ EOF
 [ -z "$statusbar" ] || [ -z "$adwaita" ] \
   && echo 'warn: could not find `statusbar` or `adwaita` not installed, skipping'
 if [ -n "$statusbar" ] && [ -n "$adwaita" ]; then
-  cat <<EOF >> config
+  cat >> config <<EOF && echo 'info: installed `statusbar.sh` as `status_command`'
     status_command while ~/.config/sway/statusbar.sh; do sleep 1; done
 
     # https://github.com/swaywm/sway/issues/5645
     icon_theme Adwaita
 EOF
 else
-  cat <<EOF >> config
+  cat >> config <<EOF && echo 'info: installed default `status_command`'
     # The default just shows the current date and time.
     status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
 EOF
@@ -330,7 +328,7 @@ smart_gaps on
 EOF
 
 [ -z "$pamixer" ] && echo 'warn: could not find `pamixer`, skipping volume keys'
-[ -n "$pamixer" ] && cat <<EOF >> config
+[ -n "$pamixer" ] && cat >> config <<EOF && echo 'info: installed `pamixer` volume keys'
 
 # special keys
 # https://wiki.archlinux.org/title/Sway#Custom_keybindings
@@ -340,8 +338,15 @@ EOF
     bindsym XF86AudioMute exec pamixer --toggle-mute
 EOF
 
+[ -z "$brillo" ] && echo 'warn: could not find `brillo`, skipping volume keys'
+[ -n "$brillo" ] && cat >> config <<EOF && echo 'info: installed `brillo` backlight keys'
+    bindsym XF86MonBrightnessUp exec brillo -u 200000 -A 5
+    bindsym XF86MonBrightnessDown exec brillo -u 200000 -U 5
+    bindsym XF86Display exec "[ \$(brillo -G | cut -d '.' -f 1) != '0' ] && brillo -O && brillo -u 800000 -S 0 && swaymsg 'output * dpms off' || (swaymsg 'output * dpms on' && brillo -u 800000 -I)"
+EOF
+
 [ -z "$mako" ] && echo 'warn: could not find `mako`, skipping'
-[ -n "$mako" ] && cat <<EOF >> config
+[ -n "$mako" ] && cat <<EOF >> config && echo 'info: installed `mako` dismiss binding'
 
 # mako notifications
 # https://github.com/emersion/mako
@@ -349,14 +354,14 @@ EOF
 EOF
 
 [ -z "$swaylock" ] && echo 'warn: could not find `swaylock`, skipping'
-[ -n "$swaylock" ] && cat <<EOF >> config
+[ -n "$swaylock" ] && cat <<EOF >> config && echo 'info: installed `swaylock` binding'
 
-# swayidle
+# swaylock ((i)dle)
     bindsym \$mod+i exec 'swaylock -f -e -c 000000DD'
 EOF
 
 [ -z "$grimshot" ] && echo 'warn: could not find `grimshot`, skipping'
-[ -n "$grimshot" ] && cat <<EOF >> config
+[ -n "$grimshot" ] && cat <<EOF >> config && echo 'info: installed `grimshot` bindings'
 
 # grimshot
     bindsym \$mod+p exec grimshot copy area
@@ -364,11 +369,16 @@ EOF
     bindsym \$mod+Ctrl+p exec grimshot copy screen
 EOF
 
-cat <<EOF >> config
+cat <<EOF >> config && echo 'info: installed floating window directives'
 
 for_window [app_id="zoom" title="zoom"] floating enable
 for_window [class="Anki" title="add"] floating enable
 for_window [title="win0"] floating enable
+for_window [title="Firefox — Sharing Indicator"] floating enable
+for_window [title="Firefox — Sharing Indicator"] nofocus
+EOF
+
+cat <<EOF >> config && echo 'info: installed second monitor config, assuming `eDP-1` is primary'
 
 # second monitor
     bindsym \$mod+m exec 'swaymsg output eDP-1 toggle'
@@ -376,7 +386,9 @@ for_window [title="win0"] floating enable
     bindsym \$mod+Ctrl+Shift+\$down exec 'swaymsg move workspace output down'
     bindsym \$mod+Ctrl+Shift+\$up exec 'swaymsg move workspace output up'
     bindsym \$mod+Ctrl+Shift+\$right exec 'swaymsg move workspace output right'
+EOF
 
+cat <<EOF >> config && echo 'info: installed `dbus` env variable fix'
 # on startup
     # https://github.com/emersion/xdg-desktop-portal-wlr#running
     # https://github.com/swaywm/sway/wiki#gtk-applications-take-20-seconds-to-start
@@ -384,37 +396,37 @@ for_window [title="win0"] floating enable
 EOF
 
 [ -z "$xresources" ] && echo "warn: \`$X_RESOURCES\` file is missing, skipping, might have dpi problems"
-[ -n "$xresources" ] && cat <<EOF >> config
+[ -n "$xresources" ] && cat >> config <<EOF && echo "info: loading \`$X_RESOURCES\` file on startup"
     # https://github.com/swaywm/sway/wiki#after-unplugging-an-external-display-some-applications-appear-too-large-on-my-hidpi-screen
     exec xrdb -load ~/.Xresources
 EOF
 
-[ -n "$mako" ] && cat <<EOF >> config
+[ -n "$mako" ] && cat >> config <<EOF && echo 'info: loading `mako` on startup'
     exec mako
 EOF
 
 [ -z "$pipewire" ] && echo 'warn: could not find `pipewire`, skipping'
-[ -n "$pipewire" ] && cat <<EOF >> config
+[ -n "$pipewire" ] && cat >> config <<EOF && echo 'info: loading `pipewire` on startup'
     exec pipewire
 EOF
 
 [ -z "$pipewire_pulse" ] && echo 'warn: could not find `pipewire-pulse`, skipping'
-[ -n "$pipewire_pulse" ] && cat <<EOF >> config
+[ -n "$pipewire_pulse" ] && cat >> config <<EOF && echo 'info: loading `pipewire-pulse` on startup'
     exec pipewire-pulse
 EOF
 
 [ -z "$gammastep" ] && echo 'warn: could not find `gammastep`, skipping'
-[ -n "$gammastep" ] && cat <<EOF >> config
-    exec gammastep -l 47.7:-122.3 -b 1:0.5
+[ -n "$gammastep" ] && cat >> config <<EOF && echo 'info: loading `gammastep` on startup'
+    exec gammastep
 EOF
 
 [ -z "$syncthing" ] && echo 'warn: could not find `syncthing`, skipping'
-[ -n "$syncthing" ] && cat <<EOF >> config
+[ -n "$syncthing" ] && cat >> config <<EOF && echo 'info: loading `syncthing` on startup'
     exec syncthing --no-browser
 EOF
 
 [ -z "$fcitx5" ] && echo 'warn: could not find `fcitx5`, skipping'
-[ -n "$fcitx5" ] && cat <<EOF >> config
+[ -n "$fcitx5" ] && cat >> config <<EOF && echo 'info: loading `fcitx5` on startup'
     exec fcitx5 -d --replace
 EOF
 
@@ -424,3 +436,15 @@ include /etc/sway/config.d/*
 EOF
 
 echo "all done, remember to reload config"
+
+# discovered with `wev`
+# XF86AudioMicMute
+# XF86MonBrightnessDown
+# XF86MonBrightnessUp
+# XF86Display
+# XF86WLAN
+# XF86NotificationCenter
+# XF86PickupPhone
+# XF86HangupPhone
+# XF86Favorites
+# Print
