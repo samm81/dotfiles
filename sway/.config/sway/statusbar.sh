@@ -5,11 +5,13 @@ set -euo pipefail
 IFS=$'\n\t'
 shopt -s nullglob globstar
 
+IWD_STATION_NAME="wlp9s0"
+
 iwd_wifi() {
-  readarray -t wifi < <(iwctl station wlp9s0 show | awk '{ if($1=="State") { print $2 } if($1=="Connected") { print $3 }}')
-  status="${wifi[0]}"
+  readarray -t wifi < <(iwctl station $IWD_STATION_NAME show | awk '{ if($1=="State") { print $2 } if($1=="Connected") { print $3 }}')
+  status="${wifi[0]:-}"
   network="${wifi[1]:-}"
-  [ -n "$network" ] && echo "$network" || echo "$status"
+  echo "${network:-${status:-err}}"
 }
 
 mem_info=$(free -h | grep 'Mem:' | tr -s ' ' | tr -d 'i')
@@ -21,7 +23,7 @@ linux_version=$(uname -r)
 battery_status=$(cat /sys/class/power_supply/BAT0/status)
 battery_percent=$(( $(cat /sys/class/power_supply/BAT0/energy_now) * 100 / $(cat /sys/class/power_supply/BAT0/energy_full) ))
 battery="${battery_percent} ${battery_status}"
-date_formatted=$(date '+%a %F %l:%M:%S %p')
+date_formatted=$(date '+%a %F %H:%M:%S')
 volume=$(pamixer --get-volume-human)
 wifi=$(iwd_wifi)
 

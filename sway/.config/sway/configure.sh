@@ -29,6 +29,7 @@ brillo=$(exists brillo && echo 'true') || true
 mako=$(exists mako && echo 'true') || true
 swaylock=$(exists swaylock && echo 'true') || true
 grimshot=$(exists grimshot && echo 'true') || true
+kanshi=$(exists kanshi && echo 'true') || true
 xresources=$([ -f "$X_RESOURCES" ] && echo 'true') || true
 pipewire=$(exists pipewire && echo 'true') || true
 pipewire_pulse=$(exists pipewire-pulse && echo 'true') || true
@@ -369,6 +370,11 @@ EOF
     bindsym \$mod+Ctrl+p exec grimshot copy screen
 EOF
 
+[ -z "$kanshi" ] && echo 'warn: could not find `kanshi`, skipping'
+[ -n "$kanshi" ] && cat >> config <<EOF && echo 'info: loading `kanshi` on startup'
+    exec kanshi
+EOF
+
 cat <<EOF >> config && echo 'info: installed floating window directives'
 
 for_window [app_id="zoom" title="zoom"] floating enable
@@ -395,6 +401,10 @@ cat <<EOF >> config && echo 'info: installed `dbus` env variable fix'
     exec dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway SWAYSOCK
 EOF
 
+cat <<EOF >> config && echo 'info: installed sway-sv kickoff'
+    exec runsvdir "\$SWAY_SVDIR"
+EOF
+
 [ -z "$xresources" ] && echo "warn: \`$X_RESOURCES\` file is missing, skipping, might have dpi problems"
 [ -n "$xresources" ] && cat >> config <<EOF && echo "info: loading \`$X_RESOURCES\` file on startup"
     # https://github.com/swaywm/sway/wiki#after-unplugging-an-external-display-some-applications-appear-too-large-on-my-hidpi-screen
@@ -418,11 +428,6 @@ EOF
 [ -z "$gammastep" ] && echo 'warn: could not find `gammastep`, skipping'
 [ -n "$gammastep" ] && cat >> config <<EOF && echo 'info: loading `gammastep` on startup'
     exec gammastep
-EOF
-
-[ -z "$syncthing" ] && echo 'warn: could not find `syncthing`, skipping'
-[ -n "$syncthing" ] && cat >> config <<EOF && echo 'info: loading `syncthing` on startup'
-    exec syncthing --no-browser
 EOF
 
 [ -z "$fcitx5" ] && echo 'warn: could not find `fcitx5`, skipping'
