@@ -26,3 +26,21 @@ git_clean() {
   echo '$ git branch -D '\''$BRANCH_NAME'\'
 }
 alias 'git-clean'='git_clean'
+
+hint 'logs' 'svlogtail'
+
+timezone() {
+  echo '$ ln -sf /usr/share/zoneinfo/<timezone> /etc/localtime'
+}
+
+alias 'pdf' 'zathura'
+
+asdf_=$(which asdf)
+asdf-shim() {
+  [ "$1" = "install" ] && [ "$2" = "nodejs" ] && ASDF_NODEJS_FORCE_COMPILE=1 asdf_ "$@"
+}
+alias 'asdf=asdf-shim'
+
+alias gitlocalignore="echo '.git/info/exclude'"
+
+alias docker-clean='docker system prune'
