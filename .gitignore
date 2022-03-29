@@ -5,3 +5,4 @@ vim/.vim/plugged/
 vim/.vim/spell/
 foot/.config/foot/themes
 sway/.config/sway/config
+foot/.config/foot/foot.ini
