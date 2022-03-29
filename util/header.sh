@@ -7,7 +7,7 @@ shopt -s nullglob globstar
 
 # use colors, but only if connected to a terminal that supports them
 if which tput >/dev/null 2>&1; then
-	ncolors=$(tput colors)
+  ncolors=$(tput colors)
 fi
 [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]
 has_colors=$?
@@ -18,15 +18,14 @@ BLUE="$( (( has_colors == 0 )) && tput setaf 4 || echo '' )"
 BOLD="$( (( has_colors == 0 )) && tput bold || echo '' )"
 NORMAL="$( (( has_colors == 0 )) && tput sgr0 || echo '' )"
 err () {
-    [[ -n ${1:-} ]] \
-        && echo "${RED}${1}${NORMAL}"
+  [[ -n ${1:-} ]] && echo "${RED}${1}${NORMAL}"
 }
 
 function check_installed() {
-    if ! test "$(command -v ${1})"; then
-        err "${1} is not installed, please install ${1} and then retry"
-        exit 1
-    fi
+  if ! test "$(command -v ${1})"; then
+    err "${1} is not installed, please install ${1} and then retry"
+    exit 1
+  fi
 }
 
 check_installed "git"
