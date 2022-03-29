@@ -30,11 +30,6 @@ check_installed 'pipenv' && export PIPENV_VENV_IN_PROJECT=1
 # (really slow)
 #check_installed "pipenv" && eval "$(pipenv --completion)"
 
-# asdf
-ASDF="$HOME/.asdf"
-[ -d "$ASDF" ] && source "$ASDF/asdf.sh"
-[ -d "$ASDF" ] && source "$ASDF/completions/asdf.bash"
-
 # nix
 NIX="${HOME}/.nix-profile/etc/profile.d/nix.sh"
 [ -e "${NIX}" ] && source "${NIX}"
@@ -97,3 +92,5 @@ check_installed 'feh' && alias feh='feh -. --auto-rotate'
 check_installed cs && eval "$(cs --completions zsh)"
 
 check_installed kubectl && source <(kubectl completion zsh)
+
+check_installed pipx && eval "$(register-python-argcomplete pipx)"

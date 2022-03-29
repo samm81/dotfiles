@@ -20,9 +20,14 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git asdf colored-man-pages)
-#plugins+=(zsh-auto-notify) # non-built in
+
+ASDF="$HOME/.asdf"
+[ -d "$ASDF" ] && plugins+=('asdf') && fpath+=("$ASDF/completions")
+
 # from https://github.com/zsh-users
+#plugins+=(zsh-auto-notify) # non-built in
 plugins+=(zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
+
 # make zsh-autosuggestions play nice with st
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=11"
 
@@ -40,3 +45,8 @@ bindkey '^\' autosuggest-execute
 # zsh-auto-notify
 #AUTO_NOTIFY_IGNORE+=("git", "tmux", "docker run")
 #export AUTO_NOTIFY_EXPIRE_TIME=4000
+
+# theme fix
+battery_time_remaining() {
+  echo -n ""
+}
