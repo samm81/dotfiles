@@ -16,3 +16,5 @@
   verbose = true
 [init]
   defaultBranch = main
+[merge]
+  conflictstyle = diff3
