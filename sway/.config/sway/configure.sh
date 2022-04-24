@@ -380,8 +380,10 @@ cat <<EOF >> config && echo 'info: installed floating window directives'
 for_window [app_id="zoom" title="zoom"] floating enable
 for_window [class="Anki" title="add"] floating enable
 for_window [title="win0"] floating enable
-for_window [title="Firefox — Sharing Indicator"] floating enable
-for_window [title="Firefox — Sharing Indicator"] nofocus
+for_window [title="Firefox — Sharing Indicator"] \\
+    floating enable \\
+  , resize set width 79px height 52px \\
+  , move position 2250px 5px
 EOF
 
 cat <<EOF >> config && echo 'info: installed second monitor config, assuming `eDP-1` is primary'

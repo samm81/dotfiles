@@ -11,9 +11,30 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
+(use-package smex
+  :ensure t
+  :bind (("M-x" . smex))
+  :config (smex-initialize))
+
+;; org-cliplink
+(use-package org-cliplink :ensure t)
+(defun system-keyboard ()
+  "Returns current content of system keyboard"
+  (shell-command-to-string "wl-paste"))
+(defun cliplink-system-keyboard ()
+  "Puts system clipboard in killring, then calls `org-cliplink`"
+  (interactive)
+  (kill-new (system-keyboard))
+  (org-cliplink))
+(global-set-key (kbd "C-x p i") 'cliplink-system-keyboard)
+(setq org-capture-templates
+ '(("K" "Cliplink capture task" entry (file "")
+    "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
+
+
 ;; xdg-open is a great browser
 (setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "xdg-open")
+      browse-url-generic-program "firefox-wayland")
 
 ;; display line numbers
 (when (version<= "26.0.50" emacs-version)
@@ -116,9 +137,9 @@
   (setq org-refile-use-outline-path 'file)
 
   (setq org-todo-keywords
-	'((sequence "TODO(t)" "|" "DONE(d)")
+	'((sequence "TODO(t)" "WIP(i)" "|" "DONE(d)")
 	  (sequence "WAITING(w)" "|")
-	  (sequence "|" "DISCARDED(i)")))
+	  (sequence "|" "DISCARDED(c)")))
 
   ;; capture
   (setq org-default-notes-file (concat org-directory "/capture.org"))
@@ -226,20 +247,6 @@
       (setq daylight (buffer-substring start end))
       (concat sunset " " daylight))))
 
-;; org-cliplink
-(defun system-keyboard ()
-  "Returns current content of system keyboard"
-  (shell-command-to-string "xclip -out -selection clipboard"))
-(defun cliplink-system-keyboard ()
-  "Puts system clipboard in killring, then calls `org-cliplink`"
-  (interactive)
-  (kill-new (system-keyboard))
-  (org-cliplink))
-(global-set-key (kbd "C-x p i") 'cliplink-system-keyboard)
-(setq org-capture-templates
- '(("K" "Cliplink capture task" entry (file "")
-    "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -252,15 +259,13 @@
  '(ledger-post-account-alignment-column 2)
  '(ledger-post-amount-alignment-column 70)
  '(ledger-reports
-   (quote
-    (("dolbal" "ledger -l \"commodity == '$'\" bal")
+   '(("dolbal" "ledger -l \"commodity == '$'\" bal")
      ("bal" "%(binary) -f %(ledger-file) bal")
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
-     ("account" "%(binary) -f %(ledger-file) reg %(account)"))))
+     ("account" "%(binary) -f %(ledger-file) reg %(account)")))
  '(org-agenda-files
-   (quote
-    ("~/org-mode/calendar.org" "~/org-mode/day.org" "~/org-mode/habits.org" "~/org-mode/projects.org" "~/org-mode/todo.org")))
+   '("~/org-mode/calendar.org" "~/org-mode/day.org" "~/org-mode/habits.org" "~/org-mode/projects.org" "~/org-mode/todo.org"))
  '(org-directory "~/org-mode")
  '(org-pomodoro-audio-player "/usr/bin/play -q -V0 -v2")
  '(org-pomodoro-finished-sound "/home/maynard/org-mode/gong.mp3")
@@ -268,8 +273,7 @@
  '(org-pomodoro-short-break-sound "/home/maynard/org-mode/gong.mp3")
  '(org-pomodoro-start-sound "/home/maynard/org-mode/gong.mp3")
  '(package-selected-packages
-   (quote
-    (org-cliplink ## ledger-mode company org-pomodoro org))))
+   '(use-package org-cliplink ## ledger-mode company org-pomodoro org)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

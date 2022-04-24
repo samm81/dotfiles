@@ -15,18 +15,6 @@ set_default_sink () {
 }
 alias 'set-default-sink'='set_default_sink'
 
-git_clean() {
-  echo '$ git fetch --prune'
-  git fetch --prune
-  echo '$ git branch --merged | grep -E -v "(^\*|master|main)" | xargs git branch -d'
-  git branch --merged | grep -v "(^\*|master|main)" | xargs git branch -d
-  echo '$ git branch --no-merged'
-  git branch --no-merged | cat
-  # shellcheck disable=SC2016
-  echo '$ git branch -D '\''$BRANCH_NAME'\'
-}
-alias 'git-clean'='git_clean'
-
 hint 'logs' 'svlogtail'
 
 timezone() {
@@ -35,12 +23,19 @@ timezone() {
 
 alias 'pdf' 'zathura'
 
-asdf_=$(which asdf)
-asdf-shim() {
-  [ "$1" = "install" ] && [ "$2" = "nodejs" ] && ASDF_NODEJS_FORCE_COMPILE=1 asdf_ "$@"
-}
-alias 'asdf=asdf-shim'
+# although this is slick, it breaks the auto completion :(
+## rename `asdf` to `orig_asdf`
+#eval "orig_$(declare -f asdf)"
+#asdf-shim() {
+#([ "$1" = "install" ] \
+#  && [ "$2" = "nodejs" ] \
+#  && ASDF_NODEJS_FORCE_COMPILE=1 orig_asdf "$@") \
+#  || orig_asdf "$@"
+#}
+#alias 'asdf=asdf-shim'
 
-alias gitlocalignore="echo '.git/info/exclude'"
+alias git-local-ignore="echo '.git/info/exclude'"
 
 alias docker-clean='docker system prune'
+
+alias screenrecord='wf-recorder -g "$(slurp)"'

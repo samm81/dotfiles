@@ -5,7 +5,7 @@ sourc() {
 
 ZSH_DIR="$HOME/.zsh"
 
-#sourc '.zsh/profiling.sh'
+sourc "$ZSH_DIR/profiling.sh"
 sourc "$ZSH_DIR/theme_fixes.sh"
 sourc "$ZSH_DIR/oh-my-zsh.sh"
 sourc "$ZSH_DIR/check_installed.sh"

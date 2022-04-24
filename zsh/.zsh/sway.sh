@@ -22,5 +22,8 @@ if [ "$(tty)" = "/dev/tty1" ]; then
   XDG_RUNTIME_DIR="/tmp/xdg-runtime-$(id -u)"
 	export XDG_RUNTIME_DIR
   [ ! -d "XDG_RUNTIME_DIR" ] && mkdir "$XDG_RUNTIME_DIR" && chmod 0700 "$XDG_RUNTIME_DIR"
-  exec dbus-run-session sway
+  dbus-run-session sway
+  # post sway cleanup
+  pkill -u maynard pipewire
+  pkill -u maynard -f sway-sv
 fi

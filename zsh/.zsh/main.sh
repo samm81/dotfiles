@@ -77,20 +77,21 @@ drop_in() {
 }
 
 drop_in 'pip' 'pip3'
-drop_in 'cat' 'bat'
 drop_in 'diff' 'delta'
 drop_in 'ls' 'exa' \
   && alias ll='exa --long --header --git' \
   && alias la='exa --long --header --git --all'
 drop_in 'grep' 'rg' && export FZF_DEFAULT_COMMAND='rg --files'
 drop_in 'find' 'fd' "find -iname '*PATTERN*'"
+check_installed 'bat' && alias cat='bat --show-all'
 check_installed 'xclip' && alias clip='xclip -selection c'
 check_installed 'tmux' && alias tmuxd='tmux new -s ${PWD##*/}'
-alias less='less -N'
 check_installed 'feh' && alias feh='feh -. --auto-rotate'
+alias less='less -N'
 
 check_installed cs && eval "$(cs --completions zsh)"
 
-check_installed kubectl && source <(kubectl completion zsh)
+# TODO this hangs on startup if not connected to internet
+#check_installed kubectl && source <(kubectl completion zsh)
 
 check_installed pipx && eval "$(register-python-argcomplete pipx)"
