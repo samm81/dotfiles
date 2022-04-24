@@ -1,0 +1,254 @@
+" show line numbers in gutter
+set number
+set relativenumber
+
+" default to two space tabs
+set tabstop=2 shiftwidth=2 expandtab
+
+" make sure there are always couple of lines/columns of context
+set scrolloff=4 sidescrolloff=4
+
+nnoremap <Leader>ve :tabe $MYVIMRC<CR>
+nnoremap <Leader>vs :source $MYVIMRC<CR>
+
+" copy to system clipboard
+nnoremap <Leader>c :w !wl-copy<CR>
+vnoremap <Leader>c :w !wl-copy<CR>
+
+set splitbelow splitright
+
+set showcmd
+
+" don't highlight search results
+set nohlsearch
+
+" firenvim
+if exists('g:started_by_firenvim')
+  set laststatus=0
+  let fc['.*'] = { 'takeover': 'never' }
+  au BufEnter github.com_*.txt set filetype=markdown
+end
+
+au FileType text setlocal textwidth=80
+
+" re-read files when they change
+set autoread
+
+" unload a buffer when it is no longer in a window (abandoned)
+set nohidden
+
+" Install vim-plug if not found
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
+
+call plug#begin()
+
+  " Make sure you use single quotes
+
+  " allows for `:help plug-options`
+  Plug 'junegunn/vim-plug'
+
+  Plug 'neovim/nvim-lspconfig'
+
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'nvim-telescope/telescope.nvim'
+  " find files using Telescope command-line sugar
+  nnoremap <leader>ff <cmd>Telescope git_files<cr>
+  nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+  nnoremap <leader>fb <cmd>Telescope buffers<cr>
+  nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+  Plug 'sbdchd/neoformat'
+  let g:neoformat_try_node_exe=1
+	augroup fmt
+		autocmd!
+		autocmd BufWritePre * undojoin | Neoformat
+	augroup END
+
+  Plug 'tpope/vim-obsession'
+
+  Plug 'embear/vim-localvimrc'
+
+  Plug 'jparise/vim-graphql'
+
+  Plug 'yssl/QFEnter'
+  let g:qfenter_keymap = {}
+  let g:qfenter_keymap.open = ['<CR>']
+  let g:qfenter_keymap.hopen = ['<C-s>']
+  let g:qfenter_keymap.topen = ['<C-t>']
+  let g:qfenter_keymap.vopen = ['<C-v>']
+
+  Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+
+  Plug 'windwp/nvim-autopairs'
+
+  Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'hrsh7th/cmp-buffer'
+  Plug 'hrsh7th/cmp-path'
+  Plug 'hrsh7th/cmp-cmdline'
+  Plug 'hrsh7th/nvim-cmp'
+  Plug 'L3MON4D3/LuaSnip'
+  Plug 'saadparwaiz1/cmp_luasnip'
+
+  Plug 'rafamadriz/friendly-snippets'
+
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+  Plug 'windwp/nvim-ts-autotag'
+
+call plug#end()
+
+lua require('nvim-autopairs').setup{}
+
+" nvim-cmp with luasnip
+" https://github.com/hrsh7th/nvim-cmp/blob/272cbdca3e327bf43e8df85c6f4f00921656c4e4/README.md#recommended-configuration
+set completeopt=menu,menuone,noselect
+lua <<EOF
+  -- Setup nvim-cmp.
+  local cmp = require'cmp'
+
+  cmp.setup({
+    snippet = {
+      -- REQUIRED - you must specify a snippet engine
+      expand = function(args)
+        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      end,
+    },
+    mapping = {
+      ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+      ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+      ['<C-e>'] = cmp.mapping({
+        i = cmp.mapping.abort(),
+        c = cmp.mapping.close(),
+      }),
+      ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+    },
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      -- { name = 'vsnip' }, -- For vsnip users.
+      { name = 'luasnip' }, -- For luasnip users.
+      -- { name = 'ultisnips' }, -- For ultisnips users.
+      -- { name = 'snippy' }, -- For snippy users.
+    }, {
+      { name = 'buffer' },
+    })
+  })
+
+  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline('/', {
+    sources = {
+      { name = 'buffer' }
+    }
+  })
+
+  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline(':', {
+    sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    })
+  })
+EOF
+
+" lsp-config
+" https://github.com/neovim/nvim-lspconfig/blob/858fc0ec1ffa02fc03f0c62d646e8054007c49ad/README.md#suggested-configuration
+lua << EOF
+	-- Mappings.
+	-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+	local opts = { noremap=true, silent=true }
+	vim.api.nvim_set_keymap('n', '<Leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+	vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+	vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+	vim.api.nvim_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+
+	-- Use an on_attach function to only map the following keys
+	-- after the language server attaches to the current buffer
+	local on_attach = function(client, bufnr)
+		-- Enable completion triggered by <c-x><c-o>
+		vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+		-- Mappings.
+		-- See `:help vim.lsp.*` for documentation on any of the below functions
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>K', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+		--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+		--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+		--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+	end
+  -- nvim-cmp
+  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+	-- Use a loop to conveniently call 'setup' on multiple servers and
+	-- map buffer local keybindings when the language server attaches
+	local servers = { 'eslint', 'graphql', 'tsserver', 'bashls', 'tailwindcss' }
+	for _, lsp in pairs(servers) do
+		require('lspconfig')[lsp].setup {
+			on_attach = on_attach,
+			flags = {
+				-- This will be the default in neovim 0.7+
+				debounce_text_changes = 150,
+			},
+      -- nvim-cmp
+			capabilities = capabilities
+		}
+	end
+EOF
+
+" use lsp to lookup tags
+" https://github.com/weilbith/nvim-lsp-smag/issues/6#issuecomment-984044646
+set tagfunc=v:lua.vim.lsp.tagfunc
+
+" https://github.com/L3MON4D3/LuaSnip/blob/ed45343072aefa0ae1147aaee41fe64ad4565038/README.md#add-snippets
+lua require("luasnip.loaders.from_vscode").lazy_load()
+lua require("luasnip.loaders.from_snipmate").lazy_load()
+
+" nvim-autopairs
+lua << EOF
+  require('nvim-autopairs').setup({
+    fast_wrap = {
+      map = '<M-w>',
+    },
+    -- don't add if already has a close pair on the same line
+    enable_check_bracket_line = false,
+  })
+EOF
+
+" nvim-treesitter
+lua << EOF
+  require'nvim-treesitter.configs'.setup {
+    ensure_installed = "maintained",
+    highlight = {
+      enable = true,
+      -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+      -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+      -- Using this option may slow down your editor, and you may see some duplicate highlights.
+      -- Instead of true it can also be a list of languages
+      additional_vim_regex_highlighting = false,
+    },
+  }
+EOF
+
+" nvim-ts-autotag
+lua require('nvim-ts-autotag').setup()
