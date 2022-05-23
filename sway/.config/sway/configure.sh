@@ -384,6 +384,7 @@ for_window [title="Firefox — Sharing Indicator"] \\
     floating enable \\
   , resize set width 79px height 52px \\
   , move position 2250px 5px
+for_window [app_id="anki"] floating enable
 EOF
 
 cat <<EOF >> config && echo 'info: installed second monitor config, assuming `eDP-1` is primary'
