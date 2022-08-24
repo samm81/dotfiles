@@ -32,9 +32,10 @@ random_theme() {
   echo "$theme"
 }
 
-cmd="${1:?must provide command}"
+cmd="${1:-}"
 case "$cmd" in
   'random') set_theme $(random_theme) ;;
   'list') list_themes ;;
   'set') set_theme "$2" ;;
+  *) echo "usage: foot-theme list | random | set THEME" ;;
 esac
