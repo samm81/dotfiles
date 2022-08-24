@@ -59,9 +59,9 @@ snippet redirect-std "std(out|err) redirection from within script"
 
 snippet opts "opt parsing with a simple while loop"
 	while true; do
-		case "$1" in
-			'-1'|'--opt1') opt1="$2"; shift 2 ;;
-			'-2'|'--opt2') opt2="$2"; shift 2 ;;
-			*) default="$1"; shift; break ;;
+		case "\$1" in
+			'-1'|'--opt1') opt1="\$2"; shift 2 ;;
+			'-2'|'--opt2') opt2="\$2"; shift 2 ;;
+			*) default="\$1"; shift; break ;;
 		esac
 	done

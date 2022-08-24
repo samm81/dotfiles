@@ -29,13 +29,18 @@ if exists('g:started_by_firenvim')
   au BufEnter github.com_*.txt set filetype=markdown
 end
 
-au FileType text setlocal textwidth=80
 
 " re-read files when they change
 set autoread
 
 " unload a buffer when it is no longer in a window (abandoned)
 set nohidden
+
+autocmd FileType text setlocal textwidth=80
+autocmd FileType python command! Blktxt setlocal textwidth=88
+autocmd FileType python Blktxt
+autocmd FileType javascript command! Prettiertxt setlocal textwidth=88
+autocmd FileType javascript Prettiertxt
 
 " Install vim-plug if not found
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
@@ -103,9 +108,9 @@ call plug#begin()
 
   Plug 'windwp/nvim-ts-autotag'
 
-call plug#end()
+  Plug 'purescript-contrib/purescript-vim'
 
-lua require('nvim-autopairs').setup{}
+call plug#end()
 
 " nvim-cmp with luasnip
 " https://github.com/hrsh7th/nvim-cmp/blob/272cbdca3e327bf43e8df85c6f4f00921656c4e4/README.md#recommended-configuration
@@ -202,7 +207,7 @@ lua << EOF
 
 	-- Use a loop to conveniently call 'setup' on multiple servers and
 	-- map buffer local keybindings when the language server attaches
-	local servers = { 'eslint', 'graphql', 'tsserver', 'bashls', 'tailwindcss' }
+	local servers = { 'bashls', 'eslint', 'graphql', 'tailwindcss', 'tsserver', 'pyright', 'purescriptls' }
 	for _, lsp in pairs(servers) do
 		require('lspconfig')[lsp].setup {
 			on_attach = on_attach,
@@ -211,9 +216,39 @@ lua << EOF
 				debounce_text_changes = 150,
 			},
       -- nvim-cmp
-			capabilities = capabilities
+			capabilities = capabilities,
 		}
 	end
+  require('lspconfig').elixirls.setup {
+    cmd = { "/home/maynard/src/elixir-ls/language_server.sh" },
+    on_attach = on_attach,
+		flags = {
+			-- This will be the default in neovim 0.7+
+			debounce_text_changes = 150,
+		},
+    -- nvim-cmp
+    capabilities = capabilities,
+  }
+  --require('lspconfig').pylsp.setup {
+  --  on_attach = on_attach,
+	--	flags = {
+	--		-- This will be the default in neovim 0.7+
+	--		debounce_text_changes = 150,
+	--	},
+  --  -- nvim-cmp
+  --  capabilities = capabilities,
+  --  settings = {
+  --    pylsp = {
+  --      plugins = {
+  --        pycodestyle = { enabled = false },
+  --        mccabe = { enabled = false },
+  --        pyflakes = { enabled = false },
+  --        flake8 = { enabled = true },
+  --      },
+  --      configurationSources = {"pyflakes"}
+  --    }
+  --  }
+  --}
 EOF
 
 " use lsp to lookup tags
@@ -231,14 +266,18 @@ lua << EOF
       map = '<M-w>',
     },
     -- don't add if already has a close pair on the same line
-    enable_check_bracket_line = false,
+    enable_check_bracket_line = true,
   })
 EOF
 
 " nvim-treesitter
 lua << EOF
   require'nvim-treesitter.configs'.setup {
-    ensure_installed = "maintained",
+    ensure_installed = {
+      "python", "json", "typescript", "jsdoc", "bash", "make", "css", "regex",
+      "vim", "yaml", "nix", "tsx", "javascript", "eex", "elixir", "dockerfile",
+      "html", "graphql", "lua"
+    },
     highlight = {
       enable = true,
       -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
@@ -246,6 +285,9 @@ lua << EOF
       -- Using this option may slow down your editor, and you may see some duplicate highlights.
       -- Instead of true it can also be a list of languages
       additional_vim_regex_highlighting = false,
+    },
+    indent = {
+      enable = true
     },
   }
 EOF
