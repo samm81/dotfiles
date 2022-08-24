@@ -21,14 +21,12 @@ handle-period-changed() {
     'transition') icon='rotate.svg' ;;
   esac
   echo "${ICON_DIR}${icon}"
-  exec notify-send \
+  notify-send \
     --icon="${ICON_DIR}${icon}" \
     --expire-time=5000 \
     'Gammastep' "Period changed to $to"
 }
 
 case "$event" in
-  'period-changed')
-    handle-period-changed "$old_period" "$new_period"
-    ;;
+  'period-changed') handle-period-changed "$old_period" "$new_period" ;;
 esac
