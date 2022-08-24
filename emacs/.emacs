@@ -139,7 +139,7 @@
   (setq org-todo-keywords
 	'((sequence "TODO(t)" "WIP(i)" "|" "DONE(d)")
 	  (sequence "WAITING(w)" "|")
-	  (sequence "|" "DISCARDED(c)")))
+	  (sequence "|" "CANCELED(c)")))
 
   ;; capture
   (setq org-default-notes-file (concat org-directory "/capture.org"))
@@ -265,7 +265,7 @@
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
  '(org-agenda-files
-   '("~/org-mode/calendar.org" "~/org-mode/day.org" "~/org-mode/habits.org" "~/org-mode/projects.org" "~/org-mode/todo.org"))
+   '("/home/maynard/org-mode/day.org" "/home/maynard/org-mode/habits.org"))
  '(org-directory "~/org-mode")
  '(org-pomodoro-audio-player "/usr/bin/play -q -V0 -v2")
  '(org-pomodoro-finished-sound "/home/maynard/org-mode/gong.mp3")
