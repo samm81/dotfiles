@@ -13,6 +13,8 @@ sourc "$ZSH_DIR/ssh-agent.sh"
 sourc "$ZSH_DIR/main.sh"
 sourc "$ZSH_DIR/256color.sh"
 sourc "$ZSH_DIR/sway.sh"
+sourc "$ZSH_DIR/flatpak.sh"
+sourc "$ZSH_DIR/direnv.sh"
 
 sourc "$ZSH_DIR/$(hostname).sh"
 

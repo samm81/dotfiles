@@ -16,14 +16,13 @@ export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS="@im=fcitx"
 
-export SWAY_SVDIR="$HOME/sway-sv"
+export SWAY_SVDIR="$HOME/service-sway"
 
-if [ "$(tty)" = "/dev/tty1" ]; then
+if [ "$(tty)" = "/dev/tty2" ]; then
   XDG_RUNTIME_DIR="/tmp/xdg-runtime-$(id -u)"
 	export XDG_RUNTIME_DIR
   [ ! -d "XDG_RUNTIME_DIR" ] && mkdir "$XDG_RUNTIME_DIR" && chmod 0700 "$XDG_RUNTIME_DIR"
   dbus-run-session sway
-  # post sway cleanup
-  pkill -u maynard pipewire
-  pkill -u maynard -f sway-sv
+  # post sway cleanup is handled by elogind
+  # make sure to set `KillUserProcesses=yes` in `logind.conf`
 fi
