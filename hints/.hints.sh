@@ -7,7 +7,7 @@ hint() {
 
 hint 'list-fonts' 'fc-list'
 
-set_default_sink () {
+set_default_sink() {
   echo '$ pactl list short sinks'
   pactl list short sinks
   # shellcheck disable=SC2016
@@ -38,4 +38,9 @@ alias git-local-ignore="echo '.git/info/exclude'"
 
 alias docker-clean='docker system prune'
 
-alias screenrecord='wf-recorder -g "$(slurp)"'
+record() {
+  trap "pkill -INT wf-recorder" INT
+  wf-recorder --force-yuv -g "$(slurp)"
+}
+
+hint image swayimg
