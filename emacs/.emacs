@@ -263,12 +263,11 @@
  '(("K" "Cliplink capture task" entry (file "")
     "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
 
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
-'(calendar-chinese-all-holidays-flag t)
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ '(calendar-chinese-all-holidays-flag t)
  '(holiday-bahai-holidays nil)
  '(holiday-hebrew-holidays nil)
  '(holiday-islamic-holidays nil)
