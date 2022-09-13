@@ -21,7 +21,7 @@ timezone() {
   echo '$ ln -sf /usr/share/zoneinfo/<timezone> /etc/localtime'
 }
 
-alias 'pdf' 'zathura'
+hint 'pdf' 'zathura'
 
 # although this is slick, it breaks the auto completion :(
 ## rename `asdf` to `orig_asdf`
@@ -34,9 +34,9 @@ alias 'pdf' 'zathura'
 #}
 #alias 'asdf=asdf-shim'
 
-alias git-local-ignore="echo '.git/info/exclude'"
+alias 'git-local-ignore'="echo '.git/info/exclude'"
 
-alias docker-clean='docker system prune'
+alias 'docker-clean'='docker system prune'
 
 record() {
   trap "pkill -INT wf-recorder" INT
