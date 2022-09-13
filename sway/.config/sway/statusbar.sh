@@ -8,9 +8,10 @@ shopt -s nullglob globstar
 IWD_STATION_NAME="wlp9s0"
 
 iwd_wifi() {
-  readarray -t wifi < <(iwctl station $IWD_STATION_NAME show | awk '{ if($1=="State") { print $2 } if($1=="Connected") { print $3 }}')
+  readarray -t wifi < <(iwctl station $IWD_STATION_NAME show | awk '{ if($1=="State") { print $2 } if($1=="Connected") { print substr($0, index($0, $3)) }}')
   status="${wifi[0]:-}"
-  network="${wifi[1]:-}"
+  network_raw="${wifi[1]:-}"
+  network="${network_raw%${network_raw##*[![:space:]]}}"
   echo "${network:-${status:-err}}"
 }
 

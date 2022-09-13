@@ -370,11 +370,6 @@ EOF
     bindsym \$mod+Ctrl+p exec grimshot copy screen
 EOF
 
-[ -z "$kanshi" ] && echo 'warn: could not find `kanshi`, skipping'
-[ -n "$kanshi" ] && cat >> config <<EOF && echo 'info: loading `kanshi` on startup'
-    exec kanshi
-EOF
-
 cat <<EOF >> config && echo 'info: installed floating window directives'
 
 for_window [app_id="zoom" title="zoom"] floating enable
@@ -436,6 +431,11 @@ EOF
 [ -z "$fcitx5" ] && echo 'warn: could not find `fcitx5`, skipping'
 [ -n "$fcitx5" ] && cat >> config <<EOF && echo 'info: loading `fcitx5` on startup'
     exec fcitx5 -d --replace
+EOF
+
+[ -z "$kanshi" ] && echo 'warn: could not find `kanshi`, skipping'
+[ -n "$kanshi" ] && cat >> config <<EOF && echo 'info: loading `kanshi` on startup'
+    exec kanshi
 EOF
 
 cat <<EOF >> config
