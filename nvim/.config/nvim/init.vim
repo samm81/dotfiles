@@ -36,6 +36,7 @@ set autoread
 " unload a buffer when it is no longer in a window (abandoned)
 set nohidden
 
+autocmd BufEnter,BufNew *.bash set filetype=bash
 autocmd FileType text setlocal textwidth=80
 autocmd FileType python command! Blktxt setlocal textwidth=88
 autocmd FileType python Blktxt
