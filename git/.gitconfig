@@ -5,7 +5,8 @@
   name = samm81
   email = samwmaynard@gmail.com
 [core]
-  excludesfile = /home/maynard/.gitignore
+#	pager = delta
+	excludesfile = /home/maynard/.gitignore
 [fetch]
   prune = true
 [color]
@@ -19,3 +20,8 @@
 [merge]
   conflictstyle = diff3
   tool = nvimdiff
+[alias]
+	hist = "!bash -c 'git log --graph --decorate --pretty=oneline --abbrev-commit $(git reflog show --format="%h" stash 2>/dev/null) $(git log --all --ancestry-path HEAD ^HEAD --format=%H) HEAD ^master'"
+	branches = "!bash -c 'git for-each-ref --sort=-committerdate refs/heads/ --format="%(color:green)%(refname:short)%(color:reset) %(committerdate:relative) %(color:yellow)%(upstream:track) %(color:blue)%(upstream:short)"'"
+	tree-mine = "!bash -c 'git log --graph --decorate --pretty=oneline --abbrev-commit --tags --branches $(git reflog show --format="%h" stash 2>/dev/null)'"
+	tree-all = "!bash -c 'git log --graph --decorate --pretty=oneline --abbrev-commit --tags --all --branches $(git reflog show --format="%h" stash 2>/dev/null)'"

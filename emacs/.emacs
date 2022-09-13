@@ -89,6 +89,7 @@
   (setq org-startup-indented t)
   ;; wrap lines
   (add-hook 'org-mode-hook 'visual-line-mode)
+  (setf org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
   ;; estimate time before clocking in
   (defun org-set-effort-if-not-set ()
     (when (and
@@ -134,7 +135,6 @@
 	   (concat "+CLOSED>=\""
 		   (format-time-string "[%Y-%m-%d]" (current-time))
 		   "\""))))
-  (setq org-refile-use-outline-path 'file)
 
   (setq org-todo-keywords
 	'((sequence "TODO(t)" "WIP(i)" "|" "DONE(d)")
@@ -144,7 +144,9 @@
   ;; capture
   (setq org-default-notes-file (concat org-directory "/capture.org"))
   (define-key global-map "\C-c[" 'org-capture)
-  (setq org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
+  (setq org-refile-use-outline-path 'file)
+  (setq org-directory-files (directory-files org-directory nil ".*\.org$"))
+  (setq org-refile-targets '((nil :maxlevel . 9) (org-directory-files :maxlevel . 9)))
 
   ;; https://www.reddit.com/r/emacs/comments/4golh1/how_to_auto_export_html_when_saving_in_orgmode/
   (defun toggle-org-html-export-on-save ()
@@ -247,12 +249,26 @@
       (setq daylight (buffer-substring start end))
       (concat sunset " " daylight))))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
+;; org-cliplink
+(defun system-keyboard ()
+  "Returns current content of system keyboard"
+  (shell-command-to-string "wl-paste"))
+(defun cliplink-system-keyboard ()
+  "Puts system clipboard in killring, then calls `org-cliplink`"
+  (interactive)
+  (kill-new (system-keyboard))
+  (org-cliplink))
+(global-set-key (kbd "C-x p i") 'cliplink-system-keyboard)
+(setq org-capture-templates
+ '(("K" "Cliplink capture task" entry (file "")
+    "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
+
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(calendar-chinese-all-holidays-flag t)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+'(calendar-chinese-all-holidays-flag t)
  '(holiday-bahai-holidays nil)
  '(holiday-hebrew-holidays nil)
  '(holiday-islamic-holidays nil)
