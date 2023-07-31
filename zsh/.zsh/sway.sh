@@ -26,3 +26,5 @@ if [ "$(tty)" = "/dev/tty2" ]; then
   # post sway cleanup is handled by elogind
   # make sure to set `KillUserProcesses=yes` in `logind.conf`
 fi
+
+alias visway="vim -O $HOME/.config/sway/config $HOME/.config/sway/configure.sh"

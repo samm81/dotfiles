@@ -45,8 +45,18 @@ bindkey '^\' autosuggest-execute
 # zsh-auto-notify
 #AUTO_NOTIFY_IGNORE+=("git", "tmux", "docker run")
 #export AUTO_NOTIFY_EXPIRE_TIME=4000
+#
 
-# theme fix
-battery_time_remaining() {
-  echo -n ""
+# theme fixes
+battery_pct_prompt() {
+	echo ""
+}
+zsh_path() {
+	echo ""
+}
+rbenv() {
+	echo ""
+}
+jenv_prompt_info() {
+	echo ""
 }

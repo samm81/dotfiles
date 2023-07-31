@@ -16,6 +16,10 @@ sourc "$ZSH_DIR/sway.sh"
 sourc "$ZSH_DIR/flatpak.sh"
 sourc "$ZSH_DIR/direnv.sh"
 sourc "$ZSH_DIR/tmux.sh"
+sourc "$ZSH_DIR/zinit.sh"
+sourc "$ZSH_DIR/mcfly.sh"
+sourc "$ZSH_DIR/asdf.zsh"
+sourc "$ZSH_DIR/pg.sh"
 
 sourc "$ZSH_DIR/$(hostname).sh"
 
