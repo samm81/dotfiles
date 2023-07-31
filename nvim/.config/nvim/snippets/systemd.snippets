@@ -1,0 +1,28 @@
+snippet template
+	[Unit]␊
+	Description=My service
+	␊
+	[Service]␊
+	Type=simple␊
+	ExecStart=./scripts/start_server.sh
+	WorkingDirectory=/home/deploy
+	␊
+	User=deploy
+	Group=deploy
+	␊
+	#·Environment·variables:␊
+	Environment=VAR1=value VAR2=value
+	␊
+	#·Allow·many·incoming·connections␊
+	LimitNOFILE=infinity␊
+	␊
+	#·Allow·core·dumps·for·debugging␊
+	LimitCORE=infinity␊
+	␊
+	StandardInput=null␊
+	StandardOutput=syslog␊
+	StandardError=syslog␊
+	Restart=always␊
+	␊
+	[Install]␊
+	WantedBy=multi-user.target␊

@@ -1,0 +1,28 @@
+snippet strict "unnofficial strict mode"
+	#!/bin/sh
+	# unnofficial POSIX shell strict mode
+	set -o errexit
+	set -o nounset
+
+	IFS=\$(printf '\n\t')
+
+	[ "\${TRACE:-0}" = "1" ] && set -o xtrace
+
+	usage() {
+		echo 'Usage: ./script.sh arg-one arg-two
+
+	This is an awesome bash script to make your life better.'
+		exit
+	}
+
+	[ "\${1:-}" = "--help" ] && usage
+
+	cd "\$(dirname "$0")"
+
+	main() {
+		echo "\${1:?missing arg}"
+	}
+
+	main "\$@"
+
+	exit 0

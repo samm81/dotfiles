@@ -1,21 +1,54 @@
-snippet strict "unnoficial strict mode for bash > 4.3; redsymbol.net"
+snippet strict "unnofficial strict mode for bash > 4.3; redsymbol.net"
 	#!/usr/bin/env bash
-	# unnoficial strict mode, note Bash<=4.3 chokes on empty arrays with set -u
+	# unnofficial strict mode
+	# note bash<=4.3 chokes on empty arrays with set -o nounset
 	# http://redsymbol.net/articles/unofficial-bash-strict-mode/
-	set -euo pipefail
+	# https://sharats.me/posts/shell-script-best-practices/
+	set -o errexit
+	set -o nounset
+	set -o pipefail
+
 	IFS=$'\n\t'
 	shopt -s nullglob globstar
-	#set -o xtrace # set debugging flag, aka set -x
 
-	# never end a file with a short-curcuit!
+	[[ "\${TRACE:-0}" == "1" ]] && set -o xtrace
+
+	usage() {
+		echo 'Usage: ./script.sh arg-one arg-two
+
+	This is an awesome bash script to make your life better.'
+		exit
+	}
+
+	[[ "\${1:-}" =~ ^-*h(elp)?$ ]] && usage
+
+	cd "$(dirname "\$0")"
+
+	main() {
+		echo "\${1:?missing arg}"
+	}
+
+	main "$@"
+
+	exit 0
+
+snippet help "easy help flag"
+	if [[ "\${1-}" =~ ^-*h(elp)?$ ]]; then
+			echo 'Usage: ./script.sh arg-one arg-two
+
+	This is an awesome bash script to make your life better.
+
+	'
+			exit
+	fi
 
 snippet colors "bash color helpers"
 	set +e
 	# use colors, but only if connected to a terminal that supports them
 	if which tput >/dev/null 2>&1; then
-		ncolors=$(tput colors)
+		ncolors=\$(tput colors)
 	fi
-	[ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]
+	[ -t 1 ] && [ -n "\$ncolors" ] && [ "\$ncolors" -ge 8 ]
 	has_colors=$?
 	set -e
 
@@ -27,20 +60,20 @@ snippet colors "bash color helpers"
 	NORMAL="$( (( has_colors == 0 )) && tput sgr0 || echo '' )"
 
 	info () {
-			[[ -n ${1:-} ]] && echo "${BLUE}${1}${NORMAL}" >&2
+			[[ -n \${1:-} ]] && echo "\${BLUE}\${1}\${NORMAL}" >&2
 	}
 	warn () {
-			[[ -n ${1:-} ]] && echo "${YELLOW}${1}${NORMAL}" >&2
+			[[ -n \${1:-} ]] && echo "\${YELLOW}\${1}\${NORMAL}" >&2
 	}
 	success () {
-			[[ -n ${1:-} ]] && echo "${GREEN}${1}${NORMAL}" >&2
+			[[ -n \${1:-} ]] && echo "\${GREEN}\${1}\${NORMAL}" >&2
 	}
 	err () {
-			[[ -n ${1:-} ]] && echo "${RED}${1}${NORMAL}" >&2
+			[[ -n \${1:-} ]] && echo "\${RED}\${1}\${NORMAL}" >&2
 	}
 	fail () {
-			[[ -n ${1:-} ]] && echo "${BOLD}${RED}${1}${NORMAL}" >&2
-			exit "${2:-1}"
+			[[ -n \${1:-} ]] && echo "\${BOLD}\${RED}\${1}\${NORMAL}" >&2
+			exit "\${2:-1}"
 	}
 
 snippet exit-trap "exit trap to cleanup on error; redsymbol.net"
@@ -49,7 +82,7 @@ snippet exit-trap "exit trap to cleanup on error; redsymbol.net"
 	finish() {
 			echo ""
 	}
-	trap finish EXIT
+	trap finish EXIT INT
 
 snippet redirect-std "std(out|err) redirection from within script"
 	# stdout
@@ -57,7 +90,7 @@ snippet redirect-std "std(out|err) redirection from within script"
 	# stderr
 	exec 2>&1
 
-snippet opts "opt parsing with a simple while loop"
+snippet args "arg parsing with a simple while loop"
 	while true; do
 		case "\$1" in
 			'-1'|'--opt1') opt1="\$2"; shift 2 ;;
