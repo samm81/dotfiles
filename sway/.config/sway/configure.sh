@@ -386,6 +386,7 @@ for_window [title="Firefox — Sharing Indicator"] \\
   , resize set width 79px height 52px \\
   , move position 2250px 5px
 for_window [app_id="anki"] floating enable
+for_window [class="vlc"] floating enable
 EOF
 
 cat <<EOF >> config && echo 'info: installed second monitor config, assuming `eDP-1` is primary'
@@ -444,6 +445,11 @@ EOF
 ! exists 'kanshi' && echo 'warn: could not find `kanshi`, skipping'
 exists 'kanshi' && cat >> config <<EOF && echo 'info: loading `kanshi` on startup'
     exec kanshi
+EOF
+
+! exists 'udiskie' && echo 'warn: could not find `udiskie`, skipping'
+exists 'udiskie' && cat >> config <<EOF && echo 'info: loading `udiskie` on startup'
+    exec udiskie
 EOF
 
 cat <<EOF >> config
