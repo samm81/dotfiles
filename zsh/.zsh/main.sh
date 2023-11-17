@@ -72,7 +72,7 @@ drop_in() {
   ORIGINAL="${1:?must pass original command name to drop_in}"
   NEW="${2:?must pass new command name to drop_in}"
   HINT=${3:-}
-  [ -n "$HINT" ] && HINT="echo ${HINT};"
+  [ -n "$HINT" ] && HINT=">&2 echo ${HINT};"
   check_installed "$NEW" && alias "$ORIGINAL"="${HINT}${NEW}"
 }
 
