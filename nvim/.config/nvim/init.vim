@@ -18,6 +18,9 @@ set nohlsearch
 " bash-like tab in minibuffer
 set completeopt=longest,menu
 
+" disable mouse interactions
+set mouse=
+
 nnoremap <Leader>ve :tabe $MYVIMRC<CR>
 nnoremap <Leader>vs :source $MYVIMRC<CR>
 
@@ -78,7 +81,7 @@ call plug#begin()
   let g:neoformat_try_node_exe=1
 	augroup fmt
 		autocmd!
-		autocmd BufWritePre * undojoin | Neoformat
+		autocmd BufWritePre * Neoformat
 	augroup END
 
   Plug 'tpope/vim-obsession'
@@ -226,7 +229,7 @@ lua << EOF
 
 	-- Use a loop to conveniently call 'setup' on multiple servers and
 	-- map buffer local keybindings when the language server attaches
-	local servers = { 'bashls', 'eslint', 'graphql', 'tsserver', 'pylyzer', 'purescriptls' }
+	local servers = { 'bashls', 'eslint', 'graphql', 'tsserver', 'pylyzer', 'purescriptls', 'gopls' }
 	for _, lsp in pairs(servers) do
 		require('lspconfig')[lsp].setup {
 			on_attach = on_attach,
@@ -390,3 +393,12 @@ imap <Leader>cc <Cmd>call codeium#Clear()<CR>
 " copilot
 imap <silent><script><expr> <C-\> copilot#Accept("")
 let g:copilot_no_tab_map = v:true
+
+" neoformat
+function! NeoformatDbg()
+  let g:neoformat_verbose = 1
+  Neoformat
+  let g:neoformat_verbose = 0
+endfunction
+
+command! NeoformatDbg call NeoformatDbg()
