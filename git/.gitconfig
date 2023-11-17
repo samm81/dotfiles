@@ -4,9 +4,9 @@
 [user]
   name = samm81
   email = samwmaynard@gmail.com
+  signingkey = /home/maynard/.ssh/id_ed25519.pub
 [core]
-#	pager = delta
-	excludesfile = /home/maynard/.gitignore
+  excludesfile = /home/maynard/.gitignore
 [fetch]
   prune = true
 [color]
@@ -15,13 +15,16 @@
   wsErrorHighlight = all
 [commit]
   verbose = true
+  gpgsign = true
 [init]
   defaultBranch = main
 [merge]
   conflictstyle = diff3
   tool = nvimdiff
 [alias]
-	hist = "!bash -c 'git log --graph --decorate --pretty=oneline --abbrev-commit $(git reflog show --format="%h" stash 2>/dev/null) $(git log --all --ancestry-path HEAD ^HEAD --format=%H) HEAD ^master'"
-	branches = "!bash -c 'git for-each-ref --sort=-committerdate refs/heads/ --format="%(color:green)%(refname:short)%(color:reset) %(committerdate:relative) %(color:yellow)%(upstream:track) %(color:blue)%(upstream:short)"'"
-	tree-mine = "!bash -c 'git log --graph --decorate --pretty=oneline --abbrev-commit --tags --branches $(git reflog show --format="%h" stash 2>/dev/null)'"
-	tree-all = "!bash -c 'git log --graph --decorate --pretty=oneline --abbrev-commit --tags --all --branches $(git reflog show --format="%h" stash 2>/dev/null)'"
+  hist = "!bash -c 'git log --graph --decorate --pretty=oneline --abbrev-commit $(git reflog show --format="%h" stash 2>/dev/null) $(git log --all --ancestry-path HEAD ^HEAD --format=%H) HEAD ^master'"
+  branches = "!bash -c 'git for-each-ref --sort=-committerdate refs/heads/ --format="%(color:green)%(refname:short)%(color:reset) %(committerdate:relative) %(color:yellow)%(upstream:track) %(color:blue)%(upstream:short)"'"
+  tree-mine = "!bash -c 'git log --graph --decorate --pretty=oneline --abbrev-commit --tags --branches $(git reflog show --format="%h" stash 2>/dev/null)'"
+  tree-all = "!bash -c 'git log --graph --decorate --pretty=oneline --abbrev-commit --tags --all --branches $(git reflog show --format="%h" stash 2>/dev/null)'"
+[gpg]
+  format = ssh
