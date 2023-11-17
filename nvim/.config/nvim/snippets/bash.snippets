@@ -1,6 +1,8 @@
+extends sh
+
 snippet strict "unnofficial strict mode for bash > 4.3; redsymbol.net"
 	#!/usr/bin/env bash
-	# unnofficial strict mode
+	# unofficial strict mode
 	# note bash<=4.3 chokes on empty arrays with set -o nounset
 	# http://redsymbol.net/articles/unofficial-bash-strict-mode/
 	# https://sharats.me/posts/shell-script-best-practices/
@@ -14,9 +16,11 @@ snippet strict "unnofficial strict mode for bash > 4.3; redsymbol.net"
 	[[ "\${TRACE:-0}" == "1" ]] && set -o xtrace
 
 	usage() {
-		echo 'Usage: ./script.sh arg-one arg-two
+		local filename
+		filename="$(basename "\$0")"
+		echo "Usage: ./\${filename} <arg one> <arg two>
 
-	This is an awesome bash script to make your life better.'
+	This is an awesome bash script to make your life better."
 		exit
 	}
 
@@ -75,20 +79,6 @@ snippet colors "bash color helpers"
 			[[ -n \${1:-} ]] && echo "\${BOLD}\${RED}\${1}\${NORMAL}" >&2
 			exit "\${2:-1}"
 	}
-
-snippet exit-trap "exit trap to cleanup on error; redsymbol.net"
-	# exit trap, to do cleanup on errors
-	# http://redsymbol.net/articles/bash-exit-traps/
-	finish() {
-			echo ""
-	}
-	trap finish EXIT INT
-
-snippet redirect-std "std(out|err) redirection from within script"
-	# stdout
-	exec > /dev/null
-	# stderr
-	exec 2>&1
 
 snippet args "arg parsing with a simple while loop"
 	while true; do

@@ -9,15 +9,17 @@ snippet strict "unnofficial strict mode"
 	[ "\${TRACE:-0}" = "1" ] && set -o xtrace
 
 	usage() {
-		echo 'Usage: ./script.sh arg-one arg-two
+		filename="$(basename "$0")"
+		echo "Usage: ./\${filename} <arg one> <arg two>
 
-	This is an awesome bash script to make your life better.'
+	This is an awesome bash script to make your life better."
 		exit
 	}
 
-	[ "\${1:-}" = "--help" ] && usage
+	[ "\${1:-}" = '--help' ] && usage
+	[ "\${1:-}" = '-h' ] && usage
 
-	cd "\$(dirname "$0")"
+	cd "\$(dirname "\$0")"
 
 	main() {
 		echo "\${1:?missing arg}"
@@ -26,3 +28,67 @@ snippet strict "unnofficial strict mode"
 	main "\$@"
 
 	exit 0
+
+snippet exit-trap "exit trap to cleanup on error; redsymbol.net"
+	# exit trap, to do cleanup on errors
+	# http://redsymbol.net/articles/bash-exit-traps/
+	finish() {
+			echo ""
+	}
+	trap finish EXIT INT
+
+snippet check_installed
+	check_installed() {
+		test "\$(command -v "\$1")"
+	}
+
+snippet redirect-std "std(out|err) redirection from within script"
+	# stdout
+	exec > /dev/null
+	# stderr
+	exec 2>&1
+
+snippet shellcheck-disable
+	# shellcheck disable=${1}
+
+snippet docker-dev-build
+	#!/bin/sh
+
+	dirname=\$(basename "\$PWD")
+	dirname_lower=\$(echo "\$dirname" | tr '[:upper:]' '[:lower:]')
+	IMAGE_NAME="local-\${dirname_lower}"
+
+	DOCKERFILE_NAME='dev.Dockerfile'
+
+	docker buildx build \
+		--file "\$DOCKERFILE_NAME" \
+		--tag "\$IMAGE_NAME" \
+		--build-arg "UID=\$(id -u)" \
+		--build-arg "GID=\$(id -g)" \
+		.
+
+	if [ ! "\$?" ]; then
+		notify-send "\$IMAGE_NAME failed !"
+	else
+		notify-send "\$IMAGE_NAME built !"
+	fi
+
+snippet docker-dev-run
+	#!/bin/sh
+
+	dirname=\$(basename "\$PWD")
+	dirname_lower=\$(echo "\$dirname" | tr '[:upper:]' '[:lower:]')
+	IMAGE_NAME="local-\${dirname_lower}"
+
+	#PORT_HOST='57541'
+	#PORT_CONTAINER='8080'
+	#  -p "\${PORT_HOST:?PORT_HOST not set}:\${PORT_CONTAINER:?PORT_CONTAINER not set}" \
+
+	docker run \
+		--interactive --tty \
+		--rm \
+		--user "\$(id -u):\$(id -g)" \
+		-v "\$(pwd):/app/src" \
+		-v "\${HOME}/xorkspace/\${dirname}:/vids" \
+		"\$IMAGE_NAME" \
+		"\$@"
