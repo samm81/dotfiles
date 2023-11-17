@@ -76,3 +76,12 @@ grub-clean() {
 }
 
 hint 'ngrok' 'ssh -N -R 8013:localhost:8013 mni.ac'
+
+xbps-update() {
+  # TODO check if root
+  sudo xbps-install -Su xbps
+  sudo xbps-install -Su
+  sudo xlocate -S
+  sudo vkpurge list
+  echo 'sudo vkpurge rm X.*'
+}
