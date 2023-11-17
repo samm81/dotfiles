@@ -174,6 +174,10 @@
 		    (funcall super fmt my-current-time time-zone))))
       (org-todo arg)))
   (define-key org-mode-map "\C-ct" 'org-todo-with-date)
+
+  ;; display everything in hours, rather than days and hours
+  ;; https://stackoverflow.com/a/46194559
+  (setq org-duration-format (quote h:mm))
   )
 
 ;;;; org-pomodoro config
