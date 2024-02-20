@@ -1,6 +1,10 @@
 " show line numbers in gutter
 set number
 set relativenumber
+if exists('$VIM_NUMBERWIDTH')
+  let &numberwidth = $VIM_NUMBERWIDTH
+endif
+
 
 " default to two space tabs
 set tabstop=2 shiftwidth=2 expandtab
@@ -21,12 +25,12 @@ set completeopt=longest,menu
 " disable mouse interactions
 set mouse=
 
-nnoremap <Leader>ve :tabe $MYVIMRC<CR>
-nnoremap <Leader>vs :source $MYVIMRC<CR>
+nnoremap <leader>ve :tabe $MYVIMRC<CR>
+nnoremap <leader>vs :source $MYVIMRC<CR>
 
 " copy to system clipboard
-nnoremap <Leader>c :w !wl-copy<CR>
-vnoremap <Leader>c :w !wl-copy<CR>
+nnoremap <leader>c :w !wl-copy<CR>
+vnoremap <leader>c :w !wl-copy<CR>
 
 " firenvim
 if exists('g:started_by_firenvim')
@@ -43,6 +47,7 @@ set autoread
 set nohidden
 
 autocmd BufEnter,BufNew *.bash set filetype=bash
+autocmd BufEnter,BufNew *.tmate.conf set filetype=tmux
 autocmd FileType text setlocal textwidth=80
 autocmd FileType python command! Blktxt setlocal textwidth=88
 autocmd FileType python Blktxt
@@ -79,10 +84,18 @@ call plug#begin()
 
   Plug 'sbdchd/neoformat'
   let g:neoformat_try_node_exe=1
+  let g:shfmt_opt="-ci"
 	augroup fmt
 		autocmd!
 		autocmd BufWritePre * Neoformat
 	augroup END
+  let g:neoformat_javascript_prettier = {
+          \ 'exe': 'prettier',
+          \ 'args': ['--parser babel'],
+          \ 'stdin': 1
+          \ }
+  let g:neoformat_enabled_javascript = ['prettier']
+  nnoremap <leader>nf <cmd>Neoformat<cr>
 
   Plug 'tpope/vim-obsession'
 
@@ -195,12 +208,12 @@ lua << EOF
 	-- Mappings.
 	-- See `:help vim.diagnostic.*` for documentation on any of the below functions
 	local opts = { noremap=true, silent=true }
-	vim.api.nvim_set_keymap('n', '<Leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+	vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 	vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
 	vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 	vim.api.nvim_set_keymap('n', '[e', '<cmd>lua vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })<CR>', opts)
 	vim.api.nvim_set_keymap('n', ']e', '<cmd>lua vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })<CR>', opts)
-	vim.api.nvim_set_keymap('n', '<Leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+	vim.api.nvim_set_keymap('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
 	-- Use an on_attach function to only map the following keys
 	-- after the language server attaches to the current buffer
@@ -213,16 +226,16 @@ lua << EOF
 		vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
 		vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
 		vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>K', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-		--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-		--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-		--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>K', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+		--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+		--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+		--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+		vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 	end
   -- nvim-cmp
   local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -307,7 +320,7 @@ set tagfunc=v:lua.vim.lsp.tagfunc
 " https://github.com/L3MON4D3/LuaSnip/blob/ed45343072aefa0ae1147aaee41fe64ad4565038/README.md#add-snippets
 lua require("luasnip.loaders.from_vscode").lazy_load()
 lua require("luasnip.loaders.from_snipmate").lazy_load()
-nnoremap <Leader>vse :tabe ~/.config/nvim/snippets/<CR>
+nnoremap <leader>vse :tabe ~/.config/nvim/snippets/<CR>
 
 " nvim-autopairs
 lua << EOF
@@ -385,10 +398,10 @@ EOF
 
 " codeium
 let g:codeium_disable_bindings = 1
-imap <script><silent><nowait><expr> <Leader>c codeium#Accept()
-imap <Leader>cn <Cmd>call codeium#CycleCompletions(1)<CR>
-imap <Leader>cp <Cmd>call codeium#CycleCompletions(-1)<CR>
-imap <Leader>cc <Cmd>call codeium#Clear()<CR>
+imap <script><silent><nowait><expr> <leader>c codeium#Accept()
+imap <leader>cn <Cmd>call codeium#CycleCompletions(1)<CR>
+imap <leader>cp <Cmd>call codeium#CycleCompletions(-1)<CR>
+imap <leader>cc <Cmd>call codeium#Clear()<CR>
 
 " copilot
 imap <silent><script><expr> <C-\> copilot#Accept("")

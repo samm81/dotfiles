@@ -82,8 +82,8 @@ drop_in 'ls' 'exa' \
   && alias ll='exa --long --header --git' \
   && alias la='exa --long --header --git --all'
 drop_in 'grep' 'rg' && export FZF_DEFAULT_COMMAND='rg --files'
-drop_in 'find' 'fd' "find -iname '*PATTERN*'"
-check_installed 'bat' && alias cat='bat --show-all'
+drop_in 'find' 'fd' "[orig] find -iname '*PATTERN*'"
+check_installed 'bat' && alias cat='bat'
 check_installed 'xclip' && alias clip='xclip -selection c'
 check_installed 'tmux' && alias tmuxd='tmux new -s ${PWD##*/}'
 check_installed 'feh' && alias feh='feh -. --auto-rotate'
@@ -95,3 +95,5 @@ check_installed cs && eval "$(cs --completions zsh)"
 #check_installed kubectl && source <(kubectl completion zsh)
 
 check_installed pipx && eval "$(register-python-argcomplete pipx)"
+
+apropos '' 2> /dev/null | shuf -n 1 && echo ''

@@ -300,3 +300,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(load-theme 'wombat t)
+
+(when (member "NotoColorEmoji" (font-family-list))
+  (set-fontset-font
+   t 'symbol (font-spec :family "NotoColorEmoji") nil 'prepend))

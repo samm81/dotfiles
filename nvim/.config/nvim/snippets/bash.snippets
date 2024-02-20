@@ -18,9 +18,8 @@ snippet strict "unnofficial strict mode for bash > 4.3; redsymbol.net"
 	usage() {
 		local filename
 		filename="$(basename "\$0")"
-		echo "Usage: ./\${filename} <arg one> <arg two>
-
-	This is an awesome bash script to make your life better."
+		echo "Usage: ./\${filename} <arg one> <arg two>"
+		echo "  This is an awesome bash script to make your life better."
 		exit
 	}
 
@@ -82,9 +81,18 @@ snippet colors "bash color helpers"
 
 snippet args "arg parsing with a simple while loop"
 	while true; do
-		case "\$1" in
+		case "\${1:-}" in
 			'-1'|'--opt1') opt1="\$2"; shift 2 ;;
 			'-2'|'--opt2') opt2="\$2"; shift 2 ;;
 			*) default="\$1"; shift; break ;;
+		esac
+	done
+
+snippet args-collect "grab all preceding -* --* args into an array"
+	opts=()
+	while true; do
+		case "\${1:-}" in
+			--*|-*) opts+=("\$1"); shift 1 ;;
+			*) break ;;
 		esac
 	done
