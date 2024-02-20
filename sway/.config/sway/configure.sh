@@ -432,11 +432,6 @@ exists 'pipewire_pulse' && cat >> config <<EOF && echo 'info: loading `pipewire-
     exec pipewire-pulse
 EOF
 
-! exists 'gammastep' && echo 'warn: could not find `gammastep`, skipping'
-exists 'gammastep' && cat >> config <<EOF && echo 'info: loading `gammastep` on startup'
-    exec gammastep
-EOF
-
 #! exists 'fcitx5' && echo 'warn: could not find `fcitx5`, skipping'
 #exists 'fcitx5' && cat >> config <<EOF && echo 'info: loading `fcitx5` on startup'
 #    exec fcitx5 -d --replace
@@ -450,6 +445,14 @@ EOF
 ! exists 'udiskie' && echo 'warn: could not find `udiskie`, skipping'
 exists 'udiskie' && cat >> config <<EOF && echo 'info: loading `udiskie` on startup'
     exec udiskie
+EOF
+
+! exists 'gammastep' && echo 'warn: could not find `gammastep`, skipping'
+exists 'gammastep' && cat >> config <<EOF && echo 'info: loading `gammastep` on startup'
+    exec_always \
+      notify-send '[sway-startup] reminder ‼️ \`gammastep\` is perma-on' \
+      ; pkill 'gammastep' \
+      ; gammastep -O 4500
 EOF
 
 cat <<EOF >> config
