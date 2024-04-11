@@ -190,6 +190,7 @@ cat <<EOF >> config
 #
 # Workspaces:
 #
+    workspace_layout tabbed
     # Switch to workspace
     bindsym \$mod+1 workspace number 1
     bindsym \$mod+2 workspace number 2
@@ -350,8 +351,8 @@ exists 'grimshot' && cat <<EOF >> config && echo 'info: installed `grimshot` bin
 
 # grimshot
     bindsym \$mod+p exec grimshot copy area
-    bindsym \$mod+Shift+p exec grimshot copy active
-    bindsym \$mod+Ctrl+p exec grimshot copy screen
+    #bindsym \$mod+Shift+p exec grimshot copy active
+    bindsym \$mod+Ctrl+p exec grimshot save area
 EOF
 
 ! exists 'wifi' && echo 'warn: could not find `wifi`, skipping'
