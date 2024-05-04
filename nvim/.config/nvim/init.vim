@@ -242,7 +242,8 @@ lua << EOF
 
 	-- Use a loop to conveniently call 'setup' on multiple servers and
 	-- map buffer local keybindings when the language server attaches
-	local servers = { 'bashls', 'eslint', 'graphql', 'tsserver', 'pylyzer', 'purescriptls', 'gopls' }
+  -- 'pylyzer'
+	local servers = { 'bashls', 'eslint', 'graphql', 'tsserver', 'pyright', 'purescriptls', 'gopls' }
 	for _, lsp in pairs(servers) do
 		require('lspconfig')[lsp].setup {
 			on_attach = on_attach,
@@ -364,11 +365,10 @@ lua <<EOF
   vim.opt.list = true
   -- vim.opt.listchars:append "space:⋅"
   vim.opt.listchars:append "eol:↴"
+  vim.opt.listchars:append "tab:> "
 
-  require("indent_blankline").setup {
-    space_char_blankline = " ",
-    show_current_context = true,
-    show_current_context_start = true,
+  require("ibl").setup {
+    indent = { char = "▏" }
   }
 EOF
 
