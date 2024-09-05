@@ -7,9 +7,12 @@ snippet strict
 	MAKEFLAGS += --warn-undefined-variables
 	MAKEFLAGS += --no-builtin-rules
 
+	# !! \`Makefile\` must use tabs !!
+
 	# first command is what get runs by default
 	build:
-	.PHONY: build
+		touch $@
 
-	clean:
 	.PHONY: clean
+	clean:
+		rm -f build

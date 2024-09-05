@@ -92,3 +92,35 @@ snippet docker-dev-run
 		-v "\${HOME}/xorkspace/\${dirname}:/vids" \
 		"\$IMAGE_NAME" \
 		"\$@"
+
+snippet temp-dir
+	temp_dir=\$(mktemp -d)
+	cleanup() { rm -rf "\$temp_dir"; }
+	trap cleanup EXIT
+
+snippet require
+	available() { command -v "\$1" >/dev/null; }
+	require() {
+			local missing='' tool
+			for tool in "\$*"; do
+					if ! available "\$tool"; then
+							missing="\$missing \$tool"
+					fi
+			done
+
+			echo \$missing
+	}
+
+	NEEDS=\$(require curl awk grep sed tee xargs)
+	if [ -n "\$NEEDS" ]; then
+			status "ERROR: The following tools are required but missing:"
+			for need in \$NEEDS; do
+					echo "  - \$need"
+			done
+			exit 1
+	fi
+
+snippet cat-sudo
+	cat <<EOF | sudo tee "\$file" > /dev/null
+	\${contents}
+	EOF

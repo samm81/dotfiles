@@ -1,3 +1,14 @@
+" quick hints
+" `:PlugUpgrade` - update `plug.vim`
+" `:PlugUpdate` - update plugins
+" `:TSUpdate` - update tree-sitter
+" cd ~/src/elixir-ls \
+"   && git pull \
+"   && git checkout ${MOST_RECENT_TAG} \
+"   && mix deps.get \
+"   && MIX_ENV=prod mix compile \
+"   && MIX_ENV=prod mix elixir_ls.release2 -o release
+
 " show line numbers in gutter
 set number
 set relativenumber
@@ -48,6 +59,8 @@ set nohidden
 
 autocmd BufEnter,BufNew *.bash set filetype=bash
 autocmd BufEnter,BufNew *.tmate.conf set filetype=tmux
+autocmd BufEnter,BufNew *.hbs set filetype=html
+autocmd BufEnter,BufNew *.handlebars set filetype=html
 autocmd FileType text setlocal textwidth=80
 autocmd FileType python command! Blktxt setlocal textwidth=88
 autocmd FileType python Blktxt
@@ -85,16 +98,22 @@ call plug#begin()
   Plug 'sbdchd/neoformat'
   let g:neoformat_try_node_exe=1
   let g:shfmt_opt="-ci"
-	augroup fmt
-		autocmd!
-		autocmd BufWritePre * Neoformat
-	augroup END
+  augroup fmt
+    autocmd!
+    autocmd BufWritePre * Neoformat
+  augroup END
   let g:neoformat_javascript_prettier = {
           \ 'exe': 'prettier',
           \ 'args': ['--parser babel'],
           \ 'stdin': 1
           \ }
   let g:neoformat_enabled_javascript = ['prettier']
+  let g:neoformat_heex_mix_format = {
+          \ 'exe': 'mix',
+          \ 'args': ['format', '--stdin-filename="%:t"', '-'],
+          \ 'stdin': 1
+          \ }
+  let g:neoformat_enabled_heex = ['mix_format']
   nnoremap <leader>nf <cmd>Neoformat<cr>
 
   Plug 'tpope/vim-obsession'
@@ -110,7 +129,7 @@ call plug#begin()
   let g:qfenter_keymap.topen = ['<C-t>']
   let g:qfenter_keymap.vopen = ['<C-v>']
 
-  Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+  "Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
   Plug 'windwp/nvim-autopairs'
 
@@ -147,7 +166,8 @@ call plug#end()
 set completeopt=menu,menuone,noselect
 lua <<EOF
   -- Setup nvim-cmp.
-  local cmp = require'cmp'
+  local cmp = require('cmp')
+  local luasnip = require('luasnip')
 
   cmp.setup({
     snippet = {
@@ -168,8 +188,41 @@ lua <<EOF
         i = cmp.mapping.abort(),
         c = cmp.mapping.close(),
       }),
-      ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-      ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+
+      -- ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      -- ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+
+      -- `<CR>` `<Tab>` and `<S-Tab>`
+      -- https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings
+      ['<CR>'] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+            if luasnip.expandable() then
+                luasnip.expand()
+            else
+                cmp.confirm({ select = false })
+            end
+        else
+            fallback()
+        end
+      end),
+
+      ["<Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.confirm({ select = true })
+        elseif luasnip.locally_jumpable(1) then
+          luasnip.jump(1)
+        else
+          fallback()
+        end
+      end, { "i", "s" }),
+
+      ["<S-Tab>"] = cmp.mapping(function(fallback)
+        if luasnip.locally_jumpable(-1) then
+          luasnip.jump(-1)
+        else
+          fallback()
+        end
+      end, { "i", "s" }),
     },
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
@@ -256,12 +309,20 @@ lua << EOF
 		}
 	end
   require('lspconfig').elixirls.setup {
-    cmd = { "/home/maynard/src/elixir-ls/language_server.sh" },
+    cmd = { "/home/maynard/src/elixir-ls/release/language_server.sh" },
     on_attach = on_attach,
 		flags = {
 			-- This will be the default in neovim 0.7+
 			debounce_text_changes = 150,
 		},
+    --settings = {
+    --  elixirLS = {
+    --    dialyzerEnabled = true,
+    --    fetchDeps = false,
+    --    suggestSpecs = true,
+    --    dialyzerFormat = "dialyxir",
+    --  }
+    --},
     -- nvim-cmp
     capabilities = capabilities,
   }
