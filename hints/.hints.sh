@@ -39,11 +39,6 @@ alias 'git-local-ignore'="echo '.git/info/exclude'"
 
 alias 'docker-clean'='docker system prune'
 
-record() {
-  trap "pkill -INT wf-recorder" INT
-  wf-recorder --force-yuv -g "$(slurp)"
-}
-
 hint image swayimg
 
 find-string-in-dir() {
@@ -75,8 +70,6 @@ grub-clean() {
   echo "sudo vkpurge rm X.*"
 }
 
-hint 'ngrok' 'ssh -N -R 8013:localhost:8013 mni.ac'
-
 xbps-update() {
   # TODO check if root
   sudo xbps-install -Su xbps
@@ -84,4 +77,31 @@ xbps-update() {
   sudo xlocate -S
   sudo vkpurge list
   echo 'sudo vkpurge rm X.*'
+}
+
+portscan() {
+  set +x
+  nmap -sP 192.168.1.0/24 \
+    | grep 'Nmap scan report for' \
+    | awk '{print $5}' \
+    | xargs -I {} nmap -sV {}
+  set -x
+}
+
+root-clean() {
+  sudo xbps-remove -O -o
+}
+
+before-reboot() {
+  root-clean
+  xbps-update
+  grub-clean
+}
+
+asdf-update-nodejs-lts() {
+  set +x
+  asdf nodejs update-nodebuild
+  ASDF_NODEJS_FORCE_COMPILE=1 \
+    asdf install nodejs $(asdf nodejs resolve lts --latest-available)
+  set -x
 }
