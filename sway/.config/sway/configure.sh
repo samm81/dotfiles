@@ -376,6 +376,13 @@ exists 'wofi-emoji' && cat <<EOF >> config && echo 'info: installed `wofi-emoji`
     bindsym \$mod+semicolon exec wofi-emoji
 EOF
 
+! exists 'wofi-country-codes-alpha3' && echo 'warn: could not find `wofi-country-codes-alpha3`, skipping'
+exists 'wofi-country-codes-alpha3' && cat <<EOF >> config && echo 'info: installed `wofi-country-codes-alpha3` bindings'
+
+# country-codes-alpha3
+    bindsym \$mod+bracketright exec wofi-country-codes-alpha3
+EOF
+
 cat <<EOF >> config && echo 'info: installed floating window directives'
 
 for_window [app_id="foot-float"] floating enable
