@@ -1,0 +1,15 @@
+profile {
+  output "Dell Inc. DELL U3219Q 5DHYXV2" enable
+  output "Dell Inc. DELL U3219Q 5DHYXV2" mode 3840x2160
+  output "eDP-1" disable
+}
+
+profile {
+  output "eDP-1" enable
+}
+
+profile {
+  output "Hewlett Packard LA2405 CN4210079X" enable
+  output "Hewlett Packard LA2405 CN4210079X" transform 270
+  output "eDP-1" enable
+}
