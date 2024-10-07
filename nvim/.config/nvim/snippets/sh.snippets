@@ -102,19 +102,19 @@ snippet require
 	available() { command -v "\$1" >/dev/null; }
 	require() {
 			local missing='' tool
-			for tool in "\$*"; do
+			for tool in "\$@"; do
 					if ! available "\$tool"; then
 							missing="\$missing \$tool"
 					fi
 			done
 
-			echo \$missing
+			echo "\$missing"
 	}
 
-	NEEDS=\$(require curl awk grep sed tee xargs)
-	if [ -n "\$NEEDS" ]; then
-			status "ERROR: The following tools are required but missing:"
-			for need in \$NEEDS; do
+	needs=\$(require curl awk grep sed tee xargs)
+	if [ -n "\$needs" ]; then
+			echo "err: the following tools are required but missing:"
+			for need in \$needs; do
 					echo "  - \$need"
 			done
 			exit 1
@@ -124,3 +124,40 @@ snippet cat-sudo
 	cat <<EOF | sudo tee "\$file" > /dev/null
 	\${contents}
 	EOF
+
+snippet read-stdin-loop
+	while read -r f; do echo "\$f"; done
+
+snippet colors
+  set +e
+  # use colors, but only if connected to a terminal that supports them
+  if which tput >/dev/null 2>&1; then
+    ncolors=\$(tput colors)
+  fi
+  [ -t 1 ] && [ -n "\${ncolors:-}" ] && [ "\${ncolors:-}" -ge 8 ]
+  has_colors=\$?
+  set -e
+
+  RED="\$( (( has_colors == 0 )) && tput setaf 1 || echo '' )"
+  GREEN="\$( (( has_colors == 0 )) && tput setaf 2 || echo '' )"
+  YELLOW="\$( (( has_colors == 0 )) && tput setaf 3 || echo '' )"
+  BLUE="\$( (( has_colors == 0 )) && tput setaf 4 || echo '' )"
+  BOLD="\$( (( has_colors == 0 )) && tput bold || echo '' )"
+  NORMAL="\$( (( has_colors == 0 )) && tput sgr0 || echo '' )"
+
+  info () {
+      [[ -n \${1:-} ]] && echo "\${BLUE}\${1}\${NORMAL}" >&2
+  }
+  warn () {
+      [[ -n \${1:-} ]] && echo "\${YELLOW}\${1}\${NORMAL}" >&2
+  }
+  success () {
+      [[ -n \${1:-} ]] && echo "\${GREEN}\${1}\${NORMAL}" >&2
+  }
+  err () {
+      [[ -n \${1:-} ]] && echo "\${RED}\${1}\${NORMAL}" >&2
+  }
+  fail () {
+      [[ -n \${1:-} ]] && echo "\${BOLD}\${RED}\${1}\${NORMAL}" >&2
+      exit "\${2:-1}"
+  }
