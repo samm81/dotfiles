@@ -84,10 +84,12 @@ touchpad=$(swaymsg -t get_inputs | grep 'Touchpad' | grep 'identifier' | cut -d 
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read \`man 5 sway-input\` for more information about this section.
 input "$touchpad" {
-    accel_profile adaptive
+    accel_profile flat
+    pointer_accel 1
+
     drag enabled
-    dwt disabled
     tap enabled
+    dwt disabled # disable-while-typing
 }
 EOF
 
