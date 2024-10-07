@@ -131,8 +131,6 @@ call plug#begin()
 
   "Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
-  Plug 'windwp/nvim-autopairs'
-
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/cmp-buffer'
   Plug 'hrsh7th/cmp-path'
@@ -159,6 +157,9 @@ call plug#begin()
 
   " :Copilot setup
   Plug 'github/copilot.vim'
+
+  " 2024-10-02
+  Plug 'tpope/vim-surround'
 call plug#end()
 
 " nvim-cmp with luasnip
@@ -383,17 +384,6 @@ set tagfunc=v:lua.vim.lsp.tagfunc
 lua require("luasnip.loaders.from_vscode").lazy_load()
 lua require("luasnip.loaders.from_snipmate").lazy_load()
 nnoremap <leader>vse :tabe ~/.config/nvim/snippets/<CR>
-
-" nvim-autopairs
-lua << EOF
-  require('nvim-autopairs').setup({
-    fast_wrap = {
-      map = '<M-w>',
-    },
-    -- don't add if already has a close pair on the same line
-    enable_check_bracket_line = true,
-  })
-EOF
 
 " nvim-treesitter
 lua << EOF
