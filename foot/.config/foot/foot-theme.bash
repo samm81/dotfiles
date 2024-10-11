@@ -19,22 +19,22 @@ list_themes() {
 }
 
 set_theme() {
-  theme="${1:?must supply theme name}"
-  theme_file="${FOOT_THEMES_DIR}/${theme}"
+  local theme="${1:?must supply theme name}"
+  local theme_file="${FOOT_THEMES_DIR}/${theme}"
 
   cat "${FOOT_CONFIG_DEF_FILE}" <(echo) "${theme_file}" > "${FOOT_CONFIG_FILE}"
 }
 
 random_theme() {
-  theme_path=$(find "${FOOT_THEMES_DIR}/" | shuf | head -n 1)
-  theme=${theme_path##*/}
+  local theme_path=$(find "${FOOT_THEMES_DIR}/" | shuf | head -n 1)
+  local theme=${theme_path##*/}
 
   echo "$theme"
 }
 
 cmd="${1:-}"
 case "$cmd" in
-  'random') set_theme $(random_theme) ;;
+  'random') theme="$(random_theme)"; echo "$theme"; set_theme "$theme" ;;
   'list') list_themes ;;
   'set') set_theme "$2" ;;
   *) echo "usage: foot-theme list | random | set THEME" ;;

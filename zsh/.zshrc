@@ -1,26 +1,49 @@
-sourc() {
-  ZSH_FILE="$1"
-  [ -f "$ZSH_FILE" ] && source "$ZSH_FILE"
-}
-
 ZSH_DIR="$HOME/.zsh"
 
-sourc "$ZSH_DIR/profiling.sh"
-sourc "$ZSH_DIR/theme_fixes.sh"
-sourc "$ZSH_DIR/oh-my-zsh.sh"
-sourc "$ZSH_DIR/check_installed.sh"
-sourc "$ZSH_DIR/ssh-agent.sh"
-sourc "$ZSH_DIR/main.sh"
-sourc "$ZSH_DIR/256color.sh"
-sourc "$ZSH_DIR/sway.sh"
-sourc "$ZSH_DIR/flatpak.sh"
-sourc "$ZSH_DIR/direnv.sh"
-sourc "$ZSH_DIR/tmux.sh"
-sourc "$ZSH_DIR/zinit.sh"
-sourc "$ZSH_DIR/mcfly.sh"
-sourc "$ZSH_DIR/asdf.zsh"
-sourc "$ZSH_DIR/pg.sh"
+source "$ZSH_DIR/profiling.sh"
 
-sourc "$ZSH_DIR/$(hostname).sh"
+sourc() {
+  local file="$1"
+  [ -f "$file" ] && source "$file"
+}
+
+sourcz() {
+  local file="$1"
+  sourc "${ZSH_DIR}/${file}.sh"
+  sourc "${ZSH_DIR}/${file}.bash"
+  sourc "${ZSH_DIR}/${file}.zsh"
+}
+
+sourcz 'check_installed'
+
+sourczif() {
+  local program="$1"
+  check_installed "$program" && sourcz "$program"
+}
+
+sourcz 'zsh'
+sourcz 'theme_fixes'
+sourcz 'oh-my-zsh'
+sourcz 'zinit'
+
+sourcz 'main'
+
+sourcz 'ssh-agent'
+sourcz '256color'
+sourcz 'flatpak'
+sourcz 'direnv'
+sourcz 'pg'
+sourcz 'sudo'
+sourcz 'fly'
+
+sourczif 'tmux'
+sourczif 'sway'
+sourczif 'mcfly'
+sourczif 'asdf'
+sourczif 'foot'
+sourczif 'foot'
+sourczif 'nvim'
+
+sourcz "$(hostname).sh"
 
 sourc "$HOME/.hints.sh"

@@ -32,9 +32,8 @@
     "* TODO %(org-cliplink-capture) \n  SCHEDULED: %t\n" :empty-lines 1)))
 
 
-;; xdg-open is a great browser
 (setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "firefox-wayland")
+      browse-url-generic-program "firefox")
 
 ;; display line numbers
 (when (version<= "26.0.50" emacs-version)
@@ -62,11 +61,11 @@
 (global-set-key (kbd "C-w") 'ignore)
 
 ;; for sunrise/sunset
-(require 'cl)
-(require 'solar)
-(setq calendar-latitude 47.608013)
-(setq calendar-longitude -122.335167)
-(setq calendar-location-name "Seattle, WA")
+;(require 'cl)
+;(require 'solar)
+;(setq calendar-latitude 47.608013)
+;(setq calendar-longitude -122.335167)
+;(setq calendar-location-name "Seattle, WA")
 
 ;; for global use in any file
 (global-set-key (kbd "C-c l") 'org-store-link)
@@ -77,8 +76,8 @@
 (with-eval-after-load 'org
   (setq org-modules '(org-habit))
   (org-load-modules-maybe t)
-  (load "~/org-mode/next-spec-day")
-  (load "~/org-mode/meditation")
+  ;(load "~/org-mode/next-spec-day")
+  ;(load "~/org-mode/meditation")
   ;; add a CLOSED stamp whenever a TOOD item is marked DONE
   (setq org-log-done 'time)
   ;; and put it in LOGBOOK
@@ -271,6 +270,7 @@
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(calendar-chinese-all-holidays-flag t)
  '(holiday-bahai-holidays nil)
  '(holiday-hebrew-holidays nil)
@@ -283,14 +283,13 @@
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
- '(org-agenda-files
-   '("/home/maynard/org-mode/day.org" "/home/maynard/org-mode/habits.org"))
- '(org-directory "~/org-mode")
- '(org-pomodoro-audio-player "/usr/bin/play -q -V0 -v2")
- '(org-pomodoro-finished-sound "/home/maynard/org-mode/gong.mp3")
- '(org-pomodoro-long-break-sound "/home/maynard/org-mode/long-gong.mp3")
- '(org-pomodoro-short-break-sound "/home/maynard/org-mode/gong.mp3")
- '(org-pomodoro-start-sound "/home/maynard/org-mode/gong.mp3")
+ ;'(org-agenda-files '("/home/maynard/org-mode/day.org" "/home/maynard/org-mode/habits.org"))
+ '(org-directory "~/studio/org-mode")
+ ;'(org-pomodoro-audio-player "/usr/bin/play -q -V0 -v2")
+ ;'(org-pomodoro-finished-sound "/home/maynard/org-mode/gong.mp3")
+ ;'(org-pomodoro-long-break-sound "/home/maynard/org-mode/long-gong.mp3")
+ ;'(org-pomodoro-short-break-sound "/home/maynard/org-mode/gong.mp3")
+ ;'(org-pomodoro-start-sound "/home/maynard/org-mode/gong.mp3")
  '(package-selected-packages
    '(use-package org-cliplink ## ledger-mode company org-pomodoro org)))
 
@@ -301,7 +300,7 @@
  ;; If there is more than one, they won't work right.
  )
 
-(load-theme 'wombat t)
+;(load-theme 'wombat t)
 
 (when (member "NotoColorEmoji" (font-family-list))
   (set-fontset-font

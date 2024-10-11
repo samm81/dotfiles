@@ -2,12 +2,14 @@
 " `:PlugUpgrade` - update `plug.vim`
 " `:PlugUpdate` - update plugins
 " `:TSUpdate` - update tree-sitter
-" cd ~/src/elixir-ls \
-"   && git pull \
-"   && git checkout ${MOST_RECENT_TAG} \
-"   && mix deps.get \
-"   && MIX_ENV=prod mix compile \
-"   && MIX_ENV=prod mix elixir_ls.release2 -o release
+"
+" curl -fLO https://github.com/elixir-lsp/elixir-ls/releases/latest/download/elixir-ls.zip
+" unzip elixir-ls.zip -d ~/src/elixir-ls
+" chmod +x ~/src/elixir-ls/language_server.sh
+" ln -s ~/src/elixir-ls/language_server.sh ~/bin/elixir-ls
+"
+" npm install -g vscode-langservers-extracted bash-language-server \
+"   typescript typescript-language-server eslint prettier
 
 " show line numbers in gutter
 set number
@@ -297,7 +299,7 @@ lua << EOF
 	-- Use a loop to conveniently call 'setup' on multiple servers and
 	-- map buffer local keybindings when the language server attaches
   -- 'pylyzer'
-	local servers = { 'bashls', 'eslint', 'graphql', 'tsserver', 'pyright', 'purescriptls', 'gopls' }
+	local servers = { 'bashls', 'eslint', 'graphql', 'ts_ls', 'pyright', 'purescriptls', 'gopls' }
 	for _, lsp in pairs(servers) do
 		require('lspconfig')[lsp].setup {
 			on_attach = on_attach,
@@ -310,7 +312,7 @@ lua << EOF
 		}
 	end
   require('lspconfig').elixirls.setup {
-    cmd = { "/home/maynard/src/elixir-ls/release/language_server.sh" },
+    cmd = { "elixir-ls" },
     on_attach = on_attach,
 		flags = {
 			-- This will be the default in neovim 0.7+

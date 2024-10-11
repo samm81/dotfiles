@@ -7,13 +7,12 @@ hint() {
 
 hint 'list-fonts' 'fc-list'
 
-set_default_sink() {
+set-default-sink() {
   echo '$ pactl list short sinks'
   pactl list short sinks
   # shellcheck disable=SC2016
   echo '$ pactl set-default-sink '\''$SINK_NAME'\'
 }
-alias 'set-default-sink'='set_default_sink'
 
 hint 'logs' 'svlogtail'
 
@@ -23,23 +22,11 @@ timezone() {
 
 hint 'pdf' 'zathura'
 
-# although this is slick, it breaks the auto completion :(
-## rename `asdf` to `orig_asdf`
-## `orig_` must come first because this is doing string concat
-#eval "orig_$(declare -f asdf)"
-#asdf-shim() {
-#([ "$1" = "install" ] \
-#  && [ "$2" = "nodejs" ] \
-#  && ASDF_NODEJS_FORCE_COMPILE=1 orig_asdf "$@") \
-#  || orig_asdf "$@"
-#}
-#alias 'asdf=asdf-shim'
-
 alias 'git-local-ignore'="echo '.git/info/exclude'"
 
 alias 'docker-clean'='docker system prune'
 
-hint image swayimg
+hint 'image' 'swayimg'
 
 find-string-in-dir() {
   string="$1"
@@ -55,13 +42,13 @@ swaymsg-shim() {
   cmd="$1"
   if [[ "$cmd" == "output" ]]; then
     echo "don't forget to surround with quotes:"
-    echo "\`swaymsg 'ouput \"Some Company ASDF 4242\" command'"
+    echo "\`swaymsg 'ouput \"Some Company XYZZ 4242\" command'"
   fi
   eval "$swaymsg_orig $@"
 }
-alias 'swaymsg=swaymsg-shim'
+alias 'swaymsg'='swaymsg-shim'
 
-alias 'browser=w3m'
+alias 'browser'='w3m'
 
 hint 'video' 'vlc'
 
@@ -96,12 +83,4 @@ before-reboot() {
   root-clean
   xbps-update
   grub-clean
-}
-
-asdf-update-nodejs-lts() {
-  set +x
-  asdf nodejs update-nodebuild
-  ASDF_NODEJS_FORCE_COMPILE=1 \
-    asdf install nodejs $(asdf nodejs resolve lts --latest-available)
-  set -x
 }

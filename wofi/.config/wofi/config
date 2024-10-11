@@ -1,0 +1,6 @@
+matching=fuzzy
+insensitive=true
+gtk_dark=true
+key_up=Ctrl-p
+key_down=Ctrl-n
+key_exit=Ctrl-q

@@ -18,7 +18,7 @@ STATUSBAR_SH="$HOME/.config/sway/statusbar.sh"
 X_RESOURCES="$HOME/.Xresources"
 
 exists 'foot' && term='foot'
-exists 'foot_randomize_theme' && term='foot-randomize-theme; foot'
+exists 'foot-randomize-theme' && term='foot-randomize-theme; foot'
 ! exists "$term" && echo 'No terminal found: missing `foot`' && exit 1
 
 exists 'dmenu' && application_launcher='dmenu_path | dmenu | xargs swaymsg exec --'
@@ -45,7 +45,7 @@ set \$up k
 set \$right l
 # Your preferred terminal emulator
 set \$term $term
-set \$term-float $term --window-size-chars='120x60' --app-id='foot-float'
+set \$term-float $term --window-size-chars='80x60' --app-id='foot-float'
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
@@ -437,8 +437,8 @@ exists 'pipewire' && cat >> config <<EOF && echo 'info: loading `pipewire` on st
     exec pipewire
 EOF
 
-! exists 'pipewire_pulse' && echo 'warn: could not find `pipewire-pulse`, skipping'
-exists 'pipewire_pulse' && cat >> config <<EOF && echo 'info: loading `pipewire-pulse` on startup'
+! exists 'pipewire-pulse' && echo 'warn: could not find `pipewire-pulse`, skipping'
+exists 'pipewire-pulse' && cat >> config <<EOF && echo 'info: loading `pipewire-pulse` on startup'
     exec pipewire-pulse
 EOF
 
@@ -454,7 +454,7 @@ EOF
 
 ! exists 'udiskie' && echo 'warn: could not find `udiskie`, skipping'
 exists 'udiskie' && cat >> config <<EOF && echo 'info: loading `udiskie` on startup'
-    exec udiskie
+    exec udiskie --no-file-manager
 EOF
 
 ! exists 'gammastep' && echo 'warn: could not find `gammastep`, skipping'
