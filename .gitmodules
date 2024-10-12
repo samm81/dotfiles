@@ -1,0 +1,3 @@
+[submodule "shellrc"]
+	path = shellrc
+	url = git@github.com:samm81/shellrc.git
