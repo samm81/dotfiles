@@ -1,5 +1,4 @@
 export ZSH="${HOME}/.oh-my-zsh"
-export ZSHRC="${HOME}/.zshrc"
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -21,17 +20,14 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git asdf colored-man-pages)
 
-ASDF="$HOME/.asdf"
-[ -d "$ASDF" ] && plugins+=('asdf') && fpath+=("$ASDF/completions")
+ASDF_DIR="$HOME/.asdf"
+[ -d "$ASDF_DIR" ] && plugins+=('asdf') && fpath+=("$ASDF_DIR/completions")
 
 # from https://github.com/zsh-users
 #plugins+=(zsh-auto-notify) # non-built in
 plugins+=(zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
 
-# make zsh-autosuggestions play nice with st
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=11"
-
-source $ZSH/oh-my-zsh.sh
+source "$ZSH/oh-my-zsh.sh"
 
 # for zsh-completions
 autoload -Uz compinit && compinit
@@ -40,23 +36,23 @@ unsetopt correct_all
 setopt correct
 
 # zsh-autosuggest
+# shellcheck disable=SC1003
 bindkey '^\' autosuggest-execute
 
 # zsh-auto-notify
 #AUTO_NOTIFY_IGNORE+=("git", "tmux", "docker run")
 #export AUTO_NOTIFY_EXPIRE_TIME=4000
-#
 
 # theme fixes
 battery_pct_prompt() {
-	echo ""
+  echo ""
 }
 zsh_path() {
-	echo ""
+  echo ""
 }
 rbenv() {
-	echo ""
+  echo ""
 }
 jenv_prompt_info() {
-	echo ""
+  echo ""
 }
