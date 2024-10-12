@@ -79,8 +79,16 @@ root-clean() {
   sudo xbps-remove -O -o
 }
 
+update() {
+  xbps-update
+  pipx update-all
+  npm -g update
+  echo '`~/.docker/cli-plugins/docker-compose`'
+  ls ~/src/
+}
+
 before-reboot() {
   root-clean
-  xbps-update
+  update
   grub-clean
 }
