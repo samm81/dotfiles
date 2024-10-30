@@ -1,6 +1,6 @@
 # set environment variables if user's agent already exists
 [ -z "$SSH_AUTH_SOCK" ] &&
-  SSH_AUTH_SOCK="$(find /tmp -type s -user "$(whoami)" -iwholename '/tmp/ssh-*/agent.*')"
+  SSH_AUTH_SOCK="$(/bin/find /tmp -type s -user "$(whoami)" -iwholename '/tmp/ssh-*/agent.*')"
 [ -z "$SSH_AGENT_PID" ] &&
   [ -z "$(echo "$SSH_AUTH_SOCK" | cut -d '.' -f 2)" ] &&
   SSH_AGENT_PID=$(($(echo "$SSH_AUTH_SOCK" | cut -d. -f2) + 1))
