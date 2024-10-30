@@ -23,6 +23,17 @@ plugins=(git asdf colored-man-pages)
 ASDF_DIR="$HOME/.asdf"
 [ -d "$ASDF_DIR" ] && plugins+=('asdf') && fpath+=("$ASDF_DIR/completions")
 
+if isinstalled 'pdm'; then
+  # `ZSH_CUSTOM` is set by `oh-my-zsh` it seems, so cheat a little here
+  zsh_custom="${ZSH}/custom"
+  ZSH_CUSTOM_PLUGINS_PDM_DIR="${zsh_custom}/plugins/pdm"
+  plugins+=('pdm')
+  # if the `pdm` plugin dir is missing, it will warn, but this will tell the user exactly what to do
+  [ ! -d "$ZSH_CUSTOM_PLUGINS_PDM_DIR" ] &&
+    echo "${ZSH_CUSTOM_PLUGINS_PDM_DIR} missing, probably need to run \`pdm completion zsh > " \
+      "\$ZSH_CUSTOM/plugins/pdm/_pdm\`"
+fi
+
 # from https://github.com/zsh-users
 #plugins+=(zsh-auto-notify) # non-built in
 plugins+=(zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
@@ -38,6 +49,8 @@ setopt correct
 # zsh-autosuggest
 # shellcheck disable=SC1003
 bindkey '^\' autosuggest-execute
+# make the suggestions more visible
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=11"
 
 # zsh-auto-notify
 #AUTO_NOTIFY_IGNORE+=("git", "tmux", "docker run")

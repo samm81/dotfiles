@@ -1,1 +1,1 @@
-alias 'vizsh'='vim -p ~/.zshrc ~/.zsh/'
+alias 'vizsh'='vim -p ~/.zshrc ~/.zshrc.d/'
