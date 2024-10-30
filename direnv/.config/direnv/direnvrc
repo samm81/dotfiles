@@ -1,0 +1,5 @@
+layout_pdm() {
+  if [ -f 'pyproject.toml' ]; then
+    eval "$(pdm venv activate)"
+  fi
+}
