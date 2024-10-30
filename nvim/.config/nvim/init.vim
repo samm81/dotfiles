@@ -66,6 +66,8 @@ autocmd BufEnter,BufNew *.bash set filetype=bash
 autocmd BufEnter,BufNew *.tmate.conf set filetype=tmux
 autocmd BufEnter,BufNew *.hbs set filetype=html
 autocmd BufEnter,BufNew *.handlebars set filetype=html
+autocmd BufEnter,BufNew *.envrc set filetype=bash
+autocmd BufEnter,BufNew direnvrc set filetype=bash
 autocmd FileType text setlocal textwidth=80
 autocmd FileType python command! Blktxt setlocal textwidth=88
 autocmd FileType python Blktxt
@@ -101,6 +103,7 @@ call plug#begin()
   nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
   Plug 'sbdchd/neoformat'
+  nnoremap <leader>nf <cmd>Neoformat<cr>
   let g:neoformat_try_node_exe=1
   let g:shfmt_opt="-ci"
   augroup fmt
@@ -119,7 +122,11 @@ call plug#begin()
           \ 'stdin': 1
           \ }
   let g:neoformat_enabled_heex = ['mix_format']
-  nnoremap <leader>nf <cmd>Neoformat<cr>
+  "let g:neoformat_clojure_cljfmt = {
+  "        \ 'exe': 'cljfmt',
+  "        \ 'args': ['fix'],
+  "        \ }
+  "let g:neoformat_enabled_clojure = ['cljfmt']
 
   Plug 'tpope/vim-obsession'
 
@@ -302,7 +309,7 @@ lua << EOF
   -- Use a loop to conveniently call 'setup' on multiple servers and
   -- map buffer local keybindings when the language server attaches
   -- 'pylyzer'
-  local servers = { 'eslint', 'graphql', 'ts_ls', 'pyright', 'purescriptls', 'gopls' }
+  local servers = { 'eslint', 'graphql', 'ts_ls', 'pyright', 'purescriptls', 'gopls', 'ruff' }
   for _, lsp in pairs(servers) do
     require('lspconfig')[lsp].setup {
       on_attach = on_attach,
@@ -325,7 +332,7 @@ lua << EOF
     capabilities = capabilities,
   }
   require('lspconfig').elixirls.setup {
-    cmd = { "elixir-ls" },
+    cmd = { "/home/maynard/bin/elixir-ls" },
     on_attach = on_attach,
     flags = {
       -- This will be the default in neovim 0.7+
