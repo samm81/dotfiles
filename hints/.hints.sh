@@ -44,16 +44,16 @@ swaymsg-shim() {
     echo "don't forget to surround with quotes:"
     echo "\`swaymsg 'ouput \"Some Company XYZZ 4242\" command'"
   fi
-  eval "$swaymsg_orig $@"
+  eval "$swaymsg_orig $*"
 }
 alias 'swaymsg'='swaymsg-shim'
 
 alias 'browser'='w3m'
 
-hint 'video' 'vlc'
+hint 'video' 'mpv'
 
 grub-clean() {
-  echo "sudo vkpurge list"
+  sudo vkpurge list
   echo "sudo vkpurge rm X.*"
 }
 
@@ -62,16 +62,14 @@ xbps-update() {
   sudo xbps-install -Su xbps
   sudo xbps-install -Su
   sudo xlocate -S
-  sudo vkpurge list
-  echo 'sudo vkpurge rm X.*'
 }
 
 portscan() {
   set +x
-  nmap -sP 192.168.1.0/24 \
-    | grep 'Nmap scan report for' \
-    | awk '{print $5}' \
-    | xargs -I {} nmap -sV {}
+  nmap -sP 192.168.1.0/24 |
+    grep 'Nmap scan report for' |
+    awk '{print $5}' |
+    xargs -I {} nmap -sV {}
   set -x
 }
 
@@ -80,11 +78,21 @@ root-clean() {
 }
 
 update() {
+  set -x
   xbps-update
-  pipx update-all
+  pipx upgrade-all
   npm -g update
-  echo '`~/.docker/cli-plugins/docker-compose`'
-  ls ~/src/
+  set +x
+  echo 'TODO `~/.docker/cli-plugins/docker-compose`'
+  echo 'TODO `~/bin/cljfmt`'
+  echo 'TODO `~/bin/mcfly`'
+  echo 'TODO `'"${ZSH_CUSTOM}"'`'
+  for f in ~/bin/*.AppImage; do
+    echo "TODO $f"
+  done
+  for d in ~/src/*; do
+    echo "TODO $d"
+  done
 }
 
 before-reboot() {
