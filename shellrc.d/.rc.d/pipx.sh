@@ -1,1 +1,3 @@
-isinstalled pipx && eval "$(register-python-argcomplete pipx)"
+isinstalled 'pipx' &&
+  isinstalled 'register-python-argcomplete' &&
+  eval "$(register-python-argcomplete pipx)"
