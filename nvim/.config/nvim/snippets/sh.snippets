@@ -9,10 +9,9 @@ snippet strict "unnofficial strict mode"
 	[ "\${TRACE:-0}" = "1" ] && set -o xtrace
 
 	usage() {
-		filename="$(basename "$0")"
-		echo "Usage: ./\${filename} <arg one> <arg two>"
-		echo
-		echo "This is an awesome bash script to make your life better."
+		filename="$(basename "\$0")"
+		echo "usage: ./\${filename} <arg one> <arg two>"
+		echo '  this is an awesome \`sh\` script to make your life better'
 		exit
 	}
 
@@ -161,3 +160,13 @@ snippet colors
       [[ -n \${1:-} ]] && echo "\${BOLD}\${RED}\${1}\${NORMAL}" >&2
       exit "\${2:-1}"
   }
+
+snippet sigint-ctrl-c
+  # handle \`SIGINT\` (Ctrl-C) at the script level
+  # shellcheck disable=SC2317
+  handle_sigint() {
+      exit 130
+  }
+
+  # Set up trap to catch SIGINT
+  trap 'handle_sigint' INT

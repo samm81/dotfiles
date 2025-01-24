@@ -68,7 +68,7 @@ autocmd BufEnter,BufNew *.hbs set filetype=html
 autocmd BufEnter,BufNew *.handlebars set filetype=html
 autocmd BufEnter,BufNew *.envrc set filetype=bash
 autocmd BufEnter,BufNew direnvrc set filetype=bash
-autocmd FileType text setlocal textwidth=80
+"autocmd FileType text setlocal textwidth=80
 autocmd FileType python command! Blktxt setlocal textwidth=88
 autocmd FileType python Blktxt
 autocmd FileType javascript command! Prettiertxt setlocal textwidth=88
@@ -426,6 +426,44 @@ lua << EOF
     indent = {
       enable = true
     },
+  }
+EOF
+
+" telescope
+lua << EOF
+  require('telescope').setup{
+    defaults = {
+      -- Default configuration for telescope goes here:
+      -- config_key = value,
+      mappings = {
+        i = {
+          -- map actions.which_key to <C-h> (default: <C-/>)
+          -- actions.which_key shows the mappings for your picker,
+          -- e.g. git_{create, delete, ...}_branch for the git_branches picker
+          -- ["<C-h>"] = "which_key"
+        }
+      },
+      path_display = { "smart" },
+    },
+    pickers = {
+      -- Default configuration for builtin pickers goes here:
+      -- picker_name = {
+      --   picker_config_key = value,
+      --   ...
+      -- }
+      -- Now the picker_config_key will be applied every time you call this
+      -- builtin picker
+      live_grep = {
+        glob_pattern = "!package-lock.json",
+      }
+    },
+    extensions = {
+      -- Your extension configuration goes here:
+      -- extension_name = {
+      --   extension_config_key = value,
+      -- }
+      -- please take a look at the readme of the extension you want to configure
+    }
   }
 EOF
 
