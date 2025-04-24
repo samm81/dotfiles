@@ -167,11 +167,19 @@ call plug#begin()
 
   Plug 'b0o/SchemaStore.nvim'
 
-  " :Copilot setup
-  Plug 'github/copilot.vim'
-
   " 2024-10-02
   Plug 'tpope/vim-surround'
+
+  " 2025-06-23
+  " dependencies
+  Plug 'MunifTanjim/nui.nvim'
+  " already `Plug`ed above
+  " Plug 'nvim-lua/plenary.nvim'
+  Plug 'jackMort/ChatGPT.nvim', { 'do': 'bash ./install.sh' }
+
+  " 2025-06-23
+  Plug 'milanglacier/minuet-ai.nvim'
+
 call plug#end()
 
 " nvim-cmp with luasnip
@@ -183,6 +191,10 @@ lua <<EOF
   local luasnip = require('luasnip')
 
   cmp.setup({
+    --experimental = {
+    --  ghost_text = true,
+    --},
+
     snippet = {
       -- REQUIRED - you must specify a snippet engine
       expand = function(args)
@@ -193,6 +205,8 @@ lua <<EOF
       end,
     },
     mapping = {
+      ['<C-n>'] = cmp.mapping.select_next_item(),
+      ['<C-p>'] = cmp.mapping.select_prev_item(),
       ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
       ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
       ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
@@ -514,10 +528,6 @@ imap <leader>cn <Cmd>call codeium#CycleCompletions(1)<CR>
 imap <leader>cp <Cmd>call codeium#CycleCompletions(-1)<CR>
 imap <leader>cc <Cmd>call codeium#Clear()<CR>
 
-" copilot
-imap <silent><script><expr> <C-\> copilot#Accept("")
-let g:copilot_no_tab_map = v:true
-
 " neoformat
 function! NeoformatDbg()
   let g:neoformat_verbose = 1
@@ -526,3 +536,75 @@ function! NeoformatDbg()
 endfunction
 
 command! NeoformatDbg call NeoformatDbg()
+
+" chatgpt.nvim
+
+lua << EOF
+  local home = vim.fn.expand("$HOME")
+  require("chatgpt").setup({
+    -- api_host_cmd = "echo -n 'localhost:41410'",
+    api_key_cmd = "cat " .. home .. "/.local/share/openai-api-key.txt",
+    -- https://github.com/jackMort/ChatGPT.nvim/blob/5b6d296eefc75331e2ff9f0adcffbd7d27862dd6/README.md#example-configuration
+    -- openai_params = {
+    --   -- NOTE: model can be a function returning the model name
+    --   -- this is useful if you want to change the model on the fly
+    --   -- using commands
+    --   -- Example:
+    --   -- model = function()
+    --   --     if some_condition() then
+    --   --         return "gpt-4-1106-preview"
+    --   --     else
+    --   --         return "gpt-3.5-turbo"
+    --   --     end
+    --   -- end,
+    model = "o4-mini-2025-04-16",
+    --   frequency_penalty = 0,
+    --   presence_penalty = 0,
+    --   max_tokens = 4095,
+    --   temperature = 0.2,
+    --   top_p = 0.1,
+    --   n = 1,
+    -- }
+  })
+EOF
+
+" minuet-ai
+lua <<EOF
+  require('minuet').setup({
+    provider = 'openai',
+    virtualtext = {
+      auto_trigger_ft = {'*'},
+      keymap = {
+        -- accept whole completion
+        accept = '<C-\\>',
+        -- accept one line
+        accept_line = '<A-a>',
+        -- accept n lines (prompts for number)
+        -- e.g. "A-z 2 CR" will accept 2 lines
+        accept_n_lines = '<A-z>',
+        -- Cycle to prev completion item, or manually invoke completion
+        prev = '<A-[>',
+        -- Cycle to next completion item, or manually invoke completion
+        next = '<A-]>',
+        dismiss = '<A-e>',
+      },
+    },
+    --provider_options = {
+    --  openai = {
+    --    model = 'gpt-4.1-mini',
+    --    system = "see [Prompt] section for the default value",
+    --    few_shots = "see [Prompt] section for the default value",
+    --    chat_input = "See [Prompt Section for default value]",
+    --    stream = true,
+    --    api_key = 'OPENAI_API_KEY',
+    --    optional = {
+    --      -- pass any additional parameters you want to send to OpenAI request,
+    --      -- e.g.
+    --      -- stop = { 'end' },
+    --      -- max_tokens = 256,
+    --      -- top_p = 0.9,
+    --    },
+    --  },
+    --}
+  })
+EOF
