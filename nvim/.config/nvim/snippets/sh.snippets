@@ -15,8 +15,11 @@ snippet strict "unnofficial strict mode"
 		exit
 	}
 
-	[ "\${1:-}" = '--help' ] && usage
-	[ "\${1:-}" = '-h' ] && usage
+	case "\${1:-}" in
+		h | he | hel | help | -h | -he | -hel | -help | --h | --he | --hel | --help)
+			usage
+			;;
+	esac
 
 	cd "\$(dirname "\$0")"
 

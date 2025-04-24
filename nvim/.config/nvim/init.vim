@@ -55,7 +55,6 @@ if exists('g:started_by_firenvim')
   au BufEnter github.com_*.txt set filetype=markdown
 end
 
-
 " re-read files when they change
 set autoread
 
@@ -127,6 +126,7 @@ call plug#begin()
   "        \ 'args': ['fix'],
   "        \ }
   "let g:neoformat_enabled_clojure = ['cljfmt']
+  let g:neoformat_enabled_bash = ['shfmt']
 
   Plug 'tpope/vim-obsession'
 
@@ -134,6 +134,7 @@ call plug#begin()
 
   Plug 'jparise/vim-graphql'
 
+  " quickfix
   Plug 'yssl/QFEnter'
   let g:qfenter_keymap = {}
   let g:qfenter_keymap.open = ['<CR>']
@@ -426,7 +427,7 @@ lua << EOF
   require'nvim-treesitter.configs'.setup {
     ensure_installed = {
       "python", "json", "typescript", "jsdoc", "bash", "make", "css", "regex",
-      "vim", "yaml", "nix", "tsx", "javascript", "eex", "elixir", "heex",
+      "vim", "yaml", "nix", "tsx", "javascript", "elixir", "eex", "heex",
       "dockerfile", "html", "graphql", "lua"
     },
     highlight = {
