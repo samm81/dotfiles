@@ -48,13 +48,6 @@ nnoremap <leader>vs :source $MYVIMRC<CR>
 nnoremap <leader>c :w !wl-copy<CR>
 vnoremap <leader>c :w !wl-copy<CR>
 
-" firenvim
-if exists('g:started_by_firenvim')
-  set laststatus=0
-  let fc['.*'] = { 'takeover': 'never' }
-  au BufEnter github.com_*.txt set filetype=markdown
-end
-
 " re-read files when they change
 set autoread
 
@@ -67,11 +60,6 @@ autocmd BufEnter,BufNew *.hbs set filetype=html
 autocmd BufEnter,BufNew *.handlebars set filetype=html
 autocmd BufEnter,BufNew *.envrc set filetype=bash
 autocmd BufEnter,BufNew direnvrc set filetype=bash
-"autocmd FileType text setlocal textwidth=80
-autocmd FileType python command! Blktxt setlocal textwidth=88
-autocmd FileType python Blktxt
-autocmd FileType javascript command! Prettiertxt setlocal textwidth=88
-autocmd FileType javascript Prettiertxt
 
 " Install vim-plug if not found
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
