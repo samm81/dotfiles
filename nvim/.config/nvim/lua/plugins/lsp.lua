@@ -4,7 +4,7 @@ local sane = require("lib.sane")
 return {
   {
     "neovim/nvim-lspconfig",
-    --event = "LazyFile",
+    event = "VeryLazy",
     dependencies = {
       "b0o/schemastore.nvim",
     },
@@ -54,7 +54,7 @@ return {
                   -- avoid typeerror: cannot read properties of undefined (reading 'length')
                   url = "",
                 },
-                schemas = require('schemastore').yaml.schemas(),
+                schemas = require("schemastore").yaml.schemas(),
               },
             },
           },
@@ -67,7 +67,7 @@ return {
             settings = {
               -- https://github.com/neovim/nvim-lspconfig/blob/8b0f47d851ee5343d38fe194a06ad16b9b9bd086/doc/configs.md#lua_ls
               Lua = {
-                runtime = { version = 'LuaJIT' },
+                runtime = { version = "LuaJIT" },
                 workspace = {
                   checkThirdParty = false,
                   library = { vim.env.VIMRUNTIME },
@@ -94,12 +94,8 @@ return {
     ---@param opts PluginLspOpts
     config = function(_, opts)
       local servers = opts.servers
-      local capabilities = vim.tbl_deep_extend(
-        "force",
-        {},
-        vim.lsp.protocol.make_client_capabilities(),
-        opts.capabilities or {}
-      )
+      local capabilities =
+        vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), opts.capabilities or {})
 
       local on_attach = function(_, bufnr)
         local keymap = function(mode, lhs, rhs)
@@ -153,7 +149,7 @@ return {
       local function setup(server)
         local server_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
-          on_attach = on_attach
+          on_attach = on_attach,
         }, servers[server] or {})
         if server_opts.enabled == false then
           return

@@ -29,10 +29,10 @@ o.showcmd = true
 -- do not highlight search results
 o.hlsearch = false
 
-o.completeopt = { 'menu', 'menuone', 'noselect' }
+o.completeopt = { "menu", "menuone", "noselect" }
 
 -- no scrubs
-o.mouse = ''
+o.mouse = ""
 local map = vim.keymap.set
 local modes = { "n", "i", "v" }
 for _, k in ipairs({ "<Up>", "<Down>", "<Left>", "<Right>" }) do
@@ -49,18 +49,8 @@ o.hidden = false
 -- key bindings
 --
 
-sane.keymap(
-  "n",
-  "<leader>ve",
-  "<cmd>tabedit " .. vim.fn.stdpath("config") .. "/init.lua<CR>",
-  { desc = "edit config" }
-)
-sane.keymap(
-  { "n", "v" },
-  "<leader>c",
-  ":w !wl-copy<CR>",
-  { desc = "copy to clipboard" }
-)
+sane.keymap("n", "<leader>ve", "<cmd>tabedit " .. vim.fn.stdpath("config") .. "/init.lua<CR>", { desc = "edit config" })
+sane.keymap({ "n", "v" }, "<leader>c", ":w !wl-copy<CR>", { desc = "copy to clipboard" })
 
 -- diagnostics
 -- widely accepted, according to `gpt-4`
@@ -87,7 +77,7 @@ vim.filetype.add({
     handlebars = "html",
   },
   filename = { direnvrc = "bash" },
-  pattern = { ['*.tmate.conf'] = "tmux", }
+  pattern = { ["*.tmate.conf"] = "tmux" },
 })
 
 -- now let `lazy.nvim` set up everything else
