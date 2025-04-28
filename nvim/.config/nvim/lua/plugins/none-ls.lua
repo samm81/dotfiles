@@ -23,7 +23,11 @@ return {
 
           -- elixir
           formatting.mix.with({ extra_filetypes = { "heex", "eex" } }),
-          diagnostics.credo.with({ extra_filetypes = { "heex", "eex" } }),
+          diagnostics.credo.with({
+            command = "credo",
+            args = { "suggest", "--format", "json", "--read-from-stdin", "$FILENAME" },
+            extra_filetypes = { "heex", "eex" },
+          }),
         },
         on_attach = function(client, bufnr)
           if client.supports_method("textDocument/formatting") then
