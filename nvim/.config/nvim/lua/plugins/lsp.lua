@@ -95,7 +95,7 @@ return {
     config = function(_, opts)
       local servers = opts.servers
       local capabilities =
-        vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), opts.capabilities or {})
+          vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), opts.capabilities or {})
 
       local on_attach = function(_, bufnr)
         local keymap = function(mode, lhs, rhs)
@@ -145,6 +145,11 @@ return {
         keymap_remapped("n", "gD", "grD")
         keymap_remapped("n", "<leader>D", "grt")
       end
+
+      vim.diagnostic.config({
+        virtual_text = { source = true },
+        float = { source = true },
+      })
 
       local function setup(server)
         local server_opts = vim.tbl_deep_extend("force", {
