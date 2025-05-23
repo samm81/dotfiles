@@ -100,28 +100,6 @@ snippet temp-dir
 	cleanup() { rm -rf "\$temp_dir"; }
 	trap cleanup EXIT
 
-snippet require
-	available() { command -v "\$1" >/dev/null; }
-	require() {
-			local missing='' tool
-			for tool in "\$@"; do
-					if ! available "\$tool"; then
-							missing="\$missing \$tool"
-					fi
-			done
-
-			echo "\$missing"
-	}
-
-	needs=\$(require curl awk grep sed tee xargs)
-	if [ -n "\$needs" ]; then
-			echo "err: the following tools are required but missing:"
-			for need in \$needs; do
-					echo "  - \$need"
-			done
-			exit 1
-	fi
-
 snippet cat-sudo
 	cat <<EOF | sudo tee "\$file" > /dev/null
 	\${contents}
@@ -173,3 +151,24 @@ snippet sigint-ctrl-c
 
   # Set up trap to catch SIGINT
   trap 'handle_sigint' INT
+
+snippet require
+  available() { command -v "\$1" >/dev/null; }
+  require() {
+    missings=''
+    for tool in "$@"; do
+      if ! available "$tool"; then
+        missings="${missings} ${tool}"
+      fi
+    done
+
+    if [ -n "$missings" ]; then
+      echo "err: the following tools are required but missing:"
+      for missing in $missings; do
+        echo "  - $missing"
+      done
+      exit 1
+    fi
+  }
+
+  require 'ifne' 'git' 'grep' 'xargs'

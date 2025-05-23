@@ -1,18 +1,27 @@
 snippet strict
-	# https://tech.davis-hansson.com/p/make/
-	SHELL := bash
-	.ONESHELL:
-	.SHELLFLAGS := -eu -o pipefail -c
-	.DELETE_ON_ERROR:
-	MAKEFLAGS += --warn-undefined-variables
-	MAKEFLAGS += --no-builtin-rules
+  # https://tech.davis-hansson.com/p/make/
+  SHELL := bash
+  .ONESHELL:
+  .SHELLFLAGS := -eu -o pipefail -c
+  .DELETE_ON_ERROR:
+  MAKEFLAGS += --warn-undefined-variables
+  MAKEFLAGS += --no-builtin-rules
 
-	# !! \`Makefile\` must use tabs !!
+  # ANSI color codes
+  GREEN=\$(shell tput -Txterm setaf 2)
+  YELLOW=\$(shell tput -Txterm setaf 3)
+  RED=\$(shell tput -Txterm setaf 1)
+  BLUE=\$(shell tput -Txterm setaf 6)
+  RESET=\$(shell tput -Txterm sgr0)
 
-	# first command is what get runs by default
-	build:
-		touch $@
+  # !! \`Makefile\` must use tabs !!
 
-	.PHONY: clean
-	clean:
-		rm -f build
+  # first command is what get runs by default
+  build:
+  	@echo "\$(GREEN)building...\$(RESET)"
+  	touch \$@
+  	@echo "\$(GREEN)built!\$(RESET)"
+
+  .PHONY: clean
+  clean:
+  	rm -f build
