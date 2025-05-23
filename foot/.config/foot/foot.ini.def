@@ -1,3 +1,4 @@
 [main]
 dpi-aware=no
+font='[comment] defined in ~/.config/fontconfig/fonts.conf'
 font=monospace:size=13
