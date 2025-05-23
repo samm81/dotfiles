@@ -5,6 +5,10 @@ set -euo pipefail
 IFS=$'\n\t'
 shopt -s nullglob globstar
 
+config_dir_default="${XDG_CONFIG_HOME:-$HOME/.config}/sway"
+CONFIG_DIR="${SWAY_CONFIG_DIR:-$config_dir_default}"
+CONFIG="${SWAY_CONFIG:-$CONFIG_DIR/config}"
+
 exists() {
   executable="$1"
   test "$(command -v "$executable")"
@@ -14,7 +18,7 @@ installed() {
   xbps-query "$package" >/dev/null
 }
 
-STATUSBAR_SH="$HOME/.config/sway/statusbar.sh"
+STATUSBAR_SH="${CONFIG_DIR}/statusbar.sh"
 X_RESOURCES="$HOME/.Xresources"
 
 exists 'foot' && term='foot'
@@ -31,7 +35,7 @@ statusbar=$([ -x "$STATUSBAR_SH" ] && echo "true") || true
   echo 'err: `statusbar` depends on `adwaita-icon-theme`, but it is is not installed' &&
   exit 1
 
-cat <<EOF >config
+cat <<EOF >"$CONFIG"
 # \`man 5 sway\`
 
 ### Variables
@@ -76,7 +80,7 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 # resumed. It will also lock your screen before your computer goes to sleep.
 EOF
 
-cat >>config <<EOF && echo 'info: configured touchpad'
+cat >>"$CONFIG" <<EOF && echo 'info: configured touchpad'
 
 ### Input configuration
 # You can get the names of your inputs by running: swaymsg -t get_inputs
@@ -92,7 +96,7 @@ input "type:touchpad" {
 EOF
 
 ! exists 'swaynagmode' && echo 'warn: could not find `swaynagmode`, skipping'
-exists 'swaynagmode' && cat >>config <<EOF && echo 'info: added `swaynagmode`'
+exists 'swaynagmode' && cat >>"$CONFIG" <<EOF && echo 'info: added `swaynagmode`'
 
 # swaynagmode
 set \$nag         exec swaynagmode
@@ -124,7 +128,7 @@ mode "nag" {
 swaynag_command \$nag -R
 EOF
 
-cat <<EOF >>config
+cat <<EOF >>"$CONFIG"
 
 ### Key bindings
 #
@@ -153,20 +157,20 @@ cat <<EOF >>config
 EOF
 
 if ! exists 'swaynagmode'; then
-  cat >>config <<EOF && echo 'info: added default exit binding'
+  cat >>"$CONFIG" <<EOF && echo 'info: added default exit binding'
 
     # Exit sway (logs you out of your Wayland session)
     bindsym \$mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 EOF
 else
-  cat >>config <<EOF && echo 'info: added `swaynagmode` exit binding'
+  cat >>"$CONFIG" <<EOF && echo 'info: added `swaynagmode` exit binding'
 
     # Exit sway (logs you out of your Wayland session)
     bindsym \$mod+Shift+e \$nag -t "warning" -m "Exit Sway?" -b "Exit" "swaymsg exit" -b "Reload" "swaymsg reload"
 EOF
 fi
 
-cat <<EOF >>config
+cat <<EOF >>"$CONFIG"
 
 #
 # Moving around:
@@ -285,20 +289,20 @@ EOF
 [ -z "$statusbar" ] || ! installed 'adwaita-icon-theme' &&
   echo 'warn: could not find `statusbar` or `adwaita-icon-theme` not installed, skipping'
 if [ -n "$statusbar" ] && installed 'adwaita-icon-theme'; then
-  cat >>config <<EOF && echo 'info: installed `statusbar.sh` as `status_command`'
-    status_command while ~/.config/sway/statusbar.sh; do sleep 1; done
+  cat >>"$CONFIG" <<EOF && echo "info: installed \`${STATUSBAR_SH}\` as \`status_command\`"
+    status_command while ${STATUSBAR_SH}; do sleep 1; done
 
     # https://github.com/swaywm/sway/issues/5645
     icon_theme Adwaita
 EOF
 else
-  cat >>config <<EOF && echo 'info: installed default `status_command`'
+  cat >>"$CONFIG" <<EOF && echo 'info: installed default `status_command`'
     # The default just shows the current date and time.
     status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
 EOF
 fi
 
-cat <<EOF >>config
+cat <<EOF >>"$CONFIG"
 
     colors {
         statusline #ffffff
@@ -314,7 +318,7 @@ smart_gaps on
 EOF
 
 ! exists 'pamixer' && echo 'warn: could not find `pamixer`, skipping volume keys'
-exists 'pamixer' && cat >>config <<EOF && echo 'info: installed `pamixer` volume keys'
+exists 'pamixer' && cat >>"$CONFIG" <<EOF && echo 'info: installed `pamixer` volume keys'
 
 # special keys
 # https://wiki.archlinux.org/title/Sway#Custom_keybindings
@@ -325,14 +329,14 @@ exists 'pamixer' && cat >>config <<EOF && echo 'info: installed `pamixer` volume
 EOF
 
 ! exists 'brillo' && echo 'warn: could not find `brillo`, skipping volume keys'
-exists 'brillo' && cat >>config <<EOF && echo 'info: installed `brillo` backlight keys'
+exists 'brillo' && cat >>"$CONFIG" <<EOF && echo 'info: installed `brillo` backlight keys'
     bindsym XF86MonBrightnessUp exec brillo -u 200000 -A 5
     bindsym XF86MonBrightnessDown exec brillo -u 200000 -U 5
     bindsym XF86Display exec "[ \$(brillo -G | cut -d '.' -f 1) != '0' ] && brillo -O && brillo -u 800000 -S 0 && swaymsg 'output * dpms off' || (swaymsg 'output * dpms on' && brillo -u 800000 -I)"
 EOF
 
 ! exists 'mako' && echo 'warn: could not find `mako`, skipping'
-exists 'mako' && cat <<EOF >>config && echo 'info: installed `mako` dismiss binding'
+exists 'mako' && cat <<EOF >>"$CONFIG" && echo 'info: installed `mako` dismiss binding'
 
 # mako notifications
 # https://github.com/emersion/mako
@@ -340,14 +344,14 @@ exists 'mako' && cat <<EOF >>config && echo 'info: installed `mako` dismiss bind
 EOF
 
 ! exists 'swaylock' && echo 'warn: could not find `swaylock`, skipping'
-exists 'swaylock' && cat <<EOF >>config && echo 'info: installed `swaylock` binding'
+exists 'swaylock' && cat <<EOF >>"$CONFIG" && echo 'info: installed `swaylock` binding'
 
 # swaylock ((i)dle)
     bindsym \$mod+i exec 'swaylock -f -e -c 000000DD'
 EOF
 
 ! exists 'grimshot' && echo 'warn: could not find `grimshot`, skipping'
-exists 'grimshot' && cat <<EOF >>config && echo 'info: installed `grimshot` bindings'
+exists 'grimshot' && cat <<EOF >>"$CONFIG" && echo 'info: installed `grimshot` bindings'
 
 # grimshot
     bindsym \$mod+p exec grimshot copy area
@@ -356,34 +360,34 @@ exists 'grimshot' && cat <<EOF >>config && echo 'info: installed `grimshot` bind
 EOF
 
 ! exists 'wifi' && echo 'warn: could not find `wifi`, skipping'
-exists 'wifi' && cat <<EOF >>config && echo 'info: installed `wifi` bindings'
+exists 'wifi' && cat <<EOF >>"$CONFIG" && echo 'info: installed `wifi` bindings'
 
 # wifi
     bindsym \$mod+Shift+w exec \$term-float 'wifi'
 EOF
 
 ! exists 'insect' && echo 'warn: could not find `insect`, skipping'
-exists 'insect' && cat <<EOF >>config && echo 'info: installed `insect` bindings'
+exists 'insect' && cat <<EOF >>"$CONFIG" && echo 'info: installed `insect` bindings'
 
 # calculator
     bindsym \$mod+bracketleft exec \$term-float 'insect'
 EOF
 
 ! exists 'wofi-emoji' && echo 'warn: could not find `wofi-emoji`, skipping'
-exists 'wofi-emoji' && cat <<EOF >>config && echo 'info: installed `wofi-emoji` bindings'
+exists 'wofi-emoji' && cat <<EOF >>"$CONFIG" && echo 'info: installed `wofi-emoji` bindings'
 
 # emoji
     bindsym \$mod+semicolon exec wofi-emoji
 EOF
 
 ! exists 'wofi-country-codes-alpha3' && echo 'warn: could not find `wofi-country-codes-alpha3`, skipping'
-exists 'wofi-country-codes-alpha3' && cat <<EOF >>config && echo 'info: installed `wofi-country-codes-alpha3` bindings'
+exists 'wofi-country-codes-alpha3' && cat <<EOF >>"$CONFIG" && echo 'info: installed `wofi-country-codes-alpha3` bindings'
 
 # country-codes-alpha3
     bindsym \$mod+bracketright exec wofi-country-codes-alpha3
 EOF
 
-cat <<EOF >>config && echo 'info: installed floating window directives'
+cat <<EOF >>"$CONFIG" && echo 'info: installed floating window directives'
 
 for_window [app_id="foot-float"] floating enable
 for_window [app_id="zoom" title="zoom"] floating enable
@@ -395,9 +399,10 @@ for_window [title="Firefox — Sharing Indicator"] \\
   , move position 2250px 5px
 for_window [app_id="anki"] floating enable
 for_window [class="vlc"] floating enable
+for_window [app_id="keymapp"] floating enable
 EOF
 
-cat <<EOF >>config && echo 'info: installed second monitor config, assuming `eDP-1` is primary'
+cat <<EOF >>"$CONFIG" && echo 'info: installed second monitor config, assuming `eDP-1` is primary'
 
 # second monitor
     bindsym \$mod+m exec 'swaymsg output eDP-1 toggle'
@@ -407,7 +412,7 @@ cat <<EOF >>config && echo 'info: installed second monitor config, assuming `eDP
     bindsym \$mod+Ctrl+Shift+\$right exec 'swaymsg move workspace output right'
 EOF
 
-cat <<EOF >>config && echo 'info: installed `dbus` env variable fix'
+cat <<EOF >>"$CONFIG" && echo 'info: installed `dbus` env variable fix'
 
 # on startup
     # https://github.com/emersion/xdg-desktop-portal-wlr#running
@@ -415,55 +420,60 @@ cat <<EOF >>config && echo 'info: installed `dbus` env variable fix'
     exec dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway SWAYSOCK
 EOF
 
-cat <<EOF >>config && echo 'info: installed sway-sv kickoff'
-    exec runsvdir "\$SWAY_SVDIR"
+cat <<EOF >>"$CONFIG" && echo 'info: installed sway-sv kickoff'
+    exec runsvdir "\$SVDIR_SWAY"
 EOF
 
 xresources=$([ -f "$X_RESOURCES" ] && echo 'true') || true
 [ -z "$xresources" ] && echo "warn: \`$X_RESOURCES\` file is missing, skipping, might have dpi problems"
-[ -n "$xresources" ] && cat >>config <<EOF && echo "info: loading \`$X_RESOURCES\` file on startup"
+[ -n "$xresources" ] && cat >>"$CONFIG" <<EOF && echo "info: loading \`$X_RESOURCES\` file on startup"
     # https://github.com/swaywm/sway/wiki#after-unplugging-an-external-display-some-applications-appear-too-large-on-my-hidpi-screen
     exec xrdb -load ~/.Xresources
 EOF
 
-exists 'mako' && cat >>config <<EOF && echo 'info: loading `mako` on startup'
+exists 'mako' && cat >>"$CONFIG" <<EOF && echo 'info: loading `mako` on startup'
     exec mako
 EOF
 
 ! exists 'pipewire' && echo 'warn: could not find `pipewire`, skipping'
-exists 'pipewire' && cat >>config <<EOF && echo 'info: loading `pipewire` on startup'
+exists 'pipewire' && cat >>"$CONFIG" <<EOF && echo 'info: loading `pipewire` on startup'
     exec pipewire
 EOF
 
 ! exists 'pipewire-pulse' && echo 'warn: could not find `pipewire-pulse`, skipping'
-exists 'pipewire-pulse' && cat >>config <<EOF && echo 'info: loading `pipewire-pulse` on startup'
+exists 'pipewire-pulse' && cat >>"$CONFIG" <<EOF && echo 'info: loading `pipewire-pulse` on startup'
     exec pipewire-pulse
 EOF
 
 #! exists 'fcitx5' && echo 'warn: could not find `fcitx5`, skipping'
-#exists 'fcitx5' && cat >> config <<EOF && echo 'info: loading `fcitx5` on startup'
+#exists 'fcitx5' && cat >> "$CONFIG" <<EOF && echo 'info: loading `fcitx5` on startup'
 #    exec fcitx5 -d --replace
 #EOF
 
 ! exists 'kanshi' && echo 'warn: could not find `kanshi`, skipping'
-exists 'kanshi' && cat >>config <<EOF && echo 'info: loading `kanshi` on startup'
+exists 'kanshi' && cat >>"$CONFIG" <<EOF && echo 'info: loading `kanshi` on startup'
     exec kanshi
 EOF
 
 ! exists 'udiskie' && echo 'warn: could not find `udiskie`, skipping'
-exists 'udiskie' && cat >>config <<EOF && echo 'info: loading `udiskie` on startup'
+exists 'udiskie' && cat >>"$CONFIG" <<EOF && echo 'info: loading `udiskie` on startup'
     exec udiskie --no-file-manager
 EOF
 
 ! exists 'gammastep' && echo 'warn: could not find `gammastep`, skipping'
-exists 'gammastep' && cat >>config <<EOF && echo 'info: loading `gammastep` on startup'
-    exec_always \
-      notify-send '[sway-startup] reminder ‼️ \`gammastep\` is perma-on' \
-      ; pkill 'gammastep' \
-      ; gammastep -O 4500
+exists 'gammastep' && cat >>"$CONFIG" <<EOF && echo 'info: loading `gammastep` on startup'
+    exec_always \\
+        pkill 'gammastep' \\
+      ; gammastep -O 4500 \\
+      ; notify-send '[sway-startup] reminder ‼️ \`gammastep\` is perma-on'
 EOF
 
-cat <<EOF >>config
+cat >>"$CONFIG" <<EOF
+
+    exec_always notify-send '[sway-startup] reminder ‼️  \`docker\` config is proxied'
+EOF
+
+cat <<EOF >>"$CONFIG"
 
 include /etc/sway/config.d/*
 EOF
