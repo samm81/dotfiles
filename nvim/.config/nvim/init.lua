@@ -5,6 +5,9 @@ local sane = require("lib.sane")
 --
 
 local o = vim.opt
+-- enable true-color and default background
+o.termguicolors = true
+o.background = "dark"
 -- line numbers in gutter
 o.number = true
 o.relativenumber = true
@@ -43,6 +46,25 @@ o.autoread = true
 
 -- unload a buffer when it is no longer in a window (abandoned)
 o.hidden = false
+
+-- filesystem housekeeping: persistent undo & no swap/backup clutter
+o.swapfile = false
+o.backup = false
+o.writebackup = false
+o.undofile = true
+vim.opt.undodir = vim.fn.stdpath("state") .. "/undo"
+
+-- highlight on yank
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    vim.highlight.on_yank({ higroup = "IncSearch", timeout = 150 })
+  end,
+})
+
+-- treesitter-based folding
+o.foldmethod = "expr"
+o.foldexpr = "nvim_treesitter#foldexpr()"
+o.foldlevel = 99
 
 --
 -- key bindings

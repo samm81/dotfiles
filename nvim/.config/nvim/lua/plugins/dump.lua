@@ -18,9 +18,9 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     keys = {
       { "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "find files", noremap = true, silent = true } },
-      { "<leader>fg", "<cmd>Telescope live_grep<CR>",  { desc = "live grep", noremap = true, silent = true } },
-      { "<leader>fb", "<cmd>Telescope buffers<CR>",    { desc = "buffers", noremap = true, silent = true } },
-      { "<leader>fh", "<cmd>Telescope help_tags<CR>",  { desc = "help tags", noremap = true, silent = true } },
+      { "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "live grep", noremap = true, silent = true } },
+      { "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "buffers", noremap = true, silent = true } },
+      { "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "help tags", noremap = true, silent = true } },
     },
     defaults = {
       mappings = {
@@ -100,7 +100,13 @@ return {
   },
 
   --'windwp/nvim-ts-autotag',
-  --'lukas-reineke/indent-blankline.nvim',
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    opts = {
+      char = "│",
+      show_trailing_blankline_indent = false,
+    },
+  },
 
   -- whitespace
   {
@@ -116,5 +122,4 @@ return {
       })
     end,
   },
-
 }

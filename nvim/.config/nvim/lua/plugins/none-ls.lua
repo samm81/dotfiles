@@ -30,7 +30,8 @@ return {
           }),
         },
         on_attach = function(client, bufnr)
-          if client.supports_method("textDocument/formatting") then
+          -- only setup formatting autocmd for null-ls to avoid conflicts
+          if client.name == "null-ls" and client.supports_method("textDocument/formatting") then
             vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
             vim.api.nvim_create_autocmd("BufWritePre", {
               group = augroup,

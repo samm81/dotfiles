@@ -95,7 +95,7 @@ return {
     config = function(_, opts)
       local servers = opts.servers
       local capabilities =
-          vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), opts.capabilities or {})
+        vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), opts.capabilities or {})
 
       local on_attach = function(_, bufnr)
         local keymap = function(mode, lhs, rhs)
@@ -180,5 +180,10 @@ return {
         setup(server)
       end
     end,
+  },
+
+  {
+    "j-hui/fidget.nvim",
+    opts = {},
   },
 }
