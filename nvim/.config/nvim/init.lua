@@ -33,10 +33,9 @@ o.completeopt = { "menu", "menuone", "noselect" }
 
 -- no scrubs
 o.mouse = ""
-local map = vim.keymap.set
 local modes = { "n", "i", "v" }
 for _, k in ipairs({ "<Up>", "<Down>", "<Left>", "<Right>" }) do
-  map(modes, k, "<nop>", { silent = true })
+  vim.keymap.set(modes, k, "<nop>", { silent = true })
 end
 
 -- autoread file from disk when changes
