@@ -17,7 +17,7 @@ return {
         --         return "gpt-3.5-turbo"
         --     end
         -- end,
-        model = "gpt-4.1-nano-2025-04-14",
+        model = "gpt-4o-mini",
         -- frequency_penalty = 0,
         -- presence_penalty = 0,
         -- max_completion_tokens = 4095,
@@ -79,7 +79,7 @@ return {
       providers = {
         openai = {
           endpoint = "https://api.openai.com/v1",
-          model = "gpt-4.1-nano",
+          model = "gpt-4o-mini",
           timeout = 30000, -- millis
           --extra_request_body = {
           --  temperature = 0.75,

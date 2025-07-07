@@ -44,9 +44,6 @@ end
 -- autoread file from disk when changes
 o.autoread = true
 
--- unload a buffer when it is no longer in a window (abandoned)
-o.hidden = false
-
 -- filesystem housekeeping: persistent undo & no swap/backup clutter
 o.swapfile = false
 o.backup = false
@@ -63,7 +60,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- treesitter-based folding
 o.foldmethod = "expr"
-o.foldexpr = "nvim_treesitter#foldexpr()"
+o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 o.foldlevel = 99
 
 --

@@ -1,7 +1,7 @@
 return {
   {
     "nvimtools/none-ls.nvim",
-    event = "VeryLazy",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = function()
       local none_ls = require("null-ls")
@@ -30,8 +30,7 @@ return {
           }),
         },
         on_attach = function(client, bufnr)
-          -- only setup formatting autocmd for null-ls to avoid conflicts
-          if client.name == "null-ls" and client.supports_method("textDocument/formatting") then
+          if client.supports_method("textDocument/formatting") then
             vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
             vim.api.nvim_create_autocmd("BufWritePre", {
               group = augroup,

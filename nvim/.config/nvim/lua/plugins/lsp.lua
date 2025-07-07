@@ -4,7 +4,7 @@ local sane = require("lib.sane")
 return {
   {
     "neovim/nvim-lspconfig",
-    event = "VeryLazy",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "b0o/schemastore.nvim",
     },
@@ -128,7 +128,7 @@ return {
         keymap("n", "grr", vim.lsp.buf.references)
         keymap("n", "gri", vim.lsp.buf.implementation)
         keymap("n", "gO", vim.lsp.buf.document_symbol)
-        keymap("n", "CTRL-S", vim.lsp.buf.signature_help)
+        keymap("n", "<C-S>", vim.lsp.buf.signature_help)
 
         keymap_remapped("n", "<leader>rn", "grn")
         keymap_remapped({ "n", "v" }, "<leader>ca", "gra")
