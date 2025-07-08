@@ -92,11 +92,8 @@ return {
         sync_install = false,
         highlight = {
           enable = true,
-          -- setting this to true will run `:h syntax` and tree-sitter at the same time.
-          -- set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-          -- using this option may slow down your editor, and you may see some duplicate highlights.
-          -- instead of true it can also be a list of languages
-          additional_vim_regex_highlighting = false,
+          -- enable additional highlighting for spell checking in comments
+          additional_vim_regex_highlighting = { "markdown" },
         },
         indent = { enable = true },
       })
