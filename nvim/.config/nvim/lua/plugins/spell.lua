@@ -3,6 +3,7 @@ local sane = require("lib.sane")
 -- spell checking configuration
 vim.opt.spelllang = "en_us"
 vim.opt.spellsuggest = "best,9"
+vim.opt.spellcapcheck = "" -- disable capitalization check at start of sentences
 vim.opt.spell = true
 
 -- configures spell options for different filetypes
