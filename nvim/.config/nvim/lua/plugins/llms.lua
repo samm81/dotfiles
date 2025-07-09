@@ -80,13 +80,14 @@ return {
         openai = {
           endpoint = "https://api.openai.com/v1",
           model = "gpt-4o-mini",
-          timeout = 30000, -- millis
+          timeout = 60000, -- millis
           --extra_request_body = {
           --  temperature = 0.75,
           --  max_tokens = 20480,
           --},
         },
       },
+      tools = { enabled = false }, -- disable tools to avoid getting stuck
     },
     dependencies = {
       "nvim-lua/plenary.nvim",
