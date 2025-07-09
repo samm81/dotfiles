@@ -97,6 +97,12 @@ return {
         },
         indent = { enable = true },
       })
+
+      -- set up treesitter folding after treesitter is loaded
+      vim.opt.foldmethod = "expr"
+      vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+      -- by default, open 99 levels of folds
+      vim.opt.foldlevel = 99
     end,
   },
 

@@ -58,11 +58,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
--- treesitter-based folding
-o.foldmethod = "expr"
-o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-o.foldlevel = 99
-
 --
 -- key bindings
 --
