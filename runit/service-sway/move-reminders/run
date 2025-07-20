@@ -1,0 +1,10 @@
+#!/bin/sh
+
+ICONS_DIR="$HOME/icons/svgs"
+
+exec \
+  snooze -H '*' -M '0/30' \
+    notify-send \
+      --expire-time=8000 \
+      --icon="$ICONS_DIR/solid/running.svg" \
+      '  move!'

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+check_bat() {
+  bat_status=$(cat /sys/class/power_supply/BAT0/status)
+  bat_energy=$(cat /sys/class/power_supply/BAT0/energy_now)
+  bat_energy_full=$(cat /sys/class/power_supply/BAT0/energy_full)
+  bat_percent=$((bat_energy * 100 / bat_energy_full))
+  if [[ "$bat_status" == "Discharging" ]]; then
+    [[ "$bat_percent" -lt  1 ]] && notify-send "battery below 1% !"  && exit 0
+    [[ "$bat_percent" -lt  3 ]] && notify-send "battery below 3% !"  && exit 0
+    [[ "$bat_percent" -lt  5 ]] && notify-send "battery below 5% !"  && exit 0
+    [[ "$bat_percent" -lt 10 ]] && notify-send "battery below 10% !" && exit 0
+    [[ "$bat_percent" -lt 20 ]] && notify-send "battery below 20% !" && exit 0
+    [[ "$bat_percent" -lt 30 ]] && notify-send "battery below 30% !" && exit 0
+  fi
+}
+export -f check_bat
+
+#check_bat
+exec snooze -H '*' -M '*' bash -c 'check_bat'

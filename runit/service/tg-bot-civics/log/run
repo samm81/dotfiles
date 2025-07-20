@@ -1,0 +1,8 @@
+#!/bin/sh
+
+SERVICE_NAME="civics-tg-bot"
+CACHE="${XDG_CACHE_DIR:-$HOME/.cache}"
+LOGDIR="$CACHE/service-${SERVICE_NAME}/log"
+
+mkdir -p "$LOGDIR"
+exec svlogd -tt "$LOGDIR"

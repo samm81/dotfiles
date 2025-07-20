@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# unofficial strict mode
+# note bash<=4.3 chokes on empty arrays with set -o nounset
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+# https://sharats.me/posts/shell-script-best-practices/
+set -o errexit
+set -o nounset
+set -o pipefail
+
+IFS=$'\n\t'
+shopt -s nullglob globstar
+
+[[ "${TRACE:-0}" == '1' ]] && set -o xtrace
+
+TIMEFILE="./last-run.timefile"
+INTERVAL="$((40 * 60))"
+
+main() {
+  snooze -H '*' -M '*' -J 60 \
+    -t "$TIMEFILE" \
+    -T "$INTERVAL" \
+    -v \
+    ./is-younger-than.bash "$TIMEFILE" "$((INTERVAL + (5 * 60)))" &&
+    ./lock-if-screen-on.bash
+  touch "$TIMEFILE"
+}
+
+main "$@"
+
+exit 0

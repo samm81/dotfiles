@@ -1,0 +1,2 @@
+#!/bin/sh
+exec snooze -H '*' -M '/30' "$(dirname "$0")/backup.sh"

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+SERVICE="kopia"
+LOGFILE_DIR="${HOME}/.cache/service-${SERVICE}/log"
+LOGFILE="${LOGFILE_DIR}/current"
+
+exec "$HOME/bin/logfile-notifyd" "$LOGFILE"
