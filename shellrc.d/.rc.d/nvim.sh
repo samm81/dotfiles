@@ -1,1 +1,0 @@
-dropin 'vim' 'nvim' ' '

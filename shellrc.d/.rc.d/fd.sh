@@ -1,1 +1,1 @@
-dropin 'find' 'fd' "[orig] find -iname '*PATTERN*'"
+#dropin 'find' 'fd' "[orig] find -iname '*PATTERN*'"
