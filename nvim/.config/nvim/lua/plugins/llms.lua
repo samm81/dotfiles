@@ -85,9 +85,9 @@ return {
           --  temperature = 0.75,
           --  max_tokens = 20480,
           --},
+          disable_tools = true,
         },
       },
-      tools = { enabled = false }, -- disable tools to avoid getting stuck
     },
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -120,7 +120,7 @@ return {
       --},
       {
         -- Make sure to set this up properly if you have lazy=true
-        'MeanderingProgrammer/render-markdown.nvim',
+        "MeanderingProgrammer/render-markdown.nvim",
         opts = {
           file_types = { "markdown", "Avante" },
         },
@@ -132,11 +132,10 @@ return {
   -- for doing code completion with a generic model
   {
     "milanglacier/minuet-ai.nvim",
-    enabled = false,
     opts = {
       provider = "openai",
       virtualtext = {
-        auto_trigger_ft = { "*" },
+        -- auto_trigger_ft = { "*" },
         keymap = {
           -- accept whole completion
           accept = "<C-\\>",

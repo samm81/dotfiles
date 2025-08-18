@@ -4,18 +4,26 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = function()
-      local none_ls = require("null-ls")
-      local formatting = none_ls.builtins.formatting
-      local diagnostics = none_ls.builtins.diagnostics
+      local null_ls = require("null-ls")
+      local formatting = null_ls.builtins.formatting
+      local diagnostics = null_ls.builtins.diagnostics
       local augroup = vim.api.nvim_create_augroup("NoneLsFormatting", {})
 
       return {
         sources = {
+          null_ls.builtins.diagnostics.trail_space.with({
+            disabled_filetypes = { "gitcommit" },
+          }),
+          null_ls.builtins.diagnostics.todo_comments,
+
           formatting.prettier.with({ command = { "npx", "prettier" } }),
 
           -- python
           formatting.black,
           formatting.isort,
+          diagnostics.mypy,
+          diagnostics.pydoclint,
+          diagnostics.pylint,
 
           formatting.stylua.with({ command = { "npx", "stylua" } }),
 
