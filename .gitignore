@@ -7,3 +7,4 @@ foot/.config/foot/themes
 sway/.config/sway/config
 foot/.config/foot/foot.ini
 runit/**/supervise
+nvim/.config/nvim/lazy-lock.json
