@@ -20,9 +20,9 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     keys = {
       { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "find files" },
-      { "<leader>fg", "<cmd>Telescope live_grep<CR>", desc = "live grep" },
-      { "<leader>fb", "<cmd>Telescope buffers<CR>", desc = "buffers" },
-      { "<leader>fh", "<cmd>Telescope help_tags<CR>", desc = "help tags" },
+      { "<leader>fg", "<cmd>Telescope live_grep<CR>",  desc = "live grep" },
+      { "<leader>fb", "<cmd>Telescope buffers<CR>",    desc = "buffers" },
+      { "<leader>fh", "<cmd>Telescope help_tags<CR>",  desc = "help tags" },
     },
     opts = {
       defaults = {
@@ -92,8 +92,6 @@ return {
         sync_install = false,
         highlight = {
           enable = true,
-          -- enable additional highlighting for spell checking in comments
-          additional_vim_regex_highlighting = { "markdown" },
         },
         indent = { enable = true },
       })
