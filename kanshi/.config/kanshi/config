@@ -1,15 +1,15 @@
-profile {
+profile default {
   output "eDP-1" enable
 }
 
-profile {
-  output "Nreal Air 0x66666600" res --custom 1600x900 scale 1.15
+profile xreal-air-1 {
+  output "Nreal Air 0x66666600" mode --custom 1600x900 scale 1.15
   output "eDP-1" disable
   exec notify-send "new kanshi profile applied"
 }
 
-profile {
-  output "Nreal Air 2 0x88888800" scale 1.15
+profile xreal-air-2 {
+  output "Nreal Air 2 0x88888800" mode --custom 1600x900 scale 1.15
   output "eDP-1" disable
   exec notify-send "new kanshi profile applied"
 }
