@@ -432,7 +432,7 @@ xresources=$([ -f "$X_RESOURCES" ] && echo 'true') || true
 EOF
 
 exists 'mako' && cat >>"$CONFIG" <<EOF && echo 'info: loading `mako` on startup'
-    exec mako
+    exec_always --no-startup-id pkill mako; mako
 EOF
 
 ! exists 'pipewire' && echo 'warn: could not find `pipewire`, skipping'
@@ -466,11 +466,6 @@ exists 'gammastep' && cat >>"$CONFIG" <<EOF && echo 'info: loading `gammastep` o
         pkill 'gammastep' \\
       ; gammastep -O 4500 \\
       ; notify-send '[sway-startup] reminder ‼️ \`gammastep\` is perma-on'
-EOF
-
-cat >>"$CONFIG" <<EOF
-
-    exec_always notify-send '[sway-startup] reminder ‼️  \`docker\` config is proxied'
 EOF
 
 cat <<EOF >>"$CONFIG"
