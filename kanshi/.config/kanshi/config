@@ -1,15 +1,38 @@
 profile {
-  output "Dell Inc. DELL U3219Q 5DHYXV2" enable
-  output "Dell Inc. DELL U3219Q 5DHYXV2" mode 3840x2160
+  output "eDP-1" enable
+}
+
+profile {
+  output "Nreal Air 0x66666600" res --custom 1600x900 scale 1.15
+  output "eDP-1" disable
+  exec notify-send "new kanshi profile applied"
+}
+
+profile {
+  output "Nreal Air 2 0x88888800" scale 1.15
+  output "eDP-1" disable
+  exec notify-send "new kanshi profile applied"
+}
+
+### old
+
+profile {
+  output "Dell Inc. DELL U3219Q 5DHYXV2" {
+    enable
+    mode 3840x2160
+  }
   output "eDP-1" disable
 }
 
 profile {
+  output "Hewlett Packard LA2405 CN4210079X" {
+    enable
+    transform 270
+  }
   output "eDP-1" enable
 }
 
 profile {
-  output "Hewlett Packard LA2405 CN4210079X" enable
-  output "Hewlett Packard LA2405 CN4210079X" transform 270
-  output "eDP-1" enable
+  # sway-output would be `position 0 0` but `kanshi` uses old syntax and needs commas
+  output "Philips Consumer Electronics Company PHILIPS FTV 0x01010101" position 0,0
 }
