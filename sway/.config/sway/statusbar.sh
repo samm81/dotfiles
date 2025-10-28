@@ -11,9 +11,16 @@ _mem_total=$(echo "$mem_info" | cut -d ' ' -f 2)
 mem="${mem_used}"
 uptime=$(uptime | cut -d ',' -f1 | cut -d ' ' -f4,5)
 linux_version=$(uname -r)
-battery_status=$(cat /sys/class/power_supply/BAT0/status)
-battery_percent=$(( $(cat /sys/class/power_supply/BAT0/energy_now) * 100 / $(cat /sys/class/power_supply/BAT0/energy_full) ))
+
+device='/org/freedesktop/UPower/devices/DisplayDevice'
+battery_status="$(upower -i "$device" | awk -F': +' '/state/ {print $2}')"
+battery_percent="$(upower -i "$device" | awk -F': +' '/percentage/ {print $2}')"
 battery="${battery_percent} ${battery_status}"
+battery_tte="$(upower -i "$device" | awk -F': +' '/time to empty/ {print $2}')"
+if [[ -n "$battery_tte" ]]; then
+  battery="${battery} ${battery_tte}"
+fi
+
 date_formatted=$(date '+%a %F %H:%M:%S')
 volume=$(pamixer --get-volume-human || echo '[err missing `pamixer`]')
 brightness="$(brillo -G | xargs --no-run-if-empty printf '%.0f' || echo '[err missing `brillo`]')"
