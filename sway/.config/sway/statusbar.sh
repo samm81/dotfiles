@@ -24,7 +24,10 @@ fi
 date_formatted=$(date '+%a %F %H:%M:%S')
 volume=$(pamixer --get-volume-human || echo '[err missing `pamixer`]')
 brightness="$(brillo -G | xargs --no-run-if-empty printf '%.0f' || echo '[err missing `brillo`]')"
-wifi=$(wifi-name-iwd || echo '[err missing `wifi-name-iwd`]')
+wifi=$(nmcli --terse --fields NAME,TYPE connection show --active | awk -F':' '$2 != "bridge" && $2 != "loopback" {print $1}')
+if [[ -z "$wifi" ]]; then
+  wifi="disconnected"
+fi
 storages=$(df -h | grep 'crypt' | (while read -r line; do echo "$line" | tr -s ' ' | cut -d ' ' -f 6,5 | awk '{printf " " $2 " " $1 " 🗄"}'; done))
 
 echo "$storages $wifi 📶 $volume 🔊 $brightness 🔆 $mem 💾 $uptime 🆙 $linux_version 🐧 $battery 🔋 $date_formatted"
