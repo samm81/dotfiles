@@ -49,7 +49,7 @@ set \$up k
 set \$right l
 # Your preferred terminal emulator
 set \$term $term
-set \$term-float $term --window-size-chars='80x60' --app-id='foot-float'
+set \$term-float $term --window-size-chars='80x48' --app-id='foot-float'
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
