@@ -359,11 +359,11 @@ exists 'grimshot' && cat <<EOF >>"$CONFIG" && echo 'info: installed `grimshot` b
     bindsym \$mod+Ctrl+p exec grimshot save area
 EOF
 
-! exists 'wifi' && echo 'warn: could not find `wifi`, skipping'
-exists 'wifi' && cat <<EOF >>"$CONFIG" && echo 'info: installed `wifi` bindings'
+! exists 'wifitui' && echo 'warn: could not find `wifitui`, skipping'
+exists 'wifitui' && cat <<EOF >>"$CONFIG" && echo 'info: installed `wifitui` bindings'
 
-# wifi
-    bindsym \$mod+Shift+w exec \$term-float 'wifi'
+# wifitui
+    bindsym \$mod+Shift+w exec \$term-float 'wifitui'
 EOF
 
 ! exists 'insect' && echo 'warn: could not find `insect`, skipping'
