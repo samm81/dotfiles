@@ -88,10 +88,17 @@ vim.filetype.add({
     bash = "bash",
     hbs = "html",
     handlebars = "html",
+    config = "confini",
   },
   filename = { direnvrc = "bash" },
   pattern = { ["*.tmate.conf"] = "tmux" },
 })
+
+-- helpers
+
+vim.keymap.set("n", "<leader>fo", function()
+  require("helpers").ShowFormatterOverview()
+end, { desc = "Show Formatter Overview" })
 
 -- now let `lazy.nvim` set up everything else
 require("config.lazy")
