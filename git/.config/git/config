@@ -6,7 +6,7 @@
   email = samwmaynard@gmail.com
   signingkey = /home/maynard/.ssh/id_ed25519.pub
 [core]
-  excludesfile = /home/maynard/.gitignore
+  excludesFile = /home/maynard/.config/git/ignore
 [fetch]
   prune = true
 [color]
