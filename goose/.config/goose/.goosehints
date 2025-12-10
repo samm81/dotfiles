@@ -1,0 +1,5 @@
+Always use TypeScript except when the project or file is already written in Javascript.
+
+Prefer functional programming patterns where applicable.
+
+ALWAYS ALWAYS ALWAYS ALWAYS FINISH RUN `notify-send "⚠️⚠️⚠️ TASK FINISHED ⚠️⚠️⚠️"` RIGHT BEFORE YOU FINISH YOUR TASK

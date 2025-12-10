@@ -12,17 +12,22 @@ shopt -s nullglob globstar
 
 [[ "${TRACE:-0}" == '1' ]] && set -o xtrace
 
-TIMEFILE="./last-run.timefile"
+XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+TIMEFILE="$XDG_STATE_HOME/move-lockouts/last-run.timefile"
 INTERVAL="$((40 * 60))"
 
 main() {
-  snooze -H '*' -M '*' -J 60 \
-    -t "$TIMEFILE" \
-    -T "$INTERVAL" \
-    -v \
-    ./is-younger-than.bash "$TIMEFILE" "$((INTERVAL + (5 * 60)))" &&
-    ./lock-if-screen-on.bash
+  mkdir -p "$(dirname "$TIMEFILE")"
   touch "$TIMEFILE"
+
+  # wait either for a modify on `$TIMEFILE` or for `$INTERVAL` seconds to elapse
+  if inotifywait --quiet --timeout "$INTERVAL" --event 'attrib' "$TIMEFILE"; then
+    notify-send "[move-lockouts] reset - waiting ${INTERVAL}s ⏳"
+    return
+  fi
+
+  # timeout expired → attempt a lock
+  ./lock-if-screen-on.bash
 }
 
 main "$@"

@@ -18,7 +18,7 @@ snippet strict "unnofficial strict mode for bash > 4.3; redsymbol.net"
 	usage() {
 		local filename
 		filename="$(basename "\$0")"
-		echo "usage: ./\${filename} <arg one> <arg two>"
+		echo "usage: \${filename} <arg one> <arg two>"
 		echo '  this is an awesome \`bash\` script to make your life better.'
 		exit
 	}
@@ -96,3 +96,28 @@ snippet args-collect "grab all preceding -* --* args into an array"
 			*) break ;;
 		esac
 	done
+
+snippet next-in-path "find the next location of passed command in PATH"
+  next_in_path() {
+    local cmd_name="\$1"
+    local wrapper_dir real_cmd
+
+    # Determine the directory of this wrapper script
+    wrapper_dir="$(dirname "$(realpath "\$0")")"
+
+    # Find the next executable in PATH that isn't in the wrapper's directory
+    real_cmd="$(
+      type -a "$cmd_name" \
+      | awk '{print $NF}' \
+      | grep -v "^$wrapper_dir/" \
+      | head -n 1
+    )"
+
+    if [[ -z "$real_cmd" ]]; then
+      printf "Error: No other '%s' found in PATH outside %s\n" \
+        "$cmd_name" "$wrapper_dir" >&2
+      return 1
+    fi
+
+    printf '%s\n' "$real_cmd"
+  }

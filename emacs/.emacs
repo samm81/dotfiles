@@ -300,7 +300,7 @@
  ;; If there is more than one, they won't work right.
  )
 
-;(load-theme 'wombat t)
+(load-theme 'wombat t)
 
 (when (member "NotoColorEmoji" (font-family-list))
   (set-fontset-font

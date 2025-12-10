@@ -7,8 +7,6 @@ IFS=$(printf '\n\t')
 
 [ "${TRACE:-0}" = "1" ] && set -o xtrace
 
-cd "$(dirname "$0")"
-
 log() {
   echo "${1:?missing log message}"
 }
@@ -23,7 +21,8 @@ main() {
     exit 1
   fi
 
-  if kopia snapshot create "${HOME}"; then
+  which kopia-dev
+  if kopia-dev snapshot create "${HOME}"; then
     log 'success'
   else
     log 'failed'

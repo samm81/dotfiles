@@ -19,7 +19,46 @@ return {
           pyright = {},
           purescriptls = {},
           gopls = {},
-          ruff = {},
+          ruff = {
+            init_options = {
+              settings = {
+                configurationPreference = "filesystemFirst",
+                -- E = pycodestyle
+                -- F = pyflakes
+                -- I = isort
+                -- B = bugbear
+                -- UP = pyupgrade
+                -- N = naming
+                -- SIM = simplify
+                -- C4 = comprehensions
+                -- PERF = performance
+                -- PL = pylint
+                -- RUF = ruff's own extra rules
+                -- ERA = eradicate
+                -- FAST = fastapi
+                -- A = flake8-builtins
+                lint = {
+                  select = { "E", "F", "I", "B", "UP", "N", "SIM", "C4", "PERF", "PL", "RUF", "ERA", "FAST", "A" },
+                },
+              },
+            },
+            on_attach = function(client, bufnr)
+              -- Create a local formatting function
+              local function ruff_format()
+                vim.lsp.buf.code_action({
+                  context = { only = { "source.organizeImports.ruff" } },
+                  apply = true,
+                })
+                vim.lsp.buf.format({ async = false })
+              end
+
+              -- Autoformat on save
+              vim.api.nvim_create_autocmd("BufWritePre", {
+                buffer = bufnr,
+                callback = ruff_format,
+              })
+            end,
+          },
           bashls = {
             filetypes = { "sh", "bash", "zsh" },
           },
@@ -58,9 +97,6 @@ return {
               },
             },
           },
-          html = {
-            filetypes = { "html", "eelixir", "heex" },
-          },
           lua_ls = {
             -- ---@type LazyKeysSpec[]
             -- keys = {},
@@ -95,7 +131,7 @@ return {
     config = function(_, opts)
       local servers = opts.servers
       local capabilities =
-        vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), opts.capabilities or {})
+          vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), opts.capabilities or {})
 
       local on_attach = function(_, bufnr)
         local keymap = function(mode, lhs, rhs)
@@ -173,7 +209,8 @@ return {
           end
         end
 
-        require("lspconfig")[server].setup(server_opts)
+        vim.lsp.config(server, server_opts)
+        vim.lsp.enable(server)
       end
 
       for server, _server_opts in pairs(servers) do

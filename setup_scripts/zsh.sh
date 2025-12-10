@@ -18,44 +18,44 @@ umask g-w,o-w
 # oh-my-zsh
 # https://github.com/robbyrussell/oh-my-zsh
 # adapted from https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
-if [[ ! -n "${ZSH-}" ]]; then
-	ZSH=~/.oh-my-zsh
+if [[ -z "${ZSH-}" ]]; then
+  ZSH=~/.oh-my-zsh
 fi
 
 if [[ -d "${ZSH}" ]]; then
-	echo "You already have Oh My Zsh installed."
-	echo "You'll need to remove ${ZSH} if you want to re-install."
+  echo "You already have Oh My Zsh installed."
+  echo "You'll need to remove ${ZSH} if you want to re-install."
 else
-	env git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git "${ZSH}"
+  env git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git "${ZSH}"
 fi
 
 # If this user's login shell is not already "zsh", attempt to switch.
 TEST_CURRENT_SHELL="$(expr "${SHELL}" : '.*/\(.*\)')"
 if test "${TEST_CURRENT_SHELL}" != "zsh"; then
-	# If this platform provides a "chsh" command (not Cygwin), do it, man!
-	if hash chsh >/dev/null 2>&1; then
-		echo "Time to change your default shell to zsh!"
-		chsh -s "$(grep /zsh$ /etc/shells | tail -1)"
-	# Else, suggest the user do so manually.
-	else
-		echo "I can't change your shell automatically because this system does not have chsh."
-		echo "Please manually change your default shell to zsh!"
-	fi
+  # If this platform provides a "chsh" command (not Cygwin), do it, man!
+  if hash chsh >/dev/null 2>&1; then
+    echo "Time to change your default shell to zsh!"
+    chsh -s "$(grep /zsh$ /etc/shells | tail -1)"
+  # Else, suggest the user do so manually.
+  else
+    echo "I can't change your shell automatically because this system does not have chsh."
+    echo "Please manually change your default shell to zsh!"
+  fi
 fi
 
 # custom plugins
 ZSH_CUSTOM="${ZSH}/custom"
 
 function install_zsh_plugin {
-    plugin_url="${1}"
-    plugin_name="${plugin_url##*/}"
-    plugin_dir="${ZSH_CUSTOM}/plugins/${plugin_name}"
-    if [[ -d "${plugin_dir}" ]]; then
-        echo "${plugin_name} already installed, skipping..."
-    else
-        echo "installing ${plugin_name} to ${plugin_dir}"
-        env git clone --depth=1 "${plugin_url}" "${plugin_dir}"
-    fi
+  plugin_url="${1}"
+  plugin_name="${plugin_url##*/}"
+  plugin_dir="${ZSH_CUSTOM}/plugins/${plugin_name}"
+  if [[ -d "${plugin_dir}" ]]; then
+    echo "${plugin_name} already installed, skipping..."
+  else
+    echo "installing ${plugin_name} to ${plugin_dir}"
+    env git clone --depth=1 "${plugin_url}" "${plugin_dir}"
+  fi
 }
 
 # zsh-autosuggestions for fish like suggestions

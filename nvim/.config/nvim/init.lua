@@ -62,7 +62,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- key bindings
 --
 
-sane.keymap("n", "<leader>ve", "<cmd>tabedit " .. vim.fn.stdpath("config") .. "/init.lua<CR>", { desc = "edit config" })
+-- sane.keymap("n", "<leader>ve", "<cmd>tabedit " .. vim.fn.stdpath("config") .. "/init.lua<CR>", { desc = "edit config" })
+sane.keymap("n", "<leader>ve", function()
+  require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
+end)
+
 sane.keymap({ "n", "v" }, "<leader>c", ":w !wl-copy<CR>", { desc = "copy to clipboard" })
 
 -- diagnostics

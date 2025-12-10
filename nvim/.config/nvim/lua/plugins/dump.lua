@@ -58,52 +58,6 @@ return {
     },
   },
 
-  -- 'nvimtools/none-ls.nvim'
-
-  {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    config = function()
-      local configs = require("nvim-treesitter.configs")
-
-      configs.setup({
-        ensure_installed = {
-          "python",
-          "json",
-          "typescript",
-          "jsdoc",
-          "bash",
-          "make",
-          "css",
-          "regex",
-          "vim",
-          "yaml",
-          "nix",
-          "tsx",
-          "javascript",
-          "elixir",
-          "eex",
-          "heex",
-          "dockerfile",
-          "html",
-          "graphql",
-          "lua",
-        },
-        sync_install = false,
-        highlight = {
-          enable = true,
-        },
-        indent = { enable = true },
-      })
-
-      -- set up treesitter folding after treesitter is loaded
-      vim.opt.foldmethod = "expr"
-      vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-      -- by default, open 99 levels of folds
-      vim.opt.foldlevel = 99
-    end,
-  },
-
   --'windwp/nvim-ts-autotag',
   {
     "lukas-reineke/indent-blankline.nvim",

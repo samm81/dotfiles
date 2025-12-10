@@ -18,10 +18,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git asdf colored-man-pages)
-
-ASDF_DIR="$HOME/.asdf"
-[ -d "$ASDF_DIR" ] && plugins+=('asdf') && fpath+=("$ASDF_DIR/completions")
+plugins=(git colored-man-pages)
 
 if isinstalled 'pdm'; then
   # `ZSH_CUSTOM` is set by `oh-my-zsh` it seems, so cheat a little here

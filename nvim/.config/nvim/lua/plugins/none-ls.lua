@@ -16,25 +16,29 @@ return {
           }),
           null_ls.builtins.diagnostics.todo_comments,
 
+          -- gitcommit
+          null_ls.builtins.diagnostics.commitlint.with({
+            command = { "commitlint", "--config", vim.fn.expand("~/.config/commitlint/commitlint.config.js") },
+          }),
+
+          -- js ecosystem
           formatting.prettier.with({ command = { "npx", "prettier" } }),
 
-          -- python
-          formatting.black,
-          formatting.isort,
-          diagnostics.mypy,
-          diagnostics.pydoclint,
-          diagnostics.pylint,
-
+          -- lua
           formatting.stylua.with({ command = { "npx", "stylua" } }),
 
+          -- shell
           formatting.shfmt.with({ extra_args = { "--indent", "2", "--case-indent" } }),
+
+          -- python
+          diagnostics.mypy,
+          diagnostics.pydoclint,
 
           -- elixir
           formatting.mix.with({ extra_filetypes = { "heex", "eex" } }),
           diagnostics.credo.with({
             command = "credo",
             args = { "suggest", "--format", "json", "--read-from-stdin", "$FILENAME" },
-            extra_filetypes = { "heex", "eex" },
           }),
         },
         on_attach = function(client, bufnr)

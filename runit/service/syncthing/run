@@ -1,6 +1,2 @@
 #!/bin/sh
-
-exec \
-  syncthing \
-    serve \
-      --no-default-folder
+exec syncthing serve

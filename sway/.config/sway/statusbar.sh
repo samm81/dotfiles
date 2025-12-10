@@ -28,7 +28,7 @@ wifi=$(nmcli --terse --fields NAME,TYPE connection show --active | awk -F':' '$2
 if [[ -z "$wifi" ]]; then
   wifi="disconnected"
 fi
-storages=$(df -h | grep 'crypt' | (while read -r line; do echo "$line" | tr -s ' ' | cut -d ' ' -f 6,5 | awk '{printf " " $2 " " $1 " 🗄"}'; done))
+storages=$(df -h | grep 'crypt' | (while read -r line; do echo "$line" | tr -s ' ' | cut -d ' ' -f 6,5 | awk '{printf "🗄 " $2 " " $1 " "}'; done))
 
 # === Multi-job aggregator for swaybar ===
 # https://chatgpt.com/share/68b3b055-3e34-8002-ae25-263615b0dc7a
@@ -135,7 +135,7 @@ if ((${#badges[@]} > 0)); then
 fi
 # === end multi-job aggregator ===
 
-line="$storages $wifi 📶 $volume 🔊 $brightness 🔆 $mem 💾 $uptime 🆙 $linux_version 🐧 $battery 🔋 $date_formatted"
+line="$storages 📶 $wifi 🔊 $volume 🔆 $brightness 💾 $mem 🆙 $uptime 🐧 $linux_version 🔋 $battery 🗓️ $date_formatted"
 if [[ -n "$jobs_badge" ]]; then
   echo "$jobs_badge | $line"
 else
