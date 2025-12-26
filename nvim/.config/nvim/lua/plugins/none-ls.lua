@@ -11,13 +11,13 @@ return {
 
       return {
         sources = {
-          null_ls.builtins.diagnostics.trail_space.with({
+          diagnostics.trail_space.with({
             disabled_filetypes = { "gitcommit" },
           }),
-          null_ls.builtins.diagnostics.todo_comments,
+          diagnostics.todo_comments,
 
           -- gitcommit
-          null_ls.builtins.diagnostics.commitlint.with({
+          diagnostics.commitlint.with({
             command = { "commitlint", "--config", vim.fn.expand("~/.config/commitlint/commitlint.config.js") },
           }),
 
