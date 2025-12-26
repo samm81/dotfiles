@@ -1,112 +1,112 @@
 snippet strict "unnofficial strict mode"
-	#!/bin/sh
-	# unnofficial POSIX shell strict mode
-	set -o errexit
-	set -o nounset
+  #!/bin/sh
+  # unnofficial POSIX shell strict mode
+  set -o errexit
+  set -o nounset
 
-	IFS=\$(printf '\n\t')
+  IFS=\$(printf '\n\t')
 
-	[ "\${TRACE:-0}" = "1" ] && set -o xtrace
+  [ "\${TRACE:-0}" = "1" ] && set -o xtrace
 
-	usage() {
-		filename="$(basename "\$0")"
-		echo "usage: ./\${filename} <arg one> <arg two>"
-		echo '  this is an awesome \`sh\` script to make your life better'
-		exit
-	}
+  usage() {
+    filename="$(basename "\$0")"
+    echo "usage: \${filename} <arg one> <arg two>"
+    echo '  this is an awesome \`sh\` script to make your life better'
+  }
 
-	case "\${1:-}" in
-		h | he | hel | help | -h | -he | -hel | -help | --h | --he | --hel | --help)
-			usage
-			;;
-	esac
+  case "\${1:-}" in
+    h | he | hel | help | -h | -he | -hel | -help | --h | --he | --hel | --help)
+      usage
+      exit
+      ;;
+  esac
 
-	cd "\$(dirname "\$0")"
+  # cd "\$(dirname "\$0")"
 
-	main() {
-		echo "\${1:?missing arg}"
-	}
+  main() {
+    echo "\${1:?missing arg}"
+  }
 
-	main "\$@"
+  main "\$@"
 
-	exit 0
+  exit 0
 
 snippet exit-trap "exit trap to cleanup on error; redsymbol.net"
-	# exit trap, to do cleanup on errors
-	# http://redsymbol.net/articles/bash-exit-traps/
-	finish() {
-			echo ""
-	}
-	trap finish EXIT INT
+  # exit trap, to do cleanup on errors
+  # http://redsymbol.net/articles/bash-exit-traps/
+  finish() {
+    echo ""
+  }
+  trap finish EXIT INT
 
 snippet check_installed
-	check_installed() {
-		test "\$(command -v "\$1")"
-	}
+  check_installed() {
+    test "\$(command -v "\$1")"
+  }
 
 snippet redirect-std "std(out|err) redirection from within script"
-	# stdout
-	exec > /dev/null
-	# stderr
-	exec 2>&1
+  # stdout
+  exec > /dev/null
+  # stderr
+  exec 2>&1
 
 snippet shellcheck-disable
-	# shellcheck disable=${1}
+  # shellcheck disable=${1}
 
 snippet docker-dev-build
-	#!/bin/sh
+  #!/bin/sh
 
-	dirname=\$(basename "\$PWD")
-	dirname_lower=\$(echo "\$dirname" | tr '[:upper:]' '[:lower:]')
-	IMAGE_NAME="local-\${dirname_lower}"
+  dirname=\$(basename "\$PWD")
+  dirname_lower=\$(echo "\$dirname" | tr '[:upper:]' '[:lower:]')
+  IMAGE_NAME="local-\${dirname_lower}"
 
-	DOCKERFILE_NAME='dev.Dockerfile'
+  DOCKERFILE_NAME='dev.Dockerfile'
 
-	docker buildx build \
-		--file "\$DOCKERFILE_NAME" \
-		--tag "\$IMAGE_NAME" \
-		--build-arg "UID=\$(id -u)" \
-		--build-arg "GID=\$(id -g)" \
-		.
+  docker buildx build \
+    --file "\$DOCKERFILE_NAME" \
+    --tag "\$IMAGE_NAME" \
+    --build-arg "UID=\$(id -u)" \
+    --build-arg "GID=\$(id -g)" \
+    .
 
-	if [ ! "\$?" ]; then
-		notify-send "\$IMAGE_NAME failed !"
-	else
-		notify-send "\$IMAGE_NAME built !"
-	fi
+  if [ ! "\$?" ]; then
+    notify-send "\$IMAGE_NAME failed !"
+  else
+    notify-send "\$IMAGE_NAME built !"
+  fi
 
 snippet docker-dev-run
-	#!/bin/sh
+  #!/bin/sh
 
-	dirname=\$(basename "\$PWD")
-	dirname_lower=\$(echo "\$dirname" | tr '[:upper:]' '[:lower:]')
-	IMAGE_NAME="local-\${dirname_lower}"
+  dirname=\$(basename "\$PWD")
+  dirname_lower=\$(echo "\$dirname" | tr '[:upper:]' '[:lower:]')
+  IMAGE_NAME="local-\${dirname_lower}"
 
-	#PORT_HOST='57541'
-	#PORT_CONTAINER='8080'
-	#  -p "\${PORT_HOST:?PORT_HOST not set}:\${PORT_CONTAINER:?PORT_CONTAINER not set}" \
+  #PORT_HOST='57541'
+  #PORT_CONTAINER='8080'
+  #  -p "\${PORT_HOST:?PORT_HOST not set}:\${PORT_CONTAINER:?PORT_CONTAINER not set}" \
 
-	docker run \
-		--interactive --tty \
-		--rm \
-		--user "\$(id -u):\$(id -g)" \
-		-v "\$(pwd):/app/src" \
-		-v "\${HOME}/xorkspace/\${dirname}:/vids" \
-		"\$IMAGE_NAME" \
-		"\$@"
+  docker run \
+    --interactive --tty \
+    --rm \
+    --user "\$(id -u):\$(id -g)" \
+    -v "\$(pwd):/app/src" \
+    -v "\${HOME}/xorkspace/\${dirname}:/vids" \
+    "\$IMAGE_NAME" \
+    "\$@"
 
 snippet temp-dir
-	temp_dir=\$(mktemp -d)
-	cleanup() { rm -rf "\$temp_dir"; }
-	trap cleanup EXIT
+  temp_dir=\$(mktemp -d)
+  cleanup() { rm -rf "\$temp_dir"; }
+  trap cleanup EXIT
 
 snippet cat-sudo
-	cat <<EOF | sudo tee "\$file" > /dev/null
-	\${contents}
-	EOF
+  cat <<EOF | sudo tee "\$file" > /dev/null
+  \${contents}
+  EOF
 
 snippet read-stdin-loop
-	while read -r f; do echo "\$f"; done
+  while read -r f; do echo "\$f"; done
 
 snippet colors
   set +e
@@ -126,27 +126,27 @@ snippet colors
   NORMAL="\$( (( has_colors == 0 )) && tput sgr0 || echo '' )"
 
   info () {
-      [[ -n \${1:-} ]] && echo "\${BLUE}\${1}\${NORMAL}" >&2
+    [[ -n \${1:-} ]] && echo "\${BLUE}\${1}\${NORMAL}" >&2
   }
   warn () {
-      [[ -n \${1:-} ]] && echo "\${YELLOW}\${1}\${NORMAL}" >&2
+    [[ -n \${1:-} ]] && echo "\${YELLOW}\${1}\${NORMAL}" >&2
   }
   success () {
-      [[ -n \${1:-} ]] && echo "\${GREEN}\${1}\${NORMAL}" >&2
+    [[ -n \${1:-} ]] && echo "\${GREEN}\${1}\${NORMAL}" >&2
   }
   err () {
-      [[ -n \${1:-} ]] && echo "\${RED}\${1}\${NORMAL}" >&2
+    [[ -n \${1:-} ]] && echo "\${RED}\${1}\${NORMAL}" >&2
   }
   fail () {
-      [[ -n \${1:-} ]] && echo "\${BOLD}\${RED}\${1}\${NORMAL}" >&2
-      exit "\${2:-1}"
+    [[ -n \${1:-} ]] && echo "\${BOLD}\${RED}\${1}\${NORMAL}" >&2
+    exit "\${2:-1}"
   }
 
 snippet sigint-ctrl-c
   # handle \`SIGINT\` (Ctrl-C) at the script level
   # shellcheck disable=SC2317
   handle_sigint() {
-      exit 130
+    exit 130
   }
 
   # Set up trap to catch SIGINT
