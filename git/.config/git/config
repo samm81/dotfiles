@@ -16,6 +16,7 @@
 [commit]
   verbose = true
   gpgsign = true
+	template = /home/maynard/.config/git/commit-template.txt
 [init]
   defaultBranch = main
 [merge]
