@@ -72,13 +72,17 @@ sane.keymap({ "n", "v" }, "<leader>c", ":w !wl-copy<CR>", { desc = "copy to clip
 -- diagnostics
 -- widely accepted, according to `gpt-4`
 sane.keymap("n", "<leader>e", vim.diagnostic.open_float)
-sane.keymap("n", "[d", vim.diagnostic.goto_prev)
-sane.keymap("n", "]d", vim.diagnostic.goto_next)
+sane.keymap("n", "[d", function()
+  vim.diagnostic.jump({ count = -1 })
+end)
+sane.keymap("n", "]d", function()
+  vim.diagnostic.jump({ count = 1 })
+end)
 sane.keymap("n", "[e", function()
-  vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+  vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR })
 end)
 sane.keymap("n", "]e", function()
-  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+  vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
 end)
 -- sane.keymap("n", "<leader>q", vim.diagnostic.setloclist, opts)
 

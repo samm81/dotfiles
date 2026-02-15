@@ -3,6 +3,12 @@ return {
   -- Mon Sep  1 11:20:12 AM CST 2025
   {
     "olimorris/codecompanion.nvim",
+    cmd = {
+      "CodeCompanion",
+      "CodeCompanionActions",
+      "CodeCompanionChat",
+      "CodeCompanionCmd",
+    },
     opts = {
       env = {
         url = "https://openrouter.ai/api",
