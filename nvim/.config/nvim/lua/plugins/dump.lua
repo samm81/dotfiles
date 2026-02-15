@@ -20,9 +20,9 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     keys = {
       { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "find files" },
-      { "<leader>fg", "<cmd>Telescope live_grep<CR>",  desc = "live grep" },
-      { "<leader>fb", "<cmd>Telescope buffers<CR>",    desc = "buffers" },
-      { "<leader>fh", "<cmd>Telescope help_tags<CR>",  desc = "help tags" },
+      { "<leader>fg", "<cmd>Telescope live_grep<CR>", desc = "live grep" },
+      { "<leader>fb", "<cmd>Telescope buffers<CR>", desc = "buffers" },
+      { "<leader>fh", "<cmd>Telescope help_tags<CR>", desc = "help tags" },
     },
     opts = {
       defaults = {
@@ -73,8 +73,11 @@ return {
     version = false,
     opts = {},
     init = function()
-      -- Trim all trailing whitespace on save
+      -- trim all trailing whitespace on save
+      local augroup = vim.api.nvim_create_augroup("MiniTrailspaceFormatting", {})
       vim.api.nvim_create_autocmd("BufWritePre", {
+        group = augroup,
+        desc = "trim trailing whitespace on save",
         callback = function()
           MiniTrailspace.trim()
         end,

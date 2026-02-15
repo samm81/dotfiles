@@ -18,14 +18,15 @@ return {
 
           -- gitcommit
           diagnostics.commitlint.with({
-            command = { "commitlint", "--config", vim.fn.expand("~/.config/commitlint/commitlint.config.js") },
+            command = "commitlint",
+            args = { "--config", vim.fn.expand("~/.config/commitlint/commitlint.config.js") },
           }),
 
           -- js ecosystem
-          formatting.prettier.with({ command = { "npx", "prettier" } }),
+          formatting.prettier,
 
           -- lua
-          formatting.stylua.with({ command = { "npx", "stylua" } }),
+          formatting.stylua,
 
           -- shell
           formatting.shfmt.with({ extra_args = { "--indent", "2", "--case-indent" } }),
