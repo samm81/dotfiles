@@ -95,7 +95,7 @@ vim.filetype.add({
     config = "confini",
   },
   filename = { direnvrc = "bash" },
-  pattern = { ["*.tmate.conf"] = "tmux" },
+  pattern = { ["*.tmate.conf"] = "tmux", [".env.*"] = "bash" },
 })
 
 -- helpers
