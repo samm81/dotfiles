@@ -8,8 +8,6 @@
 - when debugging reproduce in an interactive `nvim-vibe` session, not a single-buffer headless one-liner.
 - if headless checks are used, treat them as secondary confirmation only; final behavior validation should come from the interactive multi-buffer flow above.
 
-hello
-
 ## Architecture
 
 - **Entry**: `init.lua` - main config with editor options, keymaps, filetypes
@@ -28,9 +26,10 @@ hello
 - Module pattern: `local M = {}; return M`
 - LSP uses `gr*` prefix (grn=rename, gra=action, grr=references, etc.)
 
-## User's preferences
+## User's philosophy
 
-The user prefers a minimal `vim` experience, changing the built in defaults and tools as little as possible (for example, preferring `netrw` over adding a file manager with a plugin, or using built in shortcuts rather than adding new ones, and never repurposing already existing shortcuts). The user's writing style is lowercase (except for "I" and "I'm"), so comments should begin with lowercase characters instead of uppercase ones.
-for `<leader>` mappings, prefer two-character commands (for example `<leader>ff`, `<leader>fs`) to leave room for future specificity.
-never override existing keybindings.
-before adding or changing a keymap, check for conflicts and pick a non-conflicting mapping.
+- keep behavior close to built-in vim/neovim defaults; avoid unnecessary plugins or abstractions.
+- keep keymaps intentional and mnemonic, with room for growth: prefer two-character `<leader>` namespaces.
+- never override existing keybindings; always check conflicts before adding or changing a map.
+- prefer non-disruptive migration: when renaming a mapping, use reminder mappings when useful.
+- optimize for fast, in-buffer workflows (for example formatting without requiring save).
