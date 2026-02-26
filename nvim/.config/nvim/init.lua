@@ -67,11 +67,14 @@ sane.keymap("n", "<leader>ve", function()
   require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
 end)
 
-sane.keymap({ "n", "v" }, "<leader>c", ":w !wl-copy<CR>", { desc = "copy to clipboard" })
+sane.keymap({ "n", "v" }, "<leader>cc", ":w !wl-copy<CR>", { desc = "copy to clipboard" })
 
 -- diagnostics
 -- widely accepted, according to `gpt-4`
-sane.keymap("n", "<leader>e", vim.diagnostic.open_float)
+sane.keymap("n", "<leader>e", function()
+  vim.notify("use <leader>de instead", vim.log.levels.INFO)
+end)
+sane.keymap("n", "<leader>de", vim.diagnostic.open_float)
 sane.keymap("n", "[d", function()
   vim.diagnostic.jump({ count = -1 })
 end)
@@ -84,7 +87,7 @@ end)
 sane.keymap("n", "]e", function()
   vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
 end)
--- sane.keymap("n", "<leader>q", vim.diagnostic.setloclist, opts)
+-- sane.keymap("n", "<leader>qq", vim.diagnostic.setloclist, opts)
 
 --
 -- filetypes
@@ -107,6 +110,12 @@ vim.filetype.add({
 vim.keymap.set("n", "<leader>fo", function()
   require("helpers").ShowFormatterOverview()
 end, { desc = "Show Formatter Overview" })
+sane.keymap("n", "<leader>gf", function()
+  vim.lsp.buf.format({ async = true })
+end, { desc = "format buffer without saving" })
+vim.api.nvim_create_user_command("Format", function()
+  vim.lsp.buf.format({ async = true })
+end, { desc = "format current buffer without saving" })
 
 -- now let `lazy.nvim` set up everything else
 require("config.lazy")

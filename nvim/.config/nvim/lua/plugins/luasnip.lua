@@ -27,14 +27,6 @@ return {
       sane.keymap({ "i", "s" }, "<S-Tab>", function()
         luasnip.jump(-1)
       end, { desc = "jump backward in snippet" })
-
-      -- edit & reload snippet definitions
-
-      sane.keymap("n", "<leader>vsr", function()
-        snippets_load()
-        print("Snippets reloaded")
-      end, { desc = "Reload snippets" })
-
       snippets_load()
     end,
   },
