@@ -1,7 +1,7 @@
 return {
   {
     "nvimtools/none-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    event = { "BufReadPre", "BufNewFile", "BufEnter" },
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = function()
       local null_ls = require("null-ls")

@@ -107,14 +107,16 @@ vim.filetype.add({
 
 -- helpers
 
+local helpers = require("helpers")
+
 vim.keymap.set("n", "<leader>fo", function()
-  require("helpers").ShowFormatterOverview()
+  helpers.ShowFormatterOverview()
 end, { desc = "Show Formatter Overview" })
 sane.keymap("n", "<leader>gf", function()
-  vim.lsp.buf.format({ async = true })
+  helpers.FormatBufferWithoutSaving()
 end, { desc = "format buffer without saving" })
 vim.api.nvim_create_user_command("Format", function()
-  vim.lsp.buf.format({ async = true })
+  helpers.FormatBufferWithoutSaving()
 end, { desc = "format current buffer without saving" })
 
 -- now let `lazy.nvim` set up everything else
