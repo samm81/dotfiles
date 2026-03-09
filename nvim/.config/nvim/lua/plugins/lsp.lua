@@ -93,7 +93,7 @@ return {
             cmd = { "/home/maynard/bin/elixir-ls" },
           },
           tailwindcss = {
-            cmd = { "npx", "tailwindcss-language-server", "--stdio" },
+            cmd = { "tailwindcss-language-server", "--stdio" },
             init_options = {
               userlanguages = {
                 elixir = "html-eex",
