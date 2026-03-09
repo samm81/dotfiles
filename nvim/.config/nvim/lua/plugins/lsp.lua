@@ -7,6 +7,7 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "b0o/schemastore.nvim",
+      "hrsh7th/cmp-nvim-lsp",
     },
     opts = function()
       ---@class PluginLspOpts
@@ -14,6 +15,32 @@ return {
         ---@type lspconfig.options
         servers = {
           eslint = {},
+          emmet_language_server = {
+            cmd = { "emmet-language-server", "--stdio" },
+            filetypes = {
+              "astro",
+              "css",
+              "eelixir",
+              "eruby",
+              "heex",
+              "html",
+              "htmlangular",
+              "htmldjango",
+              "javascriptreact",
+              "less",
+              "sass",
+              "scss",
+              "svelte",
+              "typescriptreact",
+              "vue",
+            },
+            init_options = {
+              includeLanguages = {
+                eelixir = "html",
+                heex = "html",
+              },
+            },
+          },
           graphql = {},
           ts_ls = {},
           pyright = {},
@@ -130,8 +157,14 @@ return {
     ---@param opts PluginLspOpts
     config = function(_, opts)
       local servers = opts.servers
-      local capabilities =
-        vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), opts.capabilities or {})
+      local cmp_nvim_lsp = require("cmp_nvim_lsp")
+      local capabilities = vim.tbl_deep_extend(
+        "force",
+        {},
+        vim.lsp.protocol.make_client_capabilities(),
+        cmp_nvim_lsp.default_capabilities(),
+        opts.capabilities or {}
+      )
 
       local on_attach = function(_, bufnr)
         local keymap = function(mode, lhs, rhs)

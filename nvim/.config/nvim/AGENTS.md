@@ -14,7 +14,7 @@
 - **Package Manager**: `lua/config/lazy.lua` - lazy.nvim plugin management
 - **Library**: `lua/lib/sane.lua` - utility functions for sane keymap defaults
 - **Plugins**: `lua/plugins/` - modular plugin configurations
-  - `lsp.lua` - LSP servers (lua_ls, ts_ls, eslint, etc.) with `gr*` keymaps
+  - `lsp.lua` - LSP servers (lua_ls, ts_ls, eslint, tailwindcss, emmet, etc.) with `gr*` keymaps and cmp capabilities
   - `none-ls.lua` - formatters (prettier, stylua, black, mix) with auto-format on save
   - `cmp.lua` - completion with nvim-cmp + luasnip
   - `luasnip.lua` - snippet engine with custom snippets in `snippets/`
@@ -25,6 +25,7 @@
 - LuaJIT syntax and runtime
 - Module pattern: `local M = {}; return M`
 - LSP uses `gr*` prefix (grn=rename, gra=action, grr=references, etc.)
+- language server binaries are expected to already exist on `PATH`; this config should not auto-install them at runtime
 
 ## User's philosophy
 
