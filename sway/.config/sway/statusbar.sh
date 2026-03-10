@@ -5,10 +5,43 @@ set -euo pipefail
 IFS=$'\n\t'
 shopt -s nullglob globstar
 
-mem_info=$(free -h | grep 'Mem:' | tr -s ' ' | tr -d 'i')
-mem_used=$(echo "$mem_info" | cut -d ' ' -f 3)
-_mem_total=$(echo "$mem_info" | cut -d ' ' -f 2)
-mem="${mem_used}"
+human_iec() {
+  numfmt --to=iec -- "${1:-0}"
+}
+
+human_iec_1dp() {
+  numfmt --to=iec --format='%.1f' -- "${1:-0}"
+}
+
+format_usage_pair() {
+  local used_bytes="${1:-0}" total_bytes="${2:-0}"
+  if ((total_bytes == 0)); then
+    printf 'off'
+    return
+  fi
+  printf '%s/%s' "$(human_iec "$used_bytes")" "$(human_iec "$total_bytes")"
+}
+
+IFS=' ' read -r mem_total_bytes mem_used_bytes < <(free --bytes | awk '/^Mem:/ {print $2, $3}')
+mem="$(human_iec_1dp "$mem_used_bytes")/$(human_iec_1dp "$mem_total_bytes")"
+
+swap_kib_total=0
+swap_kib_used=0
+zram_kib_total=0
+zram_kib_used=0
+while IFS=$' \t' read -r name _type size_kib used_kib _priority; do
+  [[ "$name" == "Filename" ]] && continue
+  if [[ "$name" == *zram* ]]; then
+    ((zram_kib_total += size_kib))
+    ((zram_kib_used += used_kib))
+  else
+    ((swap_kib_total += size_kib))
+    ((swap_kib_used += used_kib))
+  fi
+done </proc/swaps
+
+zram=$(format_usage_pair "$((zram_kib_used * 1024))" "$((zram_kib_total * 1024))")
+swap=$(format_usage_pair "$((swap_kib_used * 1024))" "$((swap_kib_total * 1024))")
 uptime=$(uptime | cut -d ',' -f1 | cut -d ' ' -f4,5)
 linux_version=$(uname -r)
 
@@ -135,7 +168,7 @@ if ((${#badges[@]} > 0)); then
 fi
 # === end multi-job aggregator ===
 
-line="$storages 📶 $wifi 🔊 $volume 🔆 $brightness 💾 $mem 🆙 $uptime 🐧 $linux_version 🔋 $battery 🗓️ $date_formatted"
+line="$storages 📶 $wifi 🔊 $volume 🔆 $brightness 💾 $mem 🧊 $zram 🔁 $swap 🆙 $uptime 🐧 $linux_version 🔋 $battery 🗓️ $date_formatted"
 if [[ -n "$jobs_badge" ]]; then
   echo "$jobs_badge | $line"
 else
