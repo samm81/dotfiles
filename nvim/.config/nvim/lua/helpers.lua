@@ -116,6 +116,30 @@ local function ShowFormatterOverview()
   vim.api.nvim_buf_set_option(buf, "modifiable", false)
 end
 
+local DATETIME_FORMAT = "%Y-%m-%d %a %H:%M %Z"
+
+local function insert_line_and_focus(bufnr, row, text)
+  vim.api.nvim_buf_set_lines(bufnr, row, row, false, { text })
+
+  local win = vim.api.nvim_get_current_win()
+  if vim.api.nvim_win_get_buf(win) == bufnr then
+    vim.api.nvim_win_set_cursor(win, { row + 1, 0 })
+  end
+end
+
+local function InsertCurrentDatetimeAtLine()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local row = vim.api.nvim_win_get_cursor(0)[1]
+
+  insert_line_and_focus(bufnr, row, vim.fn.strftime(DATETIME_FORMAT))
+end
+
+local function InsertCurrentDatetimeAtTop()
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  insert_line_and_focus(bufnr, 0, vim.fn.strftime(DATETIME_FORMAT))
+end
+
 local function FormatBufferWithoutSaving()
   local bufnr = vim.api.nvim_get_current_buf()
   local formatting_method = vim.lsp.protocol.Methods and vim.lsp.protocol.Methods.textDocument_formatting
@@ -217,5 +241,7 @@ end
 
 return {
   FormatBufferWithoutSaving = FormatBufferWithoutSaving,
+  InsertCurrentDatetimeAtLine = InsertCurrentDatetimeAtLine,
+  InsertCurrentDatetimeAtTop = InsertCurrentDatetimeAtTop,
   ShowFormatterOverview = ShowFormatterOverview,
 }
