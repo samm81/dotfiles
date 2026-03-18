@@ -139,6 +139,7 @@ vim.filetype.add({
   extension = {
     envrc = "bash",
     bash = "bash",
+    zsh = "zsh",
     hbs = "html",
     handlebars = "html",
     config = "confini",

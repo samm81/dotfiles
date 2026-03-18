@@ -4,6 +4,7 @@ return {
     event = { "BufReadPre", "BufNewFile", "BufEnter" },
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = function()
+      local shellcheck = require("lib.null_ls.shellcheck")
       local null_ls = require("null-ls")
       local formatting = null_ls.builtins.formatting
       local diagnostics = null_ls.builtins.diagnostics
@@ -29,7 +30,12 @@ return {
           formatting.stylua,
 
           -- shell
-          formatting.shfmt.with({ extra_args = { "--indent", "2", "--case-indent" } }),
+          formatting.shfmt.with({
+            extra_args = { "--indent", "2", "--case-indent" },
+            extra_filetypes = { "bash", "zsh" },
+          }),
+          diagnostics.zsh,
+          shellcheck,
 
           -- python
           diagnostics.mypy,

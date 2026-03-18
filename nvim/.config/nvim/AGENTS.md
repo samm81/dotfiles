@@ -13,10 +13,11 @@
 - **Entry**: `init.lua` - main config with editor options, keymaps, filetypes
 - **Package Manager**: `lua/config/lazy.lua` - lazy.nvim plugin management
 - **Library**: `lua/lib/sane.lua` - utility functions for sane keymap defaults
+- **Custom none-ls Sources**: `lua/lib/null_ls/` - local diagnostics/formatting adapters that fill gaps in upstream none-ls builtins
 - **Helpers**: `lua/helpers.lua` - formatter overview, format-without-save, and datetime insertion helpers used by `<leader>dt*`
 - **Plugins**: `lua/plugins/` - modular plugin configurations
   - `lsp.lua` - LSP servers (lua_ls, ts_ls, eslint, tailwindcss, emmet, etc.) with `gr*` keymaps and cmp capabilities
-  - `none-ls.lua` - formatters (prettier, stylua, black, mix) with auto-format on save
+  - `none-ls.lua` - formatters and diagnostics (including shell/zsh shfmt + shellcheck wiring) with auto-format on save
   - `cmp.lua` - completion with nvim-cmp + luasnip
   - `luasnip.lua` - snippet engine with custom snippets in `snippets/`
 - **Snippets**: `snippets/` - SnipMate format snippets per filetype
