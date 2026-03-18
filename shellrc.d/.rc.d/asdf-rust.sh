@@ -1,2 +1,4 @@
-asdf_rust_path="${HOME}/.asdf/installs/rust"
-[ -f "$asdf_rust_path" ] && . "$asdf_rust_path/stable/env"
+if isinstalled 'asdf'; then
+  asdf_rust_path="$(asdf where rust 2>/dev/null)"
+  [ -r "$asdf_rust_path/env" ] && . "$asdf_rust_path/env"
+fi
