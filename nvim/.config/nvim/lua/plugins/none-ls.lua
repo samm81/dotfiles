@@ -31,7 +31,6 @@ return {
 
           -- shell
           formatting.shfmt.with({
-            extra_args = { "--indent", "2", "--case-indent" },
             extra_filetypes = { "bash", "zsh" },
           }),
           diagnostics.zsh,
