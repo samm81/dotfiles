@@ -37,8 +37,6 @@ plugins+=(zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
 
 source "$ZSH/oh-my-zsh.sh"
 
-# for zsh-completions
-autoload -Uz compinit && compinit
 # only autocorrect commands
 unsetopt correct_all
 setopt correct
