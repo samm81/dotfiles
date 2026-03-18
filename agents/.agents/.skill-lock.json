@@ -1,0 +1,46 @@
+{
+  "version": 3,
+  "skills": {
+    "modern-python": {
+      "source": "trailofbits/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/trailofbits/skills.git",
+      "skillPath": "plugins/modern-python/skills/modern-python/SKILL.md",
+      "skillFolderHash": "8679b9b2269f4320d40c4f0bea5d71fb6812b483",
+      "installedAt": "2026-03-12T21:37:42.891Z",
+      "updatedAt": "2026-03-12T21:37:42.891Z"
+    },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/skills.git",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "skillFolderHash": "c2f31172b6f256272305a5e6e7228b258446899f",
+      "installedAt": "2026-03-12T21:37:52.907Z",
+      "updatedAt": "2026-03-12T21:37:52.907Z"
+    },
+    "ast-grep-search": {
+      "source": "laurigates/claude-plugins",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/laurigates/claude-plugins.git",
+      "skillPath": "code-quality-plugin/skills/ast-grep-search/SKILL.md",
+      "skillFolderHash": "e1c87a2e0b429824355d6ba52cd1f2c62d25845c",
+      "installedAt": "2026-03-16T01:58:57.543Z",
+      "updatedAt": "2026-03-16T01:58:57.543Z"
+    }
+  },
+  "dismissed": {
+    "findSkillsPrompt": true
+  },
+  "lastSelectedAgents": [
+    "amp",
+    "cline",
+    "codex",
+    "cursor",
+    "gemini-cli",
+    "github-copilot",
+    "kimi-cli",
+    "opencode",
+    "warp"
+  ]
+}

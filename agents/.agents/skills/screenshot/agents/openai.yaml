@@ -1,0 +1,4 @@
+interface:
+  display_name: "Screenshot"
+  short_description: "Capture Wayland screenshots with grimshot"
+  default_prompt: "Use $screenshot to capture or save a Wayland screenshot with grimshot."
