@@ -14,7 +14,7 @@
 - **Package Manager**: `lua/config/lazy.lua` - lazy.nvim plugin management
 - **Library**: `lua/lib/sane.lua` - utility functions for sane keymap defaults
 - **Custom none-ls Sources**: `lua/lib/null_ls/` - local diagnostics/formatting adapters that fill gaps in upstream none-ls builtins
-- **Helpers**: `lua/helpers.lua` - formatter overview, format-without-save, and datetime insertion helpers used by `<leader>dt*`
+- **Helpers**: `lua/helpers.lua` - formatter overview, format-without-save, and `datet`-backed datetime insertion helpers used by `<leader>dt*`
 - **Plugins**: `lua/plugins/` - modular plugin configurations
   - `lsp.lua` - LSP servers (lua_ls, ts_ls, eslint, tailwindcss, emmet, etc.) with `gr*` keymaps and cmp capabilities
   - `none-ls.lua` - formatters and diagnostics (including shell/zsh shfmt + shellcheck wiring and `.edn` formatting via `zprint` when it is on `PATH`) with auto-format on save

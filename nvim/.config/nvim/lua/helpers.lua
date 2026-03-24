@@ -133,7 +133,22 @@ local function ShowFormatterOverview()
   vim.api.nvim_buf_set_option(buf, "modifiable", false)
 end
 
-local DATETIME_FORMAT = "%Y-%m-%d %a %H:%M %Z"
+local DATET_COMMAND = { "datet" }
+
+local function current_datetime_text()
+  if vim.fn.executable(DATET_COMMAND[1]) ~= 1 then
+    vim.notify("`datet` is not available on PATH", vim.log.levels.WARN)
+    return nil
+  end
+
+  local output = vim.fn.system(DATET_COMMAND)
+  if vim.v.shell_error ~= 0 then
+    vim.notify("`datet` failed: " .. vim.trim(output), vim.log.levels.ERROR)
+    return nil
+  end
+
+  return vim.trim(output)
+end
 
 local function insert_line_and_focus(bufnr, row, text)
   vim.api.nvim_buf_set_lines(bufnr, row, row, false, { text })
@@ -147,14 +162,20 @@ end
 local function InsertCurrentDatetimeAtLine()
   local bufnr = vim.api.nvim_get_current_buf()
   local row = vim.api.nvim_win_get_cursor(0)[1]
+  local text = current_datetime_text()
 
-  insert_line_and_focus(bufnr, row, vim.fn.strftime(DATETIME_FORMAT))
+  if text then
+    insert_line_and_focus(bufnr, row, text)
+  end
 end
 
 local function InsertCurrentDatetimeAtTop()
   local bufnr = vim.api.nvim_get_current_buf()
+  local text = current_datetime_text()
 
-  insert_line_and_focus(bufnr, 0, vim.fn.strftime(DATETIME_FORMAT))
+  if text then
+    insert_line_and_focus(bufnr, 0, text)
+  end
 end
 
 local function FormatBufferWithoutSaving()
