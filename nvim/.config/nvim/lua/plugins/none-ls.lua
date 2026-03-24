@@ -29,6 +29,13 @@ return {
           -- lua
           formatting.stylua,
 
+          -- edn
+          formatting.zprint.with({
+            runtime_condition = function(params)
+              return params.bufname:lower():match("%.edn$") ~= nil
+            end,
+          }),
+
           -- shell
           formatting.shfmt.with({
             extra_filetypes = { "bash", "zsh" },

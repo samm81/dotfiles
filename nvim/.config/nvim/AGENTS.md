@@ -17,7 +17,7 @@
 - **Helpers**: `lua/helpers.lua` - formatter overview, format-without-save, and datetime insertion helpers used by `<leader>dt*`
 - **Plugins**: `lua/plugins/` - modular plugin configurations
   - `lsp.lua` - LSP servers (lua_ls, ts_ls, eslint, tailwindcss, emmet, etc.) with `gr*` keymaps and cmp capabilities
-  - `none-ls.lua` - formatters and diagnostics (including shell/zsh shfmt + shellcheck wiring) with auto-format on save
+  - `none-ls.lua` - formatters and diagnostics (including shell/zsh shfmt + shellcheck wiring and `.edn` formatting via `zprint` when it is on `PATH`) with auto-format on save
   - `cmp.lua` - completion with nvim-cmp + luasnip
   - `luasnip.lua` - snippet engine with custom snippets in `snippets/`
 - **Snippets**: `snippets/` - SnipMate format snippets per filetype
@@ -27,6 +27,7 @@
 - LuaJIT syntax and runtime
 - Module pattern: `local M = {}; return M`
 - LSP uses `gr*` prefix (grn=rename, gra=action, grr=references, etc.)
+- `.edn` buffers use the `clojure` filetype; formatting is scoped to `.edn` paths via `zprint` in none-ls when `zprint` is available on `PATH`
 - language server binaries are expected to already exist on `PATH`; this config should not auto-install them at runtime
 
 ## User's philosophy

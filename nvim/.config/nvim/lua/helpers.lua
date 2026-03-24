@@ -40,8 +40,25 @@ local function ShowFormatterOverview()
   local ok_sources, none_ls_sources = pcall(require, "null-ls.sources")
   local available = {}
   if ok and ok_sources and none_ls.methods and none_ls.methods.FORMATTING then
+    local none_ls_utils = require("null-ls.utils")
+    local params = none_ls_utils.make_params({
+      bufnr = bufnr,
+      method = formatting_method,
+      textDocument = { uri = vim.uri_from_bufnr(bufnr) },
+    }, none_ls.methods.FORMATTING)
+
     for _, src in ipairs(none_ls_sources.get_available(filetype, none_ls.methods.FORMATTING)) do
-      table.insert(available, src.name)
+      local runtime_condition = src.generator and src.generator.opts and src.generator.opts.runtime_condition
+      local can_run = true
+
+      if runtime_condition then
+        local ok_runtime, result = pcall(runtime_condition, params)
+        can_run = not ok_runtime or not not result
+      end
+
+      if can_run then
+        table.insert(available, src.name)
+      end
     end
   end
 
