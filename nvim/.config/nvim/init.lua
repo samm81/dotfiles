@@ -1,3 +1,5 @@
+require("lib.profile").enable()
+
 local sane = require("lib.sane")
 
 --
