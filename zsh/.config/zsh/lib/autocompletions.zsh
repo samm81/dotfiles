@@ -295,6 +295,18 @@ usage: zrefresh-completions [--mode MODE] [--quiet]
 
 refresh zsh completion files from ~/.config/zsh/autocompletions.d into the
 xdg site-functions directory.
+
+options:
+  --mode MODE  record the runtime mode in the completion cache stamp.
+               prompt      ask before refreshing stale completions (default)
+               background  refresh stale completions in the background
+               reminder    print a reminder when completions are stale
+               disabled    skip stale-completion checks
+  --quiet      suppress non-error output
+  --help, -h   show this help
+
+note: this command always refreshes immediately. MODE describes what interactive
+shells should do later when the cache becomes stale.
 EOF
         return 0
         ;;
