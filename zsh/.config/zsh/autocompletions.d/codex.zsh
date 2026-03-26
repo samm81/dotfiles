@@ -1,0 +1,5 @@
+zac_entry_id='codex'
+zac_completion_name='_codex'
+zac_check_command='command -v codex >/dev/null 2>&1'
+zac_version_command='codex --version'
+zac_generate_command='codex completion zsh'

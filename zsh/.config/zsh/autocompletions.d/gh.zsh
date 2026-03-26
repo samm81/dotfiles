@@ -1,0 +1,5 @@
+zac_entry_id='gh'
+zac_completion_name='_gh'
+zac_check_command='command -v gh >/dev/null 2>&1'
+zac_version_command='gh --version | head -n 1'
+zac_generate_command='gh completion --shell zsh'

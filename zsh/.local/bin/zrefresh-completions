@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+emulate -LR zsh
+
+source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/lib/autocompletions.zsh" || {
+  print -u2 -r -- "zrefresh-completions: missing ~/.config/zsh/lib/autocompletions.zsh"
+  exit 1
+}
+
+zac_refresh_command "$@"

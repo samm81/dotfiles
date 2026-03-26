@@ -1,0 +1,5 @@
+zac_entry_id='atuin'
+zac_completion_name='_atuin'
+zac_check_command='command -v atuin >/dev/null 2>&1'
+zac_version_command='atuin --version'
+zac_generate_command='atuin gen-completions --shell zsh'

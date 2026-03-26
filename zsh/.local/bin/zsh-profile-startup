@@ -1,0 +1,369 @@
+#!/usr/bin/env zsh
+
+emulate -LR zsh
+setopt pipefail
+
+zmodload zsh/datetime 2>/dev/null || {
+  print -u2 -r -- 'zsh-profile-startup: unable to load zsh/datetime'
+  exit 1
+}
+
+script_path="${0:A}"
+zsh_dir="${script_path:h:h:h}"
+repo_root="${zsh_dir:h}"
+shellrc_dir="${repo_root}/shellrc.d/.rc.d"
+current_zshrc_dir="${zsh_dir}/.zshrc.d"
+legacy_dir="${zsh_dir}/.config/zsh/profiling/pre-autocompletion-cache"
+refresh_cmd="${zsh_dir}/.local/bin/zrefresh-completions"
+
+integer runs=7
+integer detail=0
+integer markdown=0
+variant='both'
+
+typeset -ga temp_roots
+typeset -ga summary_rows
+typeset -gA detail_outputs
+
+debug_log() {
+  [[ -n "${ZSH_PROFILE_STARTUP_DEBUG:-}" ]] || return 0
+  print -u2 -r -- "$*"
+}
+
+cleanup() {
+  (( ${#temp_roots[@]} > 0 )) || return 0
+  command rm -rf -- "${temp_roots[@]}"
+}
+
+usage() {
+  cat <<'EOF'
+usage: zsh-profile-startup [--runs N] [--variant pre|post|both] [--detail] [--markdown]
+
+benchmarks the repo's zsh startup path in two modes:
+- pre: inline completion generation during startup
+- post: cached completions with the xdg refresh flow
+EOF
+}
+
+ensure_paths() {
+  [[ -d "$shellrc_dir" ]] || return 1
+  [[ -d "$current_zshrc_dir" ]] || return 1
+  [[ -d "$legacy_dir" ]] || return 1
+  [[ -x "$refresh_cmd" ]] || return 1
+}
+
+variant_label() {
+  case "$1" in
+    pre)
+      print -r -- 'pre-autocompletion-cache'
+      ;;
+    post)
+      print -r -- 'post-autocompletion-cache'
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+build_post_files() {
+  local -a files
+
+  files=(
+    "${shellrc_dir}"/*.sh(N)
+    "${current_zshrc_dir}"/*.zsh(N)
+  )
+
+  print -rC1 -- "${files[@]}"
+}
+
+build_pre_files() {
+  local -a files
+
+  files=(
+    "${shellrc_dir}"/*.sh(N)
+    "${current_zshrc_dir}/00-oh-my-zsh.zsh"
+    "${current_zshrc_dir}/asdf-goland.zsh"
+    "${legacy_dir}/atuin.zsh"
+    "${legacy_dir}/bitwarden.zsh"
+    "${legacy_dir}/codex.zsh"
+    "${current_zshrc_dir}/direnv-asdf.zsh"
+    "${current_zshrc_dir}/direnv.zsh"
+    "${legacy_dir}/gh.zsh"
+    "${current_zshrc_dir}/heroku.zsh"
+    "${current_zshrc_dir}/history.zsh"
+    "${current_zshrc_dir}/kubectl.zsh"
+    "${current_zshrc_dir}/mcfly.zsh"
+    "${current_zshrc_dir}/nvm.zsh"
+    "${legacy_dir}/pipx.zsh"
+    "${current_zshrc_dir}/profiling.zsh"
+    "${legacy_dir}/uv.zsh"
+    "${current_zshrc_dir}/vizsh.zsh"
+    "${current_zshrc_dir}/zz-extra-line.zsh"
+  )
+
+  print -rC1 -- "${files[@]}"
+}
+
+build_variant_files() {
+  case "$1" in
+    pre)
+      build_pre_files
+      ;;
+    post)
+      build_post_files
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+prepare_variant_root() {
+  local variant_key="$1"
+  local root
+
+  root="$(mktemp -d "${TMPDIR:-/tmp}/zsh-profile.${variant_key}.XXXXXXXX")" || return 1
+  temp_roots+=("$root")
+
+  command mkdir -p -- "$root/zdotdir" "$root/runtime" || return 1
+
+  if [[ "$variant_key" == 'post' ]]; then
+    XDG_CONFIG_HOME="${zsh_dir}/.config" \
+    XDG_DATA_HOME="${root}/data" \
+    XDG_CACHE_HOME="${root}/cache" \
+    XDG_RUNTIME_DIR="${root}/runtime" \
+    ZDOTDIR="${root}/zdotdir" \
+    "$refresh_cmd" --quiet || return 1
+  fi
+
+  print -r -- "$root"
+}
+
+run_profile() {
+  local root="$1"
+  local detail_file="$2"
+  local output
+  local exit_code
+  shift 2
+
+  output="$(
+    XDG_CONFIG_HOME="${zsh_dir}/.config" \
+    XDG_DATA_HOME="${root}/data" \
+    XDG_CACHE_HOME="${root}/cache" \
+    XDG_RUNTIME_DIR="${root}/runtime" \
+    ZDOTDIR="${root}/zdotdir" \
+    ZSH_PROFILE_DETAIL_FILE="${detail_file}" \
+    zsh -dfi -c '
+      emulate -LR zsh
+      zmodload zsh/datetime 2>/dev/null || exit 1
+
+      exec 3>&1
+      exec >/dev/null 2>/dev/null
+
+      : >| "${ZSH_PROFILE_DETAIL_FILE}"
+
+      profile_source() {
+        local file="$1"
+        local label="${file:t}"
+        local -F 6 started_at finished_at elapsed_ms
+
+        started_at=$EPOCHREALTIME
+        source "$file"
+        finished_at=$EPOCHREALTIME
+        elapsed_ms=$(( (finished_at - started_at) * 1000.0 ))
+
+        printf "%s\t%.6f\n" "$label" "$elapsed_ms" >> "${ZSH_PROFILE_DETAIL_FILE}"
+      }
+
+      local file
+      local -F 6 total_started_at total_finished_at total_elapsed_ms
+
+      total_started_at=$EPOCHREALTIME
+      for file in "$@"; do
+        profile_source "$file"
+      done
+      total_finished_at=$EPOCHREALTIME
+      total_elapsed_ms=$(( (total_finished_at - total_started_at) * 1000.0 ))
+
+      printf "%.6f\n" "$total_elapsed_ms" >&3
+    ' zsh-profile-startup "$@"
+  )"
+  exit_code=$?
+
+  debug_log "run_profile exit=${exit_code}"
+  (( exit_code == 0 )) || return "$exit_code"
+
+  print -r -- "$output"
+}
+
+numeric_min() {
+  local -a sorted
+
+  sorted=("${(@f)$(printf '%s\n' "$@" | sort -n)}")
+  print -r -- "${sorted[1]}"
+}
+
+numeric_max() {
+  local -a sorted
+
+  sorted=("${(@f)$(printf '%s\n' "$@" | sort -n)}")
+  print -r -- "${sorted[-1]}"
+}
+
+numeric_median() {
+  local -a sorted
+  local middle left right
+  local -F 6 average
+
+  sorted=("${(@f)$(printf '%s\n' "$@" | sort -n)}")
+  middle=$(( (${#sorted[@]} + 1) / 2 ))
+
+  if (( ${#sorted[@]} % 2 == 1 )); then
+    print -r -- "${sorted[$middle]}"
+    return 0
+  fi
+
+  left=$(( ${#sorted[@]} / 2 ))
+  right=$(( left + 1 ))
+  average=$(( (sorted[$left] + sorted[$right]) / 2.0 ))
+  printf '%.3f\n' "$average"
+}
+
+record_variant() {
+  local variant_key="$1"
+  local label root detail_file total_ms
+  local -a files totals
+  integer run=1
+
+  label="$(variant_label "$variant_key")" || return 1
+  root="$(prepare_variant_root "$variant_key")" || return 1
+  files=("${(@f)$(build_variant_files "$variant_key")}")
+  totals=()
+
+  debug_log "profiling ${label} with ${#files[@]} files"
+
+  while (( run <= runs )); do
+    detail_file='/dev/null'
+    if (( detail && run == 1 )); then
+      detail_file="${root}/${variant_key}.detail.tsv"
+    fi
+
+    total_ms="$(run_profile "$root" "$detail_file" "${files[@]}")" || return 1
+    (( detail == 0 || run > 1 )) || detail_outputs[$label]="$(<"$detail_file")"
+    totals+=("$total_ms")
+    debug_log "run ${run} for ${label}: ${total_ms} ms"
+    (( run += 1 ))
+  done
+
+  summary_rows+=(
+    "${label}"$'\t'"$(numeric_median "${totals[@]}")"$'\t'"$(numeric_min "${totals[@]}")"$'\t'"$(numeric_max "${totals[@]}")"
+  )
+  debug_log "summary row recorded for ${label}"
+}
+
+print_summary() {
+  local row label median_ms min_ms max_ms
+
+  if (( markdown )); then
+    print -r -- '| variant | median total (ms) | min (ms) | max (ms) |'
+    print -r -- '| --- | ---: | ---: | ---: |'
+    for row in "${summary_rows[@]}"; do
+      IFS=$'\t' read -r label median_ms min_ms max_ms <<< "$row"
+      printf '| %s | %.3f | %.3f | %.3f |\n' "$label" "$median_ms" "$min_ms" "$max_ms"
+    done
+    return 0
+  fi
+
+  printf '%-28s %12s %12s %12s\n' 'variant' 'median_ms' 'min_ms' 'max_ms'
+  for row in "${summary_rows[@]}"; do
+    IFS=$'\t' read -r label median_ms min_ms max_ms <<< "$row"
+    printf '%-28s %12.3f %12.3f %12.3f\n' "$label" "$median_ms" "$min_ms" "$max_ms"
+  done
+}
+
+while (( $# > 0 )); do
+  case "$1" in
+    --runs)
+      shift
+      (( $# > 0 )) || {
+        print -u2 -r -- 'zsh-profile-startup: missing value for --runs'
+        exit 1
+      }
+      runs="$1"
+      ;;
+    --variant)
+      shift
+      (( $# > 0 )) || {
+        print -u2 -r -- 'zsh-profile-startup: missing value for --variant'
+        exit 1
+      }
+      variant="$1"
+      ;;
+    --detail)
+      detail=1
+      ;;
+    --markdown)
+      markdown=1
+      ;;
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    *)
+      print -u2 -r -- "zsh-profile-startup: unknown argument: $1"
+      exit 1
+      ;;
+  esac
+  shift
+done
+
+[[ "$runs" == <-> ]] || {
+  print -u2 -r -- 'zsh-profile-startup: --runs must be a positive integer'
+  exit 1
+}
+(( runs > 0 )) || {
+  print -u2 -r -- 'zsh-profile-startup: --runs must be a positive integer'
+  exit 1
+}
+
+ensure_paths || {
+  print -u2 -r -- 'zsh-profile-startup: repo paths are missing'
+  exit 1
+}
+
+debug_log "variant=${variant} runs=${runs} detail=${detail} markdown=${markdown}"
+
+trap cleanup EXIT
+
+case "$variant" in
+  pre)
+    record_variant pre || exit 1
+    ;;
+  post)
+    record_variant post || exit 1
+    ;;
+  both)
+    record_variant pre || exit 1
+    record_variant post || exit 1
+    ;;
+  *)
+    print -u2 -r -- 'zsh-profile-startup: --variant must be pre, post, or both'
+    exit 1
+    ;;
+esac
+
+print_summary
+
+if (( detail )); then
+  for label in ${(ok)detail_outputs}; do
+    output="$detail_outputs[$label]"
+    print -r -- ''
+    print -r -- "${label} top files:"
+    while IFS=$'\t' read -r file_label elapsed_ms; do
+      printf '  %8.3f ms  %s\n' "$elapsed_ms" "$file_label"
+    done < <(
+      printf '%s\n' "$output" | sort -t $'\t' -k2,2nr | head -n 10
+    )
+  done
+fi

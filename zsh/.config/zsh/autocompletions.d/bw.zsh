@@ -1,0 +1,5 @@
+zac_entry_id='bw'
+zac_completion_name='_bw'
+zac_check_command='command -v bw >/dev/null 2>&1'
+zac_version_command='bw --version'
+zac_generate_command='bw completion --shell zsh'

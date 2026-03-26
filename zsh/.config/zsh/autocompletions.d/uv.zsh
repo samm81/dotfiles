@@ -1,0 +1,5 @@
+zac_entry_id='uv'
+zac_completion_name='_uv'
+zac_check_command='command -v uv >/dev/null 2>&1'
+zac_version_command='uv --version'
+zac_generate_command='uv generate-shell-completion zsh'

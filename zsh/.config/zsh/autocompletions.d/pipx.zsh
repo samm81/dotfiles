@@ -1,0 +1,5 @@
+zac_entry_id='pipx'
+zac_completion_name='_pipx'
+zac_check_command='command -v pipx >/dev/null 2>&1 && command -v register-python-argcomplete >/dev/null 2>&1'
+zac_version_command='pipx --version'
+zac_generate_command='register-python-argcomplete pipx'
