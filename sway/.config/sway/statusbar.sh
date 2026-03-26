@@ -38,7 +38,7 @@ while IFS=$' \t' read -r name _type size_kib used_kib _priority; do
     ((swap_kib_total += size_kib))
     ((swap_kib_used += used_kib))
   fi
-done </proc/swaps
+done < /proc/swaps
 
 zram=$(format_usage_pair "$((zram_kib_used * 1024))" "$((zram_kib_total * 1024))")
 swap=$(format_usage_pair "$((swap_kib_used * 1024))" "$((swap_kib_total * 1024))")
@@ -54,7 +54,7 @@ if [[ -n "$battery_tte" ]]; then
   battery="${battery} ${battery_tte}"
 fi
 
-date_formatted=$(date '+%a %F %H:%M:%S')
+date_formatted=$(datets)
 volume=$(pamixer --get-volume-human || echo '[err missing `pamixer`]')
 brightness="$(brillo -G | xargs --no-run-if-empty printf '%.0f' || echo '[err missing `brillo`]')"
 wifi=$(nmcli --terse --fields NAME,TYPE connection show --active | awk -F':' '$2 != "bridge" && $2 != "loopback" {print $1}')
@@ -85,15 +85,15 @@ shorten() {
 
 if [[ -d "$state_dir" ]]; then
   # 1) RUNNING from PID tags (*.pid)
-  if compgen -G "$state_dir/"'*.pid' >/dev/null; then
+  if compgen -G "$state_dir/"'*.pid' > /dev/null; then
     while IFS= read -r f; do
       label="${f##*/}"
       label="${label%.pid}"
       [[ -n "${seen[$label]:-}" ]] && continue
-      pid="$(awk -F= '/^pid=/{print $2}' "$f" 2>/dev/null | tr -d '[:space:]')"
+      pid="$(awk -F= '/^pid=/{print $2}' "$f" 2> /dev/null | tr -d '[:space:]')"
       if [[ -n "$pid" && -d "/proc/$pid" ]]; then
-        saved_cmd="$(awk -F= '/^cmd=/{print substr($0,5)}' "$f" 2>/dev/null || true)"
-        now_cmd="$(tr '\0' ' ' <"/proc/$pid/cmdline" 2>/dev/null || true)"
+        saved_cmd="$(awk -F= '/^cmd=/{print substr($0,5)}' "$f" 2> /dev/null || true)"
+        now_cmd="$(tr '\0' ' ' < "/proc/$pid/cmdline" 2> /dev/null || true)"
         if [[ -z "$saved_cmd" || "$saved_cmd" = "$now_cmd" ]]; then
           badges+=("🔧 $(shorten "$label") ⏳")
           seen["$label"]=1
@@ -101,30 +101,30 @@ if [[ -d "$state_dir" ]]; then
         fi
       fi
       # PID ended or mismatched → mark done (persists until you delete it)
-      date +%s >"${f%.pid}.done"
+      date +%s > "${f%.pid}.done"
       rm -f -- "$f"
-    done < <(ls -t "$state_dir"/*.pid 2>/dev/null)
+    done < <(ls -t "$state_dir"/*.pid 2> /dev/null)
   fi
 
   # 2) RUNNING from wrapper (*.status)
-  if compgen -G "$state_dir/"'*.status' >/dev/null; then
+  if compgen -G "$state_dir/"'*.status' > /dev/null; then
     while IFS= read -r f; do
       label="${f##*/}"
       label="${label%.status}"
       [[ -n "${seen[$label]:-}" ]] && continue
       badges+=("🔧 $(shorten "$label") ⏳")
       seen["$label"]=1
-    done < <(ls -t "$state_dir"/*.status 2>/dev/null)
+    done < <(ls -t "$state_dir"/*.status 2> /dev/null)
   fi
 
   # 3) DONE (.done; use status if present)
-  if compgen -G "$state_dir/"'*.done' >/dev/null; then
+  if compgen -G "$state_dir/"'*.done' > /dev/null; then
     while IFS= read -r f; do
       label="${f##*/}"
       label="${label%.done}"
       [[ -n "${seen[$label]:-}" ]] && continue
       # Try to read a "status=" field (from newer writers). If absent, show ⚪.
-      status_val="$(awk -F= '/^status=/{print $2}' "$f" 2>/dev/null | tr -d '[:space:]' || true)"
+      status_val="$(awk -F= '/^status=/{print $2}' "$f" 2> /dev/null | tr -d '[:space:]' || true)"
       sym="⚪"
       if [[ -n "$status_val" ]]; then
         if [[ "$status_val" =~ ^[0-9]+$ ]]; then
@@ -139,19 +139,19 @@ if [[ -d "$state_dir" ]]; then
       fi
       badges+=("🔧 $(shorten "$label") ${sym}")
       seen["$label"]=1
-    done < <(ls -t "$state_dir"/*.done 2>/dev/null)
+    done < <(ls -t "$state_dir"/*.done 2> /dev/null)
   fi
 
   # 4) FAILURES ❌ (all .failed; no time limit)
-  if compgen -G "$state_dir/"'*.failed' >/dev/null; then
+  if compgen -G "$state_dir/"'*.failed' > /dev/null; then
     while IFS= read -r f; do
-      read -r ec _ts <"$f" || ec=?
+      read -r ec _ts < "$f" || ec=?
       label="${f##*/}"
       label="${label%.failed}"
       [[ -n "${seen[$label]:-}" ]] && continue
       badges+=("🔧 $(shorten "$label") ❌(${ec})")
       seen["$label"]=1
-    done < <(ls -t "$state_dir"/*.failed 2>/dev/null)
+    done < <(ls -t "$state_dir"/*.failed 2> /dev/null)
   fi
 fi
 
