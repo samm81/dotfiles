@@ -51,9 +51,9 @@ _zac_runtime_verbosity() {
 _zac_runtime_lock_age_seconds() {
   zmodload -F zsh/stat b:zstat 2>/dev/null || return 1
 
-  local -A stat_info
+  local -a stat_info
   zstat -A stat_info +mtime -- "$ZSH_AUTOCOMPLETIONS_LOCK_DIR" 2>/dev/null || return 1
-  print -r -- $(( EPOCHSECONDS - stat_info[mtime] ))
+  print -r -- $(( EPOCHSECONDS - stat_info[1] ))
 }
 
 _zac_runtime_release_lock() {
