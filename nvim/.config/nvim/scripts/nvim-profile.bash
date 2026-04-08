@@ -35,7 +35,6 @@ require_cmd() {
 }
 
 repo_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
-config_home=$(cd -- "$repo_root/.." && pwd)
 cd "$repo_root"
 
 scenario=""
@@ -233,11 +232,10 @@ run_nvim_for_scenario() {
 
   case "$current_scenario" in
     startup)
-      XDG_CONFIG_HOME="$config_home" \
-        NVIM_PROFILE_OUT="$probe_file" \
-        NVIM_PROFILE_SCENARIO="$current_scenario" \
-        NVIM_PROFILE_RUN_ID="$(basename "$probe_file" .probe.json)" \
-        nvim "${nvim_args[@]}" > /dev/null 2>&1
+      NVIM_PROFILE_OUT="$probe_file" \
+      NVIM_PROFILE_SCENARIO="$current_scenario" \
+      NVIM_PROFILE_RUN_ID="$(basename "$probe_file" .probe.json)" \
+      nvim "${nvim_args[@]}" > /dev/null 2>&1
       ;;
     gitcommit)
       mkdir -p "$tmpdir/repo/.git"
@@ -246,14 +244,13 @@ subject line
 
 body line one
 body line two
-EOF
+      EOF
       (
         cd "$tmpdir/repo"
-        XDG_CONFIG_HOME="$config_home" \
-          NVIM_PROFILE_OUT="$probe_file" \
-          NVIM_PROFILE_SCENARIO="$current_scenario" \
-          NVIM_PROFILE_RUN_ID="$(basename "$probe_file" .probe.json)" \
-          nvim "${nvim_args[@]}" COMMIT_EDITMSG > /dev/null 2>&1
+        NVIM_PROFILE_OUT="$probe_file" \
+        NVIM_PROFILE_SCENARIO="$current_scenario" \
+        NVIM_PROFILE_RUN_ID="$(basename "$probe_file" .probe.json)" \
+        nvim "${nvim_args[@]}" COMMIT_EDITMSG > /dev/null 2>&1
       )
       ;;
     diff)
@@ -274,11 +271,10 @@ epsilon plus
 zeta
 eta
 EOF
-      XDG_CONFIG_HOME="$config_home" \
-        NVIM_PROFILE_OUT="$probe_file" \
-        NVIM_PROFILE_SCENARIO="$current_scenario" \
-        NVIM_PROFILE_RUN_ID="$(basename "$probe_file" .probe.json)" \
-        nvim "${nvim_args[@]}" -d "$tmpdir/left.txt" "$tmpdir/right.txt" > /dev/null 2>&1
+      NVIM_PROFILE_OUT="$probe_file" \
+      NVIM_PROFILE_SCENARIO="$current_scenario" \
+      NVIM_PROFILE_RUN_ID="$(basename "$probe_file" .probe.json)" \
+      nvim "${nvim_args[@]}" -d "$tmpdir/left.txt" "$tmpdir/right.txt" > /dev/null 2>&1
       ;;
   esac
 }

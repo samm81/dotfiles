@@ -3,10 +3,11 @@
 ## Build/Lint/Format Commands
 
 - Format Lua: `stylua .` (uses `.stylua.toml` config with 2-space indents, LuaJIT syntax)
-- Check config: `XDG_CONFIG_HOME="$(pwd)/.." nvim --headless -c "quitall"` (syntax check)
-- Profile config: `scripts/nvim-profile all --runs 3` (repeatable startup, `gitcommit`, and `diff` timing suite; defaults to terminal-ui startup timing, with `--headless` as an opt-in internal mode)
+- Check config: `nvim --headless -c "quitall"` (syntax check; run from the environment where this config is active)
+- Profile config: `scripts/nvim-profile all --runs 3` (repeatable startup, `gitcommit`, and `diff` timing suite; defaults to terminal-ui startup timing, with `--headless` as an opt-in internal mode, and inherits the current shell environment)
+- keep committed scripts on default XDG behavior; any repo-local XDG overrides should come from the caller environment, not from committed code.
 - No traditional tests - this is a Neovim configuration
-- when debugging reproduce in an interactive `XDG_CONFIG_HOME="$(pwd)/.." nvim` session, not a single-buffer headless one-liner.
+- when debugging reproduce in an interactive `nvim` session, not a single-buffer headless one-liner.
 - if headless checks are used, treat them as secondary confirmation only; final behavior validation should come from the interactive multi-buffer flow above.
 
 ## Architecture
@@ -20,7 +21,7 @@
 - **Helpers**: `lua/helpers.lua` - formatter overview, format-without-save, and `datet`-backed datetime insertion helpers used by `<leader>dt*`
 - **Plugins**: `lua/plugins/` - modular plugin configurations
   - `lsp.lua` - LSP servers (lua_ls, ts_ls, eslint, tailwindcss, emmet, etc.) with `gr*` keymaps and cmp capabilities
-  - `none-ls.lua` - formatters and diagnostics (including shell/zsh shfmt + shellcheck wiring and `.edn` formatting via `zprint` when it is on `PATH`) with auto-format on save
+  - `none-ls.lua` - filetype-lazy `none-ls` config with imperatively filtered executable/root-gated sources and a buffer-local attach guard (including shell/zsh shfmt + shellcheck wiring and `.edn` formatting via `zprint` when it is on `PATH`) with auto-format on save
   - `cmp.lua` - completion with nvim-cmp + luasnip
   - `luasnip.lua` - snippet engine with custom snippets in `snippets/`
 - **Snippets**: `snippets/` - SnipMate format snippets per filetype
