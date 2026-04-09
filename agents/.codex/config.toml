@@ -1,0 +1,117 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+model = "gpt-5.4"
+personality = "pragmatic"
+
+notify = ["notify-send"]
+model_reasoning_effort = "xhigh"
+approvals_reviewer = "user"
+
+[projects."/home/maynard/studio/dpsk/kopia"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dpsk/samm81.github.io"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dpsk/vdirsyncer"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dwsk/anki-marketplace"]
+trust_level = "trusted"
+
+[projects."/home/maynard/dotfiles"]
+trust_level = "trusted"
+
+[projects."/home/maynard/.local/state/vim-sessions"]
+trust_level = "untrusted"
+
+[projects."/home/maynard/archives/archivebox"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dwsk/breath-ball"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dpsk/tokybook-android"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/scripts"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dwsk/interview-finder"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dpsk/geo-regions"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dpsk/skill-combiner"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dpsk/sticker-pack-splitter"]
+trust_level = "trusted"
+
+[projects."/home/maynard/bamboo_gmail"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dpsk/spliitx"]
+trust_level = "trusted"
+
+[projects."/home/maynard/.local/state/vim-sessions/logs"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dpsk/fashion-inspo-swipe"]
+trust_level = "trusted"
+
+[notice]
+"hide_gpt-5.1-codex-max_migration_prompt" = true
+hide_full_access_warning = true
+
+[notice.model_migrations]
+"gpt-5.1-codex-max" = "gpt-5.2-codex"
+"gpt-5.2-codex" = "gpt-5.3-codex"
+
+[mcp_servers.chrome-devtools]
+command = "npx"
+args = ["-y", "chrome-devtools-mcp@latest", "--executablePath", "/usr/bin/chromium", "--headless", "true", "--isolated"]
+
+[mcp_servers.chrome-devtools.tools.new_page]
+approval_mode = "auto"
+
+[mcp_servers.chrome-devtools.tools.take_screenshot]
+approval_mode = "auto"
+
+[mcp_servers.chrome-devtools.tools.navigate_page]
+approval_mode = "auto"
+
+[mcp_servers.chrome-devtools.tools.take_snapshot]
+approval_mode = "auto"
+
+[mcp_servers.chrome-devtools.tools.evaluate_script]
+approval_mode = "auto"
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["-y", "@playwright/mcp@latest", "--config", "/home/maynard/.codex/mcp/playwright-mcp.json"]
+
+[mcp_servers.playwright.tools.browser_navigate]
+approval_mode = "auto"
+
+[mcp_servers.playwright.tools.browser_resize]
+approval_mode = "auto"
+
+[mcp_servers.playwright.tools.browser_run_code]
+approval_mode = "auto"
+
+[mcp_servers.playwright.tools.browser_press_key]
+approval_mode = "auto"
+
+[mcp_servers.playwright.tools.browser_tabs]
+approval_mode = "auto"
+
+[mcp_servers.playwright.tools.browser_evaluate]
+approval_mode = "auto"
+
+[mcp_servers.playwright.tools.browser_close]
+approval_mode = "auto"
+
+[plugins."github@openai-curated"]
+enabled = true

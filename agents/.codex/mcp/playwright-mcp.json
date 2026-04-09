@@ -1,0 +1,14 @@
+{
+  "browser": {
+    "browserName": "chromium",
+    "isolated": true,
+    "launchOptions": {
+      "headless": false,
+      "executablePath": "/usr/bin/chromium",
+      "args": [
+        "--no-sandbox",
+        "--headless=new"
+      ]
+    }
+  }
+}

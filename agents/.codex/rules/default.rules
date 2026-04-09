@@ -1,0 +1,8 @@
+prefix_rule(pattern=["rm", "-rf", "pipeline/out"], decision="allow")
+prefix_rule(pattern=["rm", "-f", "/tmp/codex-zprint.log"], decision="allow")
+prefix_rule(pattern=["git", "add"], decision="allow")
+prefix_rule(pattern=["rm", "-rf", "/home/maynard/studio/dpsk/geo-regions/tmp"], decision="allow")
+prefix_rule(pattern=["rm", "-rf", "/home/maynard/studio/dpsk/geo-regions/output"], decision="allow")
+prefix_rule(pattern=["rm", "-rf", ".playwright-mcp"], decision="allow")
+prefix_rule(pattern=["uv", "run", "pytest"], decision="allow")
+prefix_rule(pattern=["git", "commit"], decision="allow")
