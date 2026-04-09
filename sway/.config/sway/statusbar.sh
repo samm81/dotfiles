@@ -32,11 +32,11 @@ zram_kib_used=0
 while IFS=$' \t' read -r name _type size_kib used_kib _priority; do
   [[ "$name" == "Filename" ]] && continue
   if [[ "$name" == *zram* ]]; then
-    ((zram_kib_total += size_kib))
-    ((zram_kib_used += used_kib))
+    zram_kib_total=$((zram_kib_total + size_kib))
+    zram_kib_used=$((zram_kib_used + used_kib))
   else
-    ((swap_kib_total += size_kib))
-    ((swap_kib_used += used_kib))
+    swap_kib_total=$((swap_kib_total + size_kib))
+    swap_kib_used=$((swap_kib_used + used_kib))
   fi
 done < /proc/swaps
 
@@ -61,7 +61,7 @@ wifi=$(nmcli --terse --fields NAME,TYPE connection show --active | awk -F':' '$2
 if [[ -z "$wifi" ]]; then
   wifi="disconnected"
 fi
-storages=$(df -h | grep 'crypt' | (while read -r line; do echo "$line" | tr -s ' ' | cut -d ' ' -f 6,5 | awk '{printf "🗄 " $2 " " $1 " "}'; done))
+storages=$(df -h | awk '/crypt/ {printf "🗄 %s %s ", $5, $6}')
 
 # === Multi-job aggregator for swaybar ===
 # https://chatgpt.com/share/68b3b055-3e34-8002-ae25-263615b0dc7a
@@ -145,7 +145,7 @@ if [[ -d "$state_dir" ]]; then
   # 4) FAILURES ❌ (all .failed; no time limit)
   if compgen -G "$state_dir/"'*.failed' > /dev/null; then
     while IFS= read -r f; do
-      read -r ec _ts < "$f" || ec=?
+      read -r ec _ts < "$f" || ec='?'
       label="${f##*/}"
       label="${label%.failed}"
       [[ -n "${seen[$label]:-}" ]] && continue
