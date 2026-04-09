@@ -5,6 +5,8 @@ set -euo pipefail
 IFS=$'\n\t'
 shopt -s nullglob globstar
 
+[ "${TRACE:-0}" = "1" ] && set -o xtrace
+
 have_cmd() {
   command -v "$1" > /dev/null 2>&1
 }
