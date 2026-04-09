@@ -1,3 +1,5 @@
+# vim: set filetype=config
+
 profile default {
   output "eDP-1" enable
 }
@@ -14,10 +16,16 @@ profile xreal-air-2 {
   exec notify-send "new kanshi profile applied"
 }
 
+profile arnav {
+  output "Dell Inc. DELL U3415W PXF7998B0HUL" enable mode '3440x1440' position '-3440,-1440'
+  output "Samsung Electric Company U32J59x HCHN102319" enable mode '3840x2160' scale '1.5' position '0,-1440'
+  output "eDP-1" enable
+}
+
 # keep this at bottom: earlier profiles match before later ones
 profile docked {
   output "eDP-1" disable
-  output * enable mode preferred position 0,0
+  output * enable mode preferred
 }
 
 # `pkill -HUP kanshi` to reload !
