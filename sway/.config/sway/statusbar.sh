@@ -27,22 +27,17 @@ mem="$(human_iec_1dp "$mem_used_bytes")/$(human_iec_1dp "$mem_total_bytes")"
 
 swap_kib_total=0
 swap_kib_used=0
-zram_kib_total=0
-zram_kib_used=0
 while IFS=$' \t' read -r name _type size_kib used_kib _priority; do
   [[ "$name" == "Filename" ]] && continue
-  if [[ "$name" == *zram* ]]; then
-    zram_kib_total=$((zram_kib_total + size_kib))
-    zram_kib_used=$((zram_kib_used + used_kib))
-  else
+  if [[ "$name" != *zram* ]]; then
     swap_kib_total=$((swap_kib_total + size_kib))
     swap_kib_used=$((swap_kib_used + used_kib))
   fi
 done < /proc/swaps
 
-zram=$(format_usage_pair "$((zram_kib_used * 1024))" "$((zram_kib_total * 1024))")
 swap=$(format_usage_pair "$((swap_kib_used * 1024))" "$((swap_kib_total * 1024))")
-uptime=$(uptime | cut -d ',' -f1 | cut -d ' ' -f4,5)
+uptime_seconds=$(awk '{print int($1)}' /proc/uptime)
+uptime=$(printf '%02d:%02d' "$((uptime_seconds / 3600))" "$(((uptime_seconds % 3600) / 60))")
 linux_version=$(uname -r)
 
 device='/org/freedesktop/UPower/devices/DisplayDevice'
@@ -168,7 +163,7 @@ if ((${#badges[@]} > 0)); then
 fi
 # === end multi-job aggregator ===
 
-line="$storages 📶 $wifi 🔊 $volume 🔆 $brightness 💾 $mem 🧊 $zram 🔁 $swap 🆙 $uptime 🐧 $linux_version 🔋 $battery 🗓️ $date_formatted"
+line="$storages 📶 $wifi 🔊 $volume 🔆 $brightness 💾 $mem 🔁 $swap 🆙 $uptime 🐧 $linux_version 🔋 $battery 🗓️ $date_formatted"
 if [[ -n "$jobs_badge" ]]; then
   echo "$jobs_badge | $line"
 else
