@@ -4,6 +4,9 @@ civics_bot_dir="$HOME/workspace/civics"
 bin="$HOME/bin"
 tg="$bin/tg"
 
-cd "$civics_bot_dir"
+cd "$civics_bot_dir" || exit 1
 payload="$(./pick_qa.sh | ./qa_to_tg_payload.sh)"
-exec snooze -H '8-20' -M '/15' bash -c "$tg send 'peifen' '$payload' && $tg send 'sam' '$payload'"
+exec snooze -H '8-20' -M '/15' sh -c '
+  "$1" send peifen "$2" &&
+  "$1" send sam "$2"
+' sh "$tg" "$payload"

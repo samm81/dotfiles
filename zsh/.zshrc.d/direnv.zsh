@@ -1,1 +1,9 @@
-isinstalled 'direnv' && eval "$(direnv hook zsh)" && direnv() { asdf exec direnv "$@"; }
+if isinstalled 'direnv'; then
+  eval "$(direnv hook zsh)"
+
+  if isinstalled 'asdf'; then
+    direnv() {
+      asdf exec direnv "$@"
+    }
+  fi
+fi

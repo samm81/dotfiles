@@ -6,11 +6,14 @@ IFS=$'\n\t'
 shopt -s nullglob globstar
 
 # use colors, but only if connected to a terminal that supports them
-if which tput >/dev/null 2>&1; then
-  ncolors=$(tput colors)
+ncolors=''
+has_colors=1
+if [ -t 1 ] && [ -n "${TERM:-}" ] && command -v tput >/dev/null 2>&1; then
+  ncolors="$(tput colors 2>/dev/null || printf '')"
+  if [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
+    has_colors=0
+  fi
 fi
-[ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]
-has_colors=$?
 RED="$( (( has_colors == 0 )) && tput setaf 1 || echo '' )"
 GREEN="$( (( has_colors == 0 )) && tput setaf 2 || echo '' )"
 YELLOW="$( (( has_colors == 0 )) && tput setaf 3 || echo '' )"
@@ -22,7 +25,7 @@ err () {
 }
 
 function check_installed() {
-  if ! test "$(command -v ${1})"; then
+  if ! test "$(command -v "${1}")"; then
     err "${1} is not installed, please install ${1} and then retry"
     exit 1
   fi
