@@ -402,10 +402,10 @@ for_window [class="vlc"] floating enable
 for_window [app_id="keymapp"] floating enable
 EOF
 
-cat <<EOF >>"$CONFIG" && echo 'info: installed second monitor config, assuming `eDP-1` is primary'
+cat <<EOF >>"$CONFIG" && echo 'info: installed display power toggle config'
 
-# second monitor
-    bindsym \$mod+m exec 'swaymsg output eDP-1 toggle'
+# display power toggles
+    bindsym --release --no-repeat \$mod+m exec sh -c "if swaymsg -r -t get_outputs | jq -e 'map(select(.active)) | length > 0 and all(.[]; .power)' >/dev/null; then swaymsg 'output * power off'; else swaymsg 'output * power on'; fi"
     bindsym \$mod+Ctrl+Shift+\$left exec 'swaymsg move workspace output left'
     bindsym \$mod+Ctrl+Shift+\$down exec 'swaymsg move workspace output down'
     bindsym \$mod+Ctrl+Shift+\$up exec 'swaymsg move workspace output up'
