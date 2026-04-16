@@ -3,6 +3,20 @@
 model = "gpt-5.4"
 personality = "pragmatic"
 
+[tui]
+status_line = [
+  "model-with-reasoning",
+  "current-dir",
+  "context-used",
+  "five-hour-limit",
+  "weekly-limit",
+  "context-window-size",
+  "used-tokens",
+  "total-input-tokens",
+  "total-output-tokens",
+  "thread-title",
+]
+
 notify = ["notify-send"]
 model_reasoning_effort = "xhigh"
 approvals_reviewer = "user"
