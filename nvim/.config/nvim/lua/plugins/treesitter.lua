@@ -1,7 +1,7 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
+    build = ":TSUpdateSync",
     config = function()
       local configs = require("nvim-treesitter.configs")
 
@@ -40,10 +40,8 @@ return {
         indent = { enable = true },
       })
 
-      -- set up treesitter folding after treesitter is loaded
       vim.opt.foldmethod = "expr"
       vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-      -- by default, open 99 levels of folds
       vim.opt.foldlevel = 99
     end,
   },
