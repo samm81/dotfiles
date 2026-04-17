@@ -48,6 +48,8 @@ If found, suggest creating a global skill with name and description.
 
 ### 5. Identify essentials for root AGENTS.md
 
+Skip this step and step 6 if the AGENTs.md file is already "ideal" length (<50 lines).
+
 Extract only what belongs in the root AGENTS.md:
 
 - One-line project description
@@ -57,6 +59,8 @@ Extract only what belongs in the root AGENTS.md:
 - Verification section (always required)
 
 ### 6. Group remaining content
+
+Skip step 5 and thiw step if the AGENTs.md file is already "ideal" length (<50 lines).
 
 Organize remaining instructions into `agents/` files by category (e.g., TypeScript conventions, testing patterns, API design, Git workflow).
 
@@ -93,6 +97,10 @@ After making changes:
 
 - `npm test` - Run tests
 - `npm run lint` - Check linting
+
+## Documentation
+
+Always make sure to keep AGENTS.md and README.md up to date based on changes that you are making to the repo.
 ```
 
 ## What to Keep vs Remove
@@ -104,7 +112,7 @@ After making changes:
 - Project gotchas and footguns
 - Links to detailed rules files
 
-**Move to `agents/`:**
+**Move to `agents/` (if the AGENTS.md file length >50 lines):**
 
 - Detailed conventions (>10 lines on a topic)
 - Style guides

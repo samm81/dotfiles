@@ -75,6 +75,12 @@ trust_level = "trusted"
 [projects."/home/maynard/studio/dpsk/fashion-inspo-swipe"]
 trust_level = "trusted"
 
+[projects."/home/maynard/studio/dpsk/pesterbot2.0"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dpsk/camera-sheet"]
+trust_level = "trusted"
+
 [notice]
 "hide_gpt-5.1-codex-max_migration_prompt" = true
 hide_full_access_warning = true
