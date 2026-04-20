@@ -24,6 +24,7 @@
   - `none-ls.lua` - filetype-lazy `none-ls` config with imperatively filtered executable/root-gated sources and a buffer-local attach guard (including shell/zsh shfmt + shellcheck wiring and `.edn` formatting via `zprint` when it is on `PATH`) with auto-format on save
   - `cmp.lua` - completion with nvim-cmp + luasnip
   - `luasnip.lua` - snippet engine with custom snippets in `snippets/`
+  - `treesitter.lua` - community `neovim-treesitter/nvim-treesitter` setup for parser/query management on Neovim 0.12+, installing into `stdpath("data") .. "/site"` and attaching highlight/indent through `FileType`
 - **Snippets**: `snippets/` - SnipMate format snippets per filetype
 
 ## Code Style
