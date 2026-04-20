@@ -1,44 +1,43 @@
-# AGENTS.md - Neovim Configuration
+# Neovim Configuration
 
-## Build/Lint/Format Commands
+Personal Neovim configuration built around `lazy.nvim`, fast in-buffer workflows, and behavior that stays close to built-in Neovim defaults.
 
-- Format Lua: `stylua .` (uses `.stylua.toml` config with 2-space indents, LuaJIT syntax)
-- Check config: `nvim --headless -c "quitall"` (syntax check; run from the environment where this config is active)
-- Profile config: `scripts/nvim-profile all --runs 3` (repeatable startup, `gitcommit`, and `diff` timing suite; defaults to terminal-ui startup timing, with `--headless` as an opt-in internal mode, and inherits the current shell environment)
-- keep committed scripts on default XDG behavior; any repo-local XDG overrides should come from the caller environment, not from committed code.
-- No traditional tests - this is a Neovim configuration
-- when debugging reproduce in an interactive `nvim` session, not a single-buffer headless one-liner.
-- if headless checks are used, treat them as secondary confirmation only; final behavior validation should come from the interactive multi-buffer flow above.
+## Commands
+
+- `stylua .` - format Lua with the repo's `.stylua.toml`
+- `scripts/nvim-profile all --runs 3` - benchmark startup plus `gitcommit` and `diff` flows
+- `nvim --headless -c "quitall"` - quick syntax smoke check only; not final validation
 
 ## Architecture
 
-- **Entry**: `init.lua` - main config with editor options, keymaps, filetypes
-- **Package Manager**: `lua/config/lazy.lua` - lazy.nvim plugin management
-- **Library**: `lua/lib/sane.lua` - utility functions for sane keymap defaults
-- **Profiling**: `lua/lib/profile.lua` - opt-in startup/file-open timing probe enabled by `scripts/nvim-profile`
-- **Custom none-ls Sources**: `lua/lib/null_ls/` - local diagnostics/formatting adapters that fill gaps in upstream none-ls builtins
-- **Scripts**: `scripts/nvim-profile` - terminal-first profiling runner for standard startup, `gitcommit`, and `diff`
-- **Helpers**: `lua/helpers.lua` - formatter overview, format-without-save, and `datet`-backed datetime insertion helpers used by `<leader>dt*`
-- **Plugins**: `lua/plugins/` - modular plugin configurations
-  - `lsp.lua` - LSP servers (lua_ls, ts_ls, eslint, tailwindcss, emmet, etc.) with `gr*` keymaps and cmp capabilities
-  - `none-ls.lua` - filetype-lazy `none-ls` config with imperatively filtered executable/root-gated sources and a buffer-local attach guard (including shell/zsh shfmt + shellcheck wiring and `.edn` formatting via `zprint` when it is on `PATH`) with auto-format on save
-  - `cmp.lua` - completion with nvim-cmp + luasnip
-  - `luasnip.lua` - snippet engine with custom snippets in `snippets/`
-  - `treesitter.lua` - community `neovim-treesitter/nvim-treesitter` setup for parser/query management on Neovim 0.12+, installing into `stdpath("data") .. "/site"` and attaching highlight/indent through `FileType`
-- **Snippets**: `snippets/` - SnipMate format snippets per filetype
+- `init.lua` - entrypoint for options, keymaps, and filetypes
+- `lua/config/lazy.lua` - plugin bootstrap and specs
+- `lua/plugins/` - modular plugin config, including `lsp.lua`, `none-ls.lua`, `cmp.lua`, `luasnip.lua`, and `treesitter.lua`
+- `lua/lib/` - shared utilities, profiling helpers, and custom `none-ls` sources
+- `lua/helpers.lua` - formatting helpers and `<leader>dt*` datetime helpers
+- `snippets/` - SnipMate snippets
 
-## Code Style
+## Rules
 
-- LuaJIT syntax and runtime
-- Module pattern: `local M = {}; return M`
-- LSP uses `gr*` prefix (grn=rename, gra=action, grr=references, etc.)
-- `.edn` buffers use the `clojure` filetype; formatting is scoped to `.edn` paths via `zprint` in none-ls when `zprint` is available on `PATH`
-- language server binaries are expected to already exist on `PATH`; this config should not auto-install them at runtime
+- keep behavior close to built-in vim/neovim defaults; avoid unnecessary plugins or abstractions
+- never override existing keybindings; check for conflicts before adding or changing a map
+- prefer two-character `<leader>` namespaces, and use reminder mappings when a rename should be non-disruptive
+- keep LSP mappings on the `gr*` prefix when adding or adjusting them
+- optimize for in-buffer workflows; formatting should not require save
+- keep language server binaries on `PATH`; this config should not auto-install them at runtime
+- `.edn` buffers use the `clojure` filetype and should format through `zprint` in `none-ls` when available
+- keep committed scripts on default XDG behavior; any repo-local XDG overrides should come from the caller environment
 
-## User's philosophy
+## Verification
 
-- keep behavior close to built-in vim/neovim defaults; avoid unnecessary plugins or abstractions.
-- keep keymaps intentional and mnemonic, with room for growth: prefer two-character `<leader>` namespaces.
-- never override existing keybindings; always check conflicts before adding or changing a map.
-- prefer non-disruptive migration: when renaming a mapping, use reminder mappings when useful.
-- optimize for fast, in-buffer workflows (for example formatting without requiring save).
+After making changes:
+
+- reproduce the behavior in an interactive `nvim` session; treat this as the primary validation path
+- use a relevant multi-buffer flow when debugging instead of a single-buffer headless one-liner
+- `stylua .`
+- `nvim --headless -c "quitall"` as a secondary smoke check only
+- `scripts/nvim-profile all --runs 3` when changing startup-sensitive config
+
+## Documentation
+
+- keep `AGENTS.md` and `README.md` up to date when behavior or workflows change
