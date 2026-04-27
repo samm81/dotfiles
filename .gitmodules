@@ -1,3 +1,6 @@
 [submodule "shellrc"]
 	path = shellrc
 	url = https://github.com/samm81/shellrc
+[submodule "agents/caveman"]
+	path = agents/caveman
+	url = git@github.com:JuliusBrussee/caveman.git
