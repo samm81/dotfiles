@@ -4,3 +4,6 @@
 [submodule "agents/caveman"]
 	path = agents/caveman
 	url = git@github.com:JuliusBrussee/caveman.git
+[submodule "agents/humanizer"]
+	path = agents/humanizer
+	url = https://github.com/blader/humanizer.git
