@@ -13,3 +13,6 @@
 [submodule "agents/agent-skill"]
 	path = agents/agent-skill
 	url = git@github.com:ast-grep/agent-skill.git
+[submodule "agents/agent-config"]
+	path = agents/agent-config
+	url = git@github.com:brianlovin/agent-config.git
