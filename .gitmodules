@@ -10,3 +10,6 @@
 [submodule "agents/skills"]
 	path = agents/skills
 	url = git@github.com:trailofbits/skills.git
+[submodule "agents/agent-skill"]
+	path = agents/agent-skill
+	url = git@github.com:ast-grep/agent-skill.git
