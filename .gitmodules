@@ -7,3 +7,6 @@
 [submodule "agents/humanizer"]
 	path = agents/humanizer
 	url = https://github.com/blader/humanizer.git
+[submodule "agents/skills"]
+	path = agents/skills
+	url = git@github.com:trailofbits/skills.git
