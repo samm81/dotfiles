@@ -5,6 +5,7 @@ check_installed git
 check_installed stow
 
 stow zsh
+stow shellrc.d
 
 # Prevent the cloned repositories from having insecure permissions. Failing to
 # do so causes compinit() calls to fail with "command not found: compdef" errors
