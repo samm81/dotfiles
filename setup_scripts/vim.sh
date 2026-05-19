@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
-# shellcheck source=../util/header.sh
-. util/header.sh
 
 check_installed stow
 check_installed curl
 
 if [[ -f "${HOME}/.vimrc" ]]; then
-	echo "existing .vimrc file detected, moving it to ~/._vimrc"
-	mv "${HOME}/.vimrc" "${HOME}/._vimrc"
+  echo "existing .vimrc file detected, moving it to ~/.vimrc.bak"
+  mv "${HOME}/.vimrc" "${HOME}/.vimrc.bak"
 fi
 stow vim
 vim -c "PlugInstall" -c "visual" -c "qa"

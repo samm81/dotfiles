@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# shellcheck source=../util/header.sh
-. util/header.sh
 
 check_installed zsh
 check_installed git
@@ -33,7 +31,7 @@ fi
 TEST_CURRENT_SHELL="$(expr "${SHELL}" : '.*/\(.*\)')"
 if test "${TEST_CURRENT_SHELL}" != "zsh"; then
   # If this platform provides a "chsh" command (not Cygwin), do it, man!
-  if hash chsh >/dev/null 2>&1; then
+  if hash chsh > /dev/null 2>&1; then
     echo "Time to change your default shell to zsh!"
     chsh -s "$(grep /zsh$ /etc/shells | tail -1)"
   # Else, suggest the user do so manually.
