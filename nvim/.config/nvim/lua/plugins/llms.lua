@@ -1,32 +1,21 @@
 return {
-  -- https://codecompanion.olimorris.dev/installation.html#installation-1
-  -- Mon Sep  1 11:20:12 AM CST 2025
+  -- https://codecompanion.olimorris.dev/installation
+  -- Tue 2026-05-19 07:39 CST
   {
     "olimorris/codecompanion.nvim",
-    cmd = {
-      "CodeCompanion",
-      "CodeCompanionActions",
-      "CodeCompanionChat",
-      "CodeCompanionCmd",
-    },
+    version = "^19.0.0",
     opts = {
-      env = {
-        url = "https://openrouter.ai/api",
-        api_key = 'cmd:echo -n "$(cat /home/maynard/.config/api-keys/openrouter-api-key.txt)"',
-        chat_url = "/v1/chat/completions",
-      },
-      strategies = {
-        chat = {
-          adapter = "openai",
-          model = "gpt-5-codex",
-        },
-        inline = {
-          adapter = "openai",
-          model = "gpt-5-codex",
-        },
-        cmd = {
-          adapter = "openai",
-          model = "gpt-5-codex",
+      interactions = {
+        cli = {
+          agent = "codex",
+          agents = {
+            codex = {
+              cmd = "codex",
+              args = { "--yolo" },
+              description = "codex",
+              provider = "terminal",
+            },
+          },
         },
       },
     },
@@ -37,6 +26,7 @@ return {
   },
   -- for codecompanion
   -- https://codecompanion.olimorris.dev/installation.html#mini-diff
+  -- Mon Sep  1 11:20:12 AM CST 2025
   {
     "echasnovski/mini.diff",
     config = function()
