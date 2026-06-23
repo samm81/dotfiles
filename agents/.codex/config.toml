@@ -1,7 +1,11 @@
 #:schema https://developers.openai.com/codex/config-schema.json
 
-model = "gpt-5.4"
+model = "gpt-5.5"
 personality = "pragmatic"
+model_reasoning_effort = "medium"
+plan_mode_reasoning_effort = "xhigh"
+approvals_reviewer = "user"
+notify = ["notify-send", "Codex"]
 
 [tui]
 status_line = [
@@ -17,9 +21,12 @@ status_line = [
   "thread-title",
 ]
 
-notify = ["notify-send"]
+notifications = true
 model_reasoning_effort = "xhigh"
 approvals_reviewer = "user"
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
 
 [projects."/home/maynard/studio/dpsk/kopia"]
 trust_level = "trusted"
@@ -81,6 +88,39 @@ trust_level = "trusted"
 [projects."/home/maynard/studio/dpsk/camera-sheet"]
 trust_level = "trusted"
 
+[projects."/home/maynard"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dpsk/logseq-on-a-graph"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dpsk/logseq-on-a-graph/logseq"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/logseq/scripts"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dwsk/dalian"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dpsk/pill-box-lid"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/phone-sync/2026-06-04--the-culture-map--anki"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dwsk/emily-preply"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dpsk/zuo-shou"]
+trust_level = "trusted"
+
+[projects."/home/maynard/studio/dpsk/culture-mapper"]
+trust_level = "trusted"
+
+[projects."/home/maynard/.codex"]
+trust_level = "trusted"
+
 [notice]
 "hide_gpt-5.1-codex-max_migration_prompt" = true
 hide_full_access_warning = true
@@ -135,3 +175,86 @@ approval_mode = "auto"
 
 [plugins."github@openai-curated"]
 enabled = true
+
+[hooks.state]
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:0:0"]
+trusted_hash = "sha256:f0232825bfbe165d8af83f9ac7f295421e6e6eda92108f6836bb1f3b29cbfd2e"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:0"]
+trusted_hash = "sha256:b7c496597e873d2b5d21204047d6ac47afd4c925eb6b549ba8a31d01c1ef962d"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:1"]
+trusted_hash = "sha256:b05f530d6cf52283bb2f7d9ee5b19f931dcf38b0b9251dc24ebcc81af86b5213"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:2"]
+trusted_hash = "sha256:d6ed4b547ec701bca953449db2a33a6e30818507ce7655443cdb5d311b9d85f4"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:3"]
+trusted_hash = "sha256:1f59b446f9fd560d60c8f6674b68503dbb6a4f8a656947f269fb522e35190ce5"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:4"]
+trusted_hash = "sha256:fd588e875ffcf0260be538c1dd489e136a6e763dfe6f303b0a90d4f389e7b267"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:5"]
+trusted_hash = "sha256:2bb8f9a09a19ea68cc920ebbb5196a27d8f9c5788035a8d8f11036729e47bb05"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:6"]
+trusted_hash = "sha256:b316196156fa951c6e196786a8b0a4b7ac7c74232a707a431013052063fb6065"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:7"]
+trusted_hash = "sha256:f68c8e263943660ffcde8edb0d54c35375ac310a3a79c6e9ca8c5a955c1d2250"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:8"]
+trusted_hash = "sha256:2c080986dabbf1f833ffc22d42918a7430891b6cc901f8140b1b8b1604884fe5"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:9"]
+trusted_hash = "sha256:224b4e3a44c29705bb2cbd174a3e51cf87db7dd15186e2c2e7b53867559f24ed"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:10"]
+trusted_hash = "sha256:039088b482ce8b07c7797dfa875f9d35bb023f51bd80a72be2ce2eff50ae91e0"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:11"]
+trusted_hash = "sha256:9d8bcaeceef5fb4a6b65d35f28c28237d9c356be8f95f12311be730455925c1b"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:12"]
+trusted_hash = "sha256:bb61c8ba067aacef0a52c77a1022e18cf51c932293c3552fe77976c89004d3da"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:13"]
+trusted_hash = "sha256:8bee0eb951afa6f2b12099d285c1c08ef1d58759dc27c7e6dcd61acc5f697f52"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:14"]
+trusted_hash = "sha256:51ef21f145cea017eff4475617045bf576965af55bf2bd335f8c9eea4ce3b89b"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:15"]
+trusted_hash = "sha256:4ddb88350cb04b66e3df1e5dfbc943dae398779bb811ae587d237873e943ec0a"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:16"]
+trusted_hash = "sha256:6215208ff6217cb9807f4c86af56ac9c01944f70d9379cfe6a07aa9917864880"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:17"]
+trusted_hash = "sha256:5f196931551583d01088f96c18df010f08d422890f0d1449352469e7600d9158"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:pre_tool_use:1:18"]
+trusted_hash = "sha256:be77fdc14267e17a8e58e4f19809ef36561c33ed888ac51b166b0aad92d9a62d"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:post_tool_use:0:0"]
+trusted_hash = "sha256:d4ba41a6026855aeb91345dcb7eddd92e600176dacacf0149074357ebe69c20c"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:post_tool_use:0:1"]
+trusted_hash = "sha256:c26e63a01118024dbd31e7623e22f9dbee8dadd0ab5fe41fadf9b43dc689bd07"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:post_tool_use:0:2"]
+trusted_hash = "sha256:fb120cc1eeb7c0a1f753ae974788554408bbf46011b1852d2dec624b7e6aee84"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:post_tool_use:0:3"]
+trusted_hash = "sha256:d8233ecb9becfc50d2da7d452f5af8b1cf27558711442c38de6a6d714de638a8"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:post_tool_use:0:4"]
+trusted_hash = "sha256:35b994a3e23271a628a8593981958510b9eee87fe3bbd297ed98af01cc419c86"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:ea882dd6d55416a8aa1cf49dd296e857db0f2176b6afb10f46595071ef8d9a27"
+
+[hooks.state."/home/maynard/studio/dwsk/emily-preply/.codex/hooks.json:subagent_start:0:0"]
+trusted_hash = "sha256:de7633c2063db4592e2ab08ef55315e8bbaa31e9e20b0b370bba16052bb8ec33"
