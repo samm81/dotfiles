@@ -16,3 +16,6 @@
 [submodule "agents/agent-config"]
 	path = agents/agent-config
 	url = git@github.com:brianlovin/agent-config.git
+[submodule "agents/ai"]
+	path = agents/ai
+	url = git@github.com:stripe/ai
