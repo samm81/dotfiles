@@ -1,0 +1,20 @@
+# Keep Stow's standard metadata and backup exclusions.
+RCS
+.+,v
+CVS
+\.\#.+
+\.cvsignore
+\.svn
+_darcs
+\.hg
+\.git
+\.gitignore
+\.gitmodules
+.+~
+\#.*\#
+^/README.*
+^/LICENSE.*
+^/COPYING
+
+# These repositories provide skill sources; they are not home-directory entries.
+^/(agent-config|agent-skill|caveman|chatgpt-skills|humanizer|skills)$

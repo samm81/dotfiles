@@ -19,3 +19,6 @@
 [submodule "agents/ai"]
 	path = agents/ai
 	url = git@github.com:stripe/ai
+[submodule "agents/chatgpt-skills"]
+	path = agents/chatgpt-skills
+	url = https://github.com/dkyazzentwatwa/chatgpt-skills
