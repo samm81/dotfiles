@@ -40,6 +40,52 @@ export PWCLI="$CODEX_HOME/skills/playwright/scripts/playwright_cli.sh"
 
 User-scoped skills install under `$CODEX_HOME/skills` (default: `~/.codex/skills`).
 
+## Persistent profile for user logins
+
+Use the Playwright CLI session/profile named `chad` by default for browser work unless the user explicitly asks for another profile. The wrapper script defaults to this session automatically:
+
+```bash
+export PLAYWRIGHT_CLI_SESSION=chad
+export PLAYWRIGHT_CHAD_PROFILE="${PLAYWRIGHT_CHAD_PROFILE:-$CODEX_HOME/playwright/profiles/chad}"
+```
+
+For durable browser cookies and local storage, the wrapper script automatically adds `--persistent --profile "$PLAYWRIGHT_CHAD_PROFILE"` to `open` commands when no explicit profile is provided:
+
+```bash
+"$PWCLI" open https://example.com --headed
+```
+
+The global profile directory contains cookies and browser state. Keep it out of git and do not delete it unless the user explicitly requests a clean profile.
+
+Before launching a browser, always check whether the `chad` session is already open:
+
+```bash
+"$PWCLI" list
+```
+
+If `chad` is already open, reuse that exact browser/session. Do not run `open` again. Use `snapshot`, `goto`, `tab-new`, `tab-select`, `reload`, and normal interactions inside the existing `chad` session. Only run `open` when `chad` is not already open, or when the user explicitly asks for a new browser launch.
+
+When launching or interacting explicitly, pass the same session:
+
+```bash
+"$PWCLI" --session chad snapshot
+```
+
+For sites where the user logs in, also preserve authentication with storage state as a portable backup:
+
+```bash
+"$PWCLI" --session chad state-save "$CODEX_HOME/playwright/chad-auth.json"
+chmod 600 "$CODEX_HOME/playwright/chad-auth.json"
+```
+
+Before reopening a login-dependent site, prefer the persistent profile. If the profile does not have the login but the state file exists, restore state:
+
+```bash
+test -f "$CODEX_HOME/playwright/chad-auth.json" && "$PWCLI" --session chad state-load "$CODEX_HOME/playwright/chad-auth.json"
+```
+
+Do not run `delete-data`, `cookie-clear`, `localstorage-clear`, `sessionstorage-clear`, `close-all`, or `kill-all` against the `chad` session unless the user explicitly requests it. Prefer `goto`, `tab-new`, `reload`, and `snapshot` inside the existing `chad` session over repeatedly running `open --headed`.
+
 ## Quick start
 
 Use the wrapper script:
