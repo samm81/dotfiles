@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spec Kit"
+  short_description: "Guide lightweight feature specs and tasks"
+  default_prompt: "Use $spec-kit 001-trial-booking to continue the next feature-spec step."
