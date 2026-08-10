@@ -34,6 +34,10 @@
   format = ssh
 [rerere]
   enable = true
+[status]
+	submodulesummary = 1
+[submodule]
+	recurse = true
 
 # https://difftastic.wilfred.me.uk/git.html
 [difftool "difftastic"]
