@@ -12,9 +12,13 @@ synthesized_from:
 
 use when reading or writing python files.
 
+## scope
+
+This skill owns Python implementation and code review. Use `modern-python` for project creation, dependency management, tool configuration, and migrations. Respect the existing project's tools during ordinary code changes; do not replace them unless migration is requested.
+
 ## core rules
 
-- define data models and function signatures before implementation. annotate all public APIs, use typed collections, and prefer modern syntax like `T | None`.
+- define data models and function signatures before implementation. annotate all public APIs, use typed collections, and prefer modern syntax like `T | None` when the project's supported Python version allows it.
 - make invalid states hard to represent. use dataclasses, pydantic models, `TypedDict`, enums, `Literal`, `NewType`, type aliases, and `Protocol` where they clarify domain constraints.
 - validate external input at system boundaries. convert raw strings and dicts into typed domain values early, and fail fast with specific, actionable errors.
 - preserve error context. catch specific exceptions, re-raise with `from err`, and ensure each code path returns a value or raises.
@@ -25,7 +29,7 @@ use when reading or writing python files.
 - use context managers for files, sockets, and similar resources. prefer `pathlib`, explicit encodings, and async-native libraries in async code.
 - avoid class-level mutable state, mutable default arguments, bare `except`, silent failures, and retry logic duplicated across multiple layers.
 - for batch work, capture partial failures instead of aborting the whole operation on the first bad item.
-- run strict type checking in the project’s chosen tool (`mypy`, `pyright`, or `ty`) and add tests for edge cases and failure paths, not only happy paths.
+- run strict type checking in the project’s chosen tool (`mypy`, `pyright`, or `ty`) and add tests for edge cases and failure paths, not only happy paths. Do not switch type-checking tools during an ordinary implementation task.
 
 ## review checklist
 

@@ -9,6 +9,8 @@ Drive a real browser from the terminal using `playwright-cli`. Prefer the bundle
 
 Treat this skill as CLI-first automation. Do not pivot to `@playwright/test` unless the user explicitly asks for test files.
 
+When the task involves writing or modifying Playwright test files, hand off test assertions, fixtures, locators, and test configuration to `playwright-best-practices`. This skill owns interactive browser sessions and terminal automation.
+
 ## Skill path (set once)
 
 ```bash

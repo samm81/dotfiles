@@ -7,6 +7,10 @@ description: Capture screenshots on a Wayland desktop with grimshot. Use when Co
 
 Use `grimshot` for screenshot capture.
 
+## Scope
+
+Use this skill for Wayland desktop captures. Use the `playwright` skill for browser-page screenshots, DOM inspection, and browser artifacts.
+
 `grimshot` wraps the common Wayland screenshot tools and exposes the main choices directly:
 
 - action: `copy`, `save`, or `savecopy`

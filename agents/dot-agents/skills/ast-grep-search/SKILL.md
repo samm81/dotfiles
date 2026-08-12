@@ -4,7 +4,7 @@ created: 2025-12-16
 modified: 2026-01-24
 reviewed: 2026-01-24
 name: ast-grep-search
-description: Find and replace code patterns structurally using ast-grep. Use when you need to match code by its AST structure (not just text), such as finding all functions with specific signatures, replacing API patterns across files, or detecting code anti-patterns that regex cannot reliably match.
+description: Find and replace code patterns structurally with ast-grep. Use for direct pattern searches and mechanical rewrites; use the separate ast-grep skill for reusable YAML rules and relational query design.
 user-invocable: false
 allowed-tools: Bash(sg *), Bash(ast-grep *), Read, Grep, Glob
 ---
@@ -12,6 +12,16 @@ allowed-tools: Bash(sg *), Bash(ast-grep *), Read, Grep, Glob
 # ast-grep Structural Code Search & Refactoring
 
 Structural code search and refactoring using `ast-grep` — matches code by its AST (abstract syntax tree) rather than text patterns.
+
+## Scope
+
+This skill owns direct, one-off structural searches and mechanical rewrites.
+
+- Use this skill for a pattern search, a targeted replacement, or a small anti-pattern scan.
+- Hand off reusable YAML rules, relational queries, and `scan` configuration design to the separate `ast-grep` skill.
+- Use `rg` for plain-text, documentation, configuration, and filename searches.
+
+The current CLI accepts both `ast-grep run -p ...` and the shorthand `ast-grep -p ...`. The examples below use the shorthand for brevity.
 
 ## When to Use ast-grep vs Grep/ripgrep
 
@@ -188,35 +198,11 @@ ast-grep -p 'await $EXPR' \
 | `-C N` | Lines around match |
 | `--debug-query` | Debug pattern parsing |
 
-## YAML Rules (Scan Mode)
+## Reusable YAML rules
 
-For reusable rules, use `ast-grep scan` with YAML configuration:
-
-```bash
-# Scan with config
-ast-grep scan -c sgconfig.yml
-
-# Run specific rule
-ast-grep scan -r rule-name
-
-# Initialize a rules project
-ast-grep new project my-linter
-ast-grep new rule no-console-log
-```
-
-Minimal rule file:
-```yaml
-id: no-empty-catch
-language: JavaScript
-severity: warning
-message: Empty catch block hides errors
-rule:
-  pattern: try { $$$ } catch ($E) { }
-fix: |
-  try { $$$ } catch ($E) { console.error($E) }
-```
-
-For comprehensive YAML rule syntax, constraints, transformations, and testing, see [REFERENCE.md](REFERENCE.md).
+Reusable rules, relational queries, `scan` configuration, and rule testing belong
+to the separate `ast-grep` skill. Do not duplicate that workflow here. Use this
+skill to apply a known rule or perform a direct one-off search or rewrite.
 
 ## Agentic Optimizations
 
@@ -226,7 +212,6 @@ For comprehensive YAML rule syntax, constraints, transformations, and testing, s
 | Count matches | `ast-grep -p 'pattern' --lang js --json=stream \| wc -l` |
 | File list only | `ast-grep -p 'pattern' --json=stream \| jq -r '.file' \| sort -u` |
 | Batch refactor | `ast-grep -p 'old' -r 'new' --lang js -U` |
-| Scan with rules | `ast-grep scan --json` |
 | Debug pattern | `ast-grep -p 'pattern' --debug-query --lang js` |
 
 ## Quick Reference
@@ -241,9 +226,6 @@ ast-grep -p 'old' -r 'new' --lang js
 # 3. Apply rewrite
 ast-grep -p 'old' -r 'new' --lang js -U
 
-# 4. Scan with rules
-ast-grep scan -c sgconfig.yml
-
-# 5. Debug pattern
+# 4. Debug pattern
 ast-grep -p 'pattern' --debug-query --lang js
 ```

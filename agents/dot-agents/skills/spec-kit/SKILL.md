@@ -9,6 +9,10 @@ Use this skill to run a lightweight, diy spec-kit process inside the current
 repository. Treat it as a workflow helper, not as a persistent project rule
 system.
 
+Ask only the concise product questions needed to resolve behavior. Do not turn
+every spec step into an open-ended design interview; use an explicit grilling
+workflow only when the user requests one.
+
 ## Invocation
 
 Accept feature identifiers such as:
@@ -99,16 +103,16 @@ user concise questions before planning.
 
 Include:
 
-- Phoenix contexts and boundaries.
+- domain contexts and boundaries.
 - data model changes and migrations.
 - external integrations and idempotency strategy.
 - authorization checks.
 - failure states and retry behavior.
-- UI or LiveView flow changes.
+- UI or framework flow changes when applicable.
 - documentation that must change.
 
-For Elixir/Phoenix code, follow any applicable repository instructions and
-mandatory Elixir/Phoenix skills before editing implementation files.
+Follow repository instructions and mandatory domain skills before
+editing implementation files.
 
 ## Tasks Step
 

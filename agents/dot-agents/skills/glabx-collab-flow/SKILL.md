@@ -7,7 +7,16 @@ description: Use the repository's glabx discussion workflow for MR review collab
 
 ## Goal
 
-Use `glabx` consistently to review merge request discussions, respond with the required reply format, and complete the expected commit/push follow-through.
+Use `glabx` consistently to review merge request discussions, respond with the required reply format, and complete the follow-through the user requests.
+
+## Scope and authorization
+
+This skill manages GitLab discussion reads and replies. Do not infer permission to create an MR, edit code, commit, push, or post a reply from a review or status request.
+
+- Review, summarize, or list requests are read-only.
+- Fix or address requests authorize local code changes, but do not authorize a commit or push unless the request says so.
+- Create, start, or open requests authorize MR creation only when the user explicitly asks for it.
+- Post replies only when the user asks for replies or the active workflow explicitly includes posting them.
 
 ## glabx Usage
 
@@ -68,7 +77,7 @@ I’d also add a short checklist item in the flow: “
 - Feel free to push back on weak assumptions, risky requests, or unclear scope.
 - Offer alternatives and trade-offs first when there are multiple reasonable approaches.
 - Proceed immediately with implementation only when the path is clear and low-risk.
-- After making a change or fix, reply to the discussion with what you changed. Never mark discussions as resolved; the user will do so.
+- When the user asks for a reply, or the active workflow includes replies, explain the change in the discussion. Never mark discussions as resolved; the user will do so.
 - When replying to discussions, always prepend your reply with `"[agent-name]"` where `agent-name` is your name. Example: `"[codex-5.3] ..."`
 - When reviewer feedback and code reality diverge, push back in-thread with concrete example code
 - For MR comment rounds, prioritize minimal diffs and avoid structural refactors unless required

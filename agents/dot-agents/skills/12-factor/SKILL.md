@@ -69,7 +69,7 @@ Treat every backing service (database, cache, queue, email, storage) as an attac
 
 **The code makes no distinction between local and third-party services.** Swapping a local PostgreSQL for a managed cloud database requires only a config change, never a code change. Connection setup should be centralized behind constructors, factories, or dependency injection that accepts validated config.
 
-For projects using hexagonal architecture, backing services map naturally to ports (interfaces) and adapters (implementations). See the `hexagonal-architecture` skill.
+For projects using hexagonal architecture, backing services map naturally to ports (interfaces) and adapters (implementations). Follow the repository's architecture guidance when it exists.
 
 ## Stateless Processes (Factor VI)
 
@@ -92,7 +92,7 @@ every_minute(send_report)
 
 **Why these are wrong:** In-memory state is lost on restart and invisible to other process instances. Local filesystem state cannot be shared across processes. In-process schedulers run in only one instance. Use backing services (Redis, S3, database) and external schedulers instead.
 
-See the `functional` skill for immutable data patterns that naturally support statelessness.
+Immutable data patterns can support statelessness. Follow the repository's functional-programming guidance when it exists.
 
 ## Concurrency (Factor VIII)
 
@@ -199,7 +199,7 @@ Admin scripts live in the repo alongside application code. They are not separate
 - **Backing services**: test that services work with any backing service URL (inject via config)
 - **Statelessness**: test that request handlers do not depend on prior request state
 
-Explicit config injection makes all of these patterns naturally testable without mocking global environment state. See the `testing` skill for factory patterns and behavior-driven test examples.
+Explicit config injection makes all of these patterns naturally testable without mocking global environment state. Follow the repository's testing guidance when it exists.
 
 ## Checklist
 

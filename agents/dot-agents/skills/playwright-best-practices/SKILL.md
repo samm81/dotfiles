@@ -6,6 +6,10 @@ adapted_from: https://github.com/alleneubank/claude-code/tree/9d4afa71c75831f5e7
 
 # Playwright Best Practices
 
+## Scope
+
+This skill owns Playwright test files and test configuration. Use the `playwright` skill for interactive browser sessions, terminal navigation, persistent profiles, and browser artifacts. This skill does not replace that CLI workflow.
+
 ## CLI Context: Prevent Context Overflow
 
 When running Playwright tests from Claude Code or any CLI agent, always use minimal reporters to prevent verbose output from consuming the context window.
