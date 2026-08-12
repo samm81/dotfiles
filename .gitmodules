@@ -2,23 +2,29 @@
 	path = shellrc
 	url = https://github.com/samm81/shellrc
 [submodule "agents/caveman"]
-	path = agents/caveman
+	path = agents/vendor/caveman
 	url = git@github.com:JuliusBrussee/caveman.git
 [submodule "agents/humanizer"]
-	path = agents/humanizer
+	path = agents/vendor/humanizer
 	url = https://github.com/blader/humanizer.git
 [submodule "agents/skills"]
-	path = agents/skills
+	path = agents/vendor/skills
 	url = git@github.com:trailofbits/skills.git
 [submodule "agents/agent-skill"]
-	path = agents/agent-skill
+	path = agents/vendor/agent-skill
 	url = git@github.com:ast-grep/agent-skill.git
 [submodule "agents/agent-config"]
-	path = agents/agent-config
+	path = agents/vendor/agent-config
 	url = git@github.com:brianlovin/agent-config.git
 [submodule "agents/ai"]
-	path = agents/ai
+	path = agents/vendor/ai
 	url = git@github.com:stripe/ai
 [submodule "agents/chatgpt-skills"]
-	path = agents/chatgpt-skills
+	path = agents/vendor/chatgpt-skills
 	url = https://github.com/dkyazzentwatwa/chatgpt-skills
+[submodule "agents/vendor/SimpleEnglish"]
+	path = agents/vendor/SimpleEnglish
+	url = https://github.com/AminBlg/SimpleEnglish.git
+[submodule "agents/vendor/agent-skills"]
+	path = agents/vendor/agent-skills
+	url = https://github.com/mblode/agent-skills.git

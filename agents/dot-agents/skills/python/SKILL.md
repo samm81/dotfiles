@@ -1,6 +1,6 @@
 ---
 name: python
-description: synthesized skill for the python workspace.
+description: use when writing python code
 synthesized_from:
   - 0xbigboss/claude-code/python-best-practices
   - wshobson/agents/python-anti-patterns
