@@ -1,5 +1,44 @@
 local sane = require("lib.sane")
 
+local path_vim_meta = vim.env.VIMRUNTIME .. "/lua/vim/_meta"
+local library_lua_ls = {
+  path_vim_meta .. "/api.gen.lua",
+  path_vim_meta .. "/builtin.lua",
+  path_vim_meta .. "/builtin_types.lua",
+  path_vim_meta .. "/options.gen.lua",
+  path_vim_meta .. "/vimfn.gen.lua",
+  path_vim_meta .. "/vvars.gen.lua",
+}
+
+local filetypes_tailwind = {
+  "astro",
+  "astro-markdown",
+  "css",
+  "eex",
+  "eelixir",
+  "ejs",
+  "erb",
+  "eruby",
+  "handlebars",
+  "hbs",
+  "heex",
+  "html",
+  "html-eex",
+  "htmlangular",
+  "htmldjango",
+  "javascript",
+  "javascriptreact",
+  "mdx",
+  "postcss",
+  "sass",
+  "scss",
+  "svelte",
+  "templ",
+  "typescript",
+  "typescriptreact",
+  "vue",
+}
+
 -- https://github.com/LazyVim/LazyVim/blob/ec5981dfb1222c3bf246d9bcaa713d5cfa486fbd/lua/lazyvim/plugins/lsp/init.lua
 return {
   {
@@ -90,10 +129,14 @@ return {
             filetypes = { "sh", "bash", "zsh" },
           },
           elixirls = {
-            cmd = { "/home/maynard/bin/elixir-ls" },
+            cmd = { "elixir-ls" },
+            exit_timeout = 1000,
+            filetypes = { "elixir", "eelixir", "heex", "surface" },
+            workspace_required = true,
           },
           tailwindcss = {
             cmd = { "tailwindcss-language-server", "--stdio" },
+            filetypes = filetypes_tailwind,
             init_options = {
               userlanguages = {
                 elixir = "html-eex",
@@ -101,6 +144,7 @@ return {
                 heex = "html-eex",
               },
             },
+            workspace_required = true,
           },
           jsonls = {
             settings = {
@@ -133,7 +177,8 @@ return {
                 runtime = { version = "LuaJIT" },
                 workspace = {
                   checkThirdParty = false,
-                  library = { vim.env.VIMRUNTIME },
+                  -- Avoid indexing the entire Neovim runtime implementation.
+                  library = library_lua_ls,
                 },
               },
             },
