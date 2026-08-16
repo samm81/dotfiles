@@ -244,7 +244,7 @@ subject line
 
 body line one
 body line two
-      EOF
+EOF
       (
         cd "$tmpdir/repo"
         NVIM_PROFILE_OUT="$probe_file" \
