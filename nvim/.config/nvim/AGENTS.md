@@ -1,44 +1,43 @@
-# Neovim Configuration
+# neovim config
 
-Personal Neovim configuration built around `lazy.nvim`, fast in-buffer workflows, and behavior that stays close to built-in Neovim defaults.
+personal neovim configuration built around `lazy.nvim`, fast in-buffer workflows, and behavior close to built-in neovim defaults.
+
+## AGENTS.md
+
+- this file and the `.agents/` directory should follow the progressive disclosure policy
+- the top level AGENTS.md should ideally be < 50 lines, and never > 100
+- the root AGENTS.md should contain only:
+    - one-line project description
+    - package manager (if not npm)
+    - non-obvious commands only (skip `npm test`, `npm run build` if standard)
+    - links to `.agents/rules/` files with brief descriptions
+    - verification section (always required)
+- remaining instructions should go in `.agents/rules/` files by category (e.g., TypeScript conventions, testing patterns, API design, Git workflow).
+- the following content should not go in AGENTS.md nor `.agents/` files:
+    - **API documentation** — link to external docs instead
+    - **code examples** — agents can infer from reading source files
+    - **interface/type definitions** — these exist in the code
+    - **generic advice** — "write clean code", "follow best practices"
+    - **obvious instructions** — "use TypeScript for .ts files"
+    - **redundant info** — things already included in your operating instructions
+    - **too vague** — instructions that are not actionable
 
 ## Commands
 
-- `stylua .` - format Lua with the repo's `.stylua.toml`
-- `scripts/nvim-profile all --runs 3` - benchmark startup plus `gitcommit` and `diff` flows
-- `nvim --headless -c "quitall"` - quick syntax smoke check only; not final validation
-
-## Architecture
-
-- `init.lua` - entrypoint for options, keymaps, and filetypes
-- `<leader>cc` copies the whole buffer in normal mode and the exact visual selection in visual mode through `wl-copy`
-- `lua/config/lazy.lua` - plugin bootstrap and specs
-- `lua/plugins/` - modular plugin config, including `lsp.lua`, `none-ls.lua`, `cmp.lua`, `luasnip.lua`, and `treesitter.lua`
-- `lua/lib/` - shared utilities, profiling helpers, and custom `none-ls` sources
-- `lua/helpers.lua` - formatting helpers and `<leader>dt*` datetime helpers
-- `snippets/` - SnipMate snippets
+- `stylua .` — format Lua with the repo's `.stylua.toml`
+- `scripts/nvim-profile all --runs 3` — benchmark startup plus `gitcommit` and `diff` flows
 
 ## Rules
 
-- keep behavior close to built-in vim/neovim defaults; avoid unnecessary plugins or abstractions
-- never override existing keybindings; check for conflicts before adding or changing a map
-- prefer two-character `<leader>` namespaces, and use reminder mappings when a rename should be non-disruptive
-- keep LSP mappings on the `gr*` prefix when adding or adjusting them
-- optimize for in-buffer workflows; formatting should not require save
-- keep language server binaries on `PATH`; this config should not auto-install them at runtime
-- `.edn` buffers use the `clojure` filetype and should format through `zprint` in `none-ls` when available
-- keep committed scripts on default XDG behavior; any repo-local XDG overrides should come from the caller environment
+- [architecture](.agents/rules/architecture.md) — configuration entrypoints and module layout
+- [editor workflows](.agents/rules/editor-workflows.md) — keymaps, formatting, LSP, and filetype behavior
+- [tooling and documentation](.agents/rules/tooling-and-documentation.md) — external binaries, XDG behavior, and docs upkeep
 
 ## Verification
 
-After making changes:
+after making changes:
 
-- reproduce the behavior in an interactive `nvim` session; treat this as the primary validation path
-- use a relevant multi-buffer flow when debugging instead of a single-buffer headless one-liner
+- reproduce the behavior in an interactive `nvim` session; use a relevant multi-buffer flow when debugging
 - `stylua .`
-- `nvim --headless -c "quitall"` as a secondary smoke check only
-- `scripts/nvim-profile all --runs 3` when changing startup-sensitive config
-
-## Documentation
-
-- keep `AGENTS.md` and `README.md` up to date when behavior or workflows change
+- `nvim --headless -c "quitall"` — secondary syntax/config smoke check
+- `scripts/nvim-profile all --runs 3` — when changing startup-sensitive config
