@@ -11,6 +11,7 @@ Personal Neovim configuration built around `lazy.nvim`, fast in-buffer workflows
 ## Architecture
 
 - `init.lua` - entrypoint for options, keymaps, and filetypes
+- `<leader>cc` copies the whole buffer in normal mode and the exact visual selection in visual mode through `wl-copy`
 - `lua/config/lazy.lua` - plugin bootstrap and specs
 - `lua/plugins/` - modular plugin config, including `lsp.lua`, `none-ls.lua`, `cmp.lua`, `luasnip.lua`, and `treesitter.lua`
 - `lua/lib/` - shared utilities, profiling helpers, and custom `none-ls` sources

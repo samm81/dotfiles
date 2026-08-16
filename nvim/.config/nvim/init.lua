@@ -87,14 +87,46 @@ local function flash_line_range(line1, line2, hl_group, timeout)
   end, timeout or 150)
 end
 
-local function copy_line_range_to_clipboard(line1, line2)
+local function copy_text_to_clipboard(text)
   if vim.fn.executable("wl-copy") == 0 then
     vim.notify("wl-copy not found", vim.log.levels.ERROR)
+    return false
+  end
+
+  vim.fn.system({ "wl-copy" }, text)
+  if vim.v.shell_error ~= 0 then
+    vim.notify("wl-copy failed", vim.log.levels.ERROR)
+    return false
+  end
+
+  return true
+end
+
+local function copy_line_range_to_clipboard(line1, line2)
+  local lines = vim.api.nvim_buf_get_lines(0, line1 - 1, line2, true)
+  if not copy_text_to_clipboard(table.concat(lines, "\n") .. "\n") then
     return
   end
 
-  vim.cmd(string.format("silent %d,%dw !wl-copy", line1, line2))
   flash_line_range(line1, line2, "ClipboardCopyFlash", 150)
+end
+
+local function copy_visual_selection_to_clipboard()
+  local selection_type = vim.fn.mode()
+  local selection_lines = vim.fn.getregion(vim.fn.getpos("v"), vim.fn.getpos("."), {
+    type = selection_type,
+  })
+  local selection = table.concat(selection_lines, "\n")
+  if selection_type == "V" then
+    selection = selection .. "\n"
+  end
+
+  if not copy_text_to_clipboard(selection) then
+    return
+  end
+
+  flash_line_range(vim.fn.line("v"), vim.fn.line("."), "ClipboardCopyFlash", 150)
+  vim.api.nvim_feedkeys(vim.keycode("<Esc>"), "nx", false)
 end
 
 vim.api.nvim_create_user_command("CopyToClipboard", function(opts)
@@ -111,7 +143,7 @@ sane.keymap("n", "<leader>ve", function()
 end)
 
 sane.keymap("n", "<leader>cc", "<cmd>%CopyToClipboard<CR>", { desc = "copy to clipboard" })
-sane.keymap("v", "<leader>cc", ":<C-u>'<,'>CopyToClipboard<CR>", { desc = "copy to clipboard" })
+sane.keymap("x", "<leader>cc", copy_visual_selection_to_clipboard, { desc = "copy to clipboard" })
 
 -- diagnostics
 -- widely accepted, according to `gpt-4`

@@ -2,6 +2,8 @@
 
 this repo contains my neovim configuration.
 
+`<leader>cc` copies the whole buffer in normal mode and the exact visual selection in visual mode through `wl-copy`.
+
 `none-ls` is loaded only for supported filetypes, and its external formatters / diagnostics are gated by executable plus root or path checks so plain unsupported buffers do not pay for it.
 
 ## profiling
