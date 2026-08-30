@@ -28,3 +28,6 @@
 [submodule "agents/vendor/agent-skills"]
 	path = agents/vendor/agent-skills
 	url = https://github.com/mblode/agent-skills.git
+[submodule "agents/vendor/ponytail"]
+	path = agents/vendor/ponytail
+	url = git@github.com:DietrichGebert/ponytail.git
