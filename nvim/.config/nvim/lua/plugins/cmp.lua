@@ -40,8 +40,6 @@ return {
       }
     end,
     config = function(_, opts)
-      vim.opt.completeopt = { "menu", "menuone", "noselect" }
-
       local cmp = require("cmp")
       cmp.setup(opts)
 

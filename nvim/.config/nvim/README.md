@@ -25,9 +25,8 @@ nvim
 ## Keyboard shortcuts
 
 - **`<leader>ve`:** find and open a file from the Neovim configuration.
-- **`<leader>cc`:** copy the whole buffer in normal mode or the exact visual selection in visual mode.
+- **`<leader>cc`:** copy the whole buffer or exact visual selection to the system clipboard.
 - **`<leader>gf` / `:Format`:** format the current buffer without saving.
-- **`<leader>fo`:** show the formatters available for the current buffer.
 - **`<leader>de`:** use `<leader>de` to open diagnostics.
 - **`[d` and `]d`:** move through diagnostic locations.
 - **`[e` and `]e`:** move through error diagnostics only.

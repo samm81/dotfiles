@@ -43,7 +43,6 @@ return {
       local formatting = null_ls.builtins.formatting
       local diagnostics = null_ls.builtins.diagnostics
       local augroup = vim.api.nvim_create_augroup("NoneLsFormatting", {})
-      local git_root = null_ls_utils.root_pattern(".git")
       local mix_root = null_ls_utils.root_pattern("mix.exs")
       local prettier_root = null_ls_utils.cosmiconfig("prettier")
       local python_root = null_ls_utils.root_pattern("pyproject.toml", "mypy.ini", ".mypy.ini", "setup.cfg", "setup.py")
@@ -60,38 +59,6 @@ return {
       local function has_root(resolver, params)
         local bufname = get_bufname(params)
         return bufname ~= "" and resolver(bufname) ~= nil
-      end
-
-      local function find_local_bin(bufname, bin_name)
-        if bufname == "" then
-          return nil
-        end
-
-        local search_root = git_root(bufname)
-        local start_dir = vim.fn.fnamemodify(bufname, ":p:h")
-
-        for dir in null_ls_utils.path.ancestors(start_dir) do
-          local candidate = null_ls_utils.path.join(dir, "node_modules", ".bin", bin_name)
-          if null_ls_utils.is_executable(candidate) then
-            return candidate
-          end
-          if search_root and dir == search_root then
-            break
-          end
-        end
-      end
-
-      local function resolve_prettier_command(params)
-        local bufname = get_bufname(params)
-        if bufname == "" or prettier_root(bufname) == nil then
-          return nil
-        end
-
-        return find_local_bin(bufname, "prettier") or (executable("prettier") and "prettier" or nil)
-      end
-
-      local function add_source(sources, source)
-        table.insert(sources, source)
       end
 
       local function source_runs_for_buffer(source, bufnr)
@@ -116,7 +83,7 @@ return {
       }
 
       if executable("commitlint") then
-        add_source(
+        table.insert(
           sources,
           diagnostics.commitlint.with({
             extra_args = { "--config", vim.fn.expand("~/.config/commitlint/commitlint.config.js") },
@@ -124,24 +91,18 @@ return {
         )
       end
 
-      add_source(
+      table.insert(
         sources,
         formatting.prettier.with({
           runtime_condition = function(params)
-            return resolve_prettier_command(params) ~= nil
-          end,
-          cwd = function(params)
             local bufname = get_bufname(params)
-            return bufname ~= "" and prettier_root(bufname) or nil
-          end,
-          dynamic_command = function(params, done)
-            done(resolve_prettier_command(params))
+            return bufname ~= "" and prettier_root(bufname) ~= nil
           end,
         })
       )
 
       if executable("stylua") then
-        add_source(
+        table.insert(
           sources,
           formatting.stylua.with({
             runtime_condition = function(params)
@@ -152,7 +113,7 @@ return {
       end
 
       if executable("zprint") then
-        add_source(
+        table.insert(
           sources,
           formatting.zprint.with({
             runtime_condition = function(params)
@@ -163,7 +124,7 @@ return {
       end
 
       if executable("shfmt") then
-        add_source(
+        table.insert(
           sources,
           formatting.shfmt.with({
             extra_filetypes = { "bash", "zsh" },
@@ -172,15 +133,15 @@ return {
       end
 
       if executable("zsh") then
-        add_source(sources, diagnostics.zsh)
+        table.insert(sources, diagnostics.zsh)
       end
 
       if executable("shellcheck") then
-        add_source(sources, shellcheck)
+        table.insert(sources, shellcheck)
       end
 
       if executable("mypy") then
-        add_source(
+        table.insert(
           sources,
           diagnostics.mypy.with({
             runtime_condition = function(params)
@@ -191,7 +152,7 @@ return {
       end
 
       if executable("pydoclint") then
-        add_source(
+        table.insert(
           sources,
           diagnostics.pydoclint.with({
             runtime_condition = function(params)
@@ -202,7 +163,7 @@ return {
       end
 
       if executable("mix") then
-        add_source(
+        table.insert(
           sources,
           formatting.mix.with({
             extra_filetypes = { "heex", "eex" },
@@ -214,7 +175,7 @@ return {
       end
 
       if executable("credo") then
-        add_source(
+        table.insert(
           sources,
           diagnostics.credo.with({
             command = "credo",

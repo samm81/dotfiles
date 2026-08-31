@@ -49,9 +49,7 @@ return {
       "hrsh7th/cmp-nvim-lsp",
     },
     opts = function()
-      ---@class PluginLspOpts
       local ret = {
-        ---@type lspconfig.options
         servers = {
           eslint = {},
           emmet_language_server = {
@@ -184,22 +182,9 @@ return {
             },
           },
         },
-        -- you can do any additional lsp server setup here
-        -- return true if you don't want this server to be setup with lspconfig
-        ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
-        setup = {
-          -- example to setup with typescript.nvim
-          -- tsserver = function(_, opts)
-          --   require("typescript").setup({ server = opts })
-          --   return true
-          -- end,
-          -- Specify * to use this function as a fallback for any server
-          -- ["*"] = function(server, opts) end,
-        },
       }
       return ret
     end,
-    ---@param opts PluginLspOpts
     config = function(_, opts)
       local servers = opts.servers
       local cmp_nvim_lsp = require("cmp_nvim_lsp")
@@ -207,8 +192,7 @@ return {
         "force",
         {},
         vim.lsp.protocol.make_client_capabilities(),
-        cmp_nvim_lsp.default_capabilities(),
-        opts.capabilities or {}
+        cmp_nvim_lsp.default_capabilities()
       )
 
       local on_attach = function(_, bufnr)
@@ -220,29 +204,6 @@ return {
             vim.notify("use " .. new .. " instead", vim.log.levels.INFO)
           end)
         end
-
-        -- lsp defaults
-        -- `:help lsp-defaults`
-        -- > - 'omnifunc' is set to |vim.lsp.omnifunc()|, use |i_CTRL-X_CTRL-O| to trigger completion.
-        -- > - 'tagfunc' is set to |vim.lsp.tagfunc()|. This enables features like go-to-definition, |:tjump|, and keymaps like |CTRL-]|, |CTRL-W_]|, |CTRL-W_}| to utilize the language server.
-        -- > - 'formatexpr' is set to |vim.lsp.formatexpr()|, so you can format lines via |gq| if the language server supports it.
-        -- > - |K| is mapped to |vim.lsp.buf.hover()| unless |'keywordprg'| is customized or a custom keymap for `K` exists.
-
-        -- starting in `nvim` 11:
-        -- > These GLOBAL keymaps are created unconditionally when Nvim starts:
-        -- > - "grn" is mapped in Normal mode to |vim.lsp.buf.rename()|
-        -- > - "gra" is mapped in Normal and Visual mode to |vim.lsp.buf.code_action()|
-        -- > - "grr" is mapped in Normal mode to |vim.lsp.buf.references()|
-        -- > - "gri" is mapped in Normal mode to |vim.lsp.buf.implementation()|
-        -- > - "gO" is mapped in Normal mode to |vim.lsp.buf.document_symbol()|
-        -- > - CTRL-S is mapped in Insert mode to |vim.lsp.buf.signature_help()|
-
-        keymap("n", "grn", vim.lsp.buf.rename)
-        keymap({ "n", "v" }, "gra", vim.lsp.buf.code_action)
-        keymap("n", "grr", vim.lsp.buf.references)
-        keymap("n", "gri", vim.lsp.buf.implementation)
-        keymap("n", "gO", vim.lsp.buf.document_symbol)
-        keymap("n", "<C-S>", vim.lsp.buf.signature_help)
 
         keymap_remapped("n", "<leader>rn", "grn")
         keymap_remapped({ "n", "v" }, "<leader>ca", "gra")
@@ -265,34 +226,15 @@ return {
         float = { source = true },
       })
 
-      local function setup(server)
-        local server_opts = vim.tbl_deep_extend("force", {
-          capabilities = vim.deepcopy(capabilities),
-          on_attach = on_attach,
-        }, servers[server] or {})
-        if server_opts.enabled == false then
-          return
-        end
-
-        -- optional `setup` function gets called first
-        -- if it returns `true`, or if the fallback (`['*']`) returns `true`
-        -- then return early and skip `.setup()`
-        if opts.setup[server] then
-          if opts.setup[server](server, server_opts) then
-            return
-          end
-        elseif opts.setup["*"] then
-          if opts.setup["*"](server, server_opts) then
-            return
-          end
-        end
-
-        vim.lsp.config(server, server_opts)
+      for server, server_options in pairs(servers) do
+        vim.lsp.config(
+          server,
+          vim.tbl_deep_extend("force", {
+            capabilities = vim.deepcopy(capabilities),
+            on_attach = on_attach,
+          }, server_options)
+        )
         vim.lsp.enable(server)
-      end
-
-      for server, _server_opts in pairs(servers) do
-        setup(server)
       end
     end,
   },

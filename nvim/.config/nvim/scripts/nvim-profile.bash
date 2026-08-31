@@ -8,7 +8,7 @@ set -o nounset
 set -o pipefail
 
 IFS=$'\n\t'
-shopt -s nullglob globstar
+shopt -s nullglob
 
 [[ "${TRACE:-0}" == '1' ]] && set -o xtrace
 
@@ -95,7 +95,6 @@ if [[ -z "$out_dir" ]]; then
 fi
 mkdir -p "$out_dir"
 
-shopt -s nullglob
 quit_cmd="lua vim.schedule(function() vim.cmd('quitall') end)"
 
 parse_startuptime() {

@@ -171,8 +171,8 @@ sane.keymap("n", "<leader>ve", function()
   require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
 end)
 
-sane.keymap("n", "<leader>cc", "<cmd>%CopyToClipboard<CR>", { desc = "copy to clipboard" })
-sane.keymap("x", "<leader>cc", copy_visual_selection_to_clipboard, { desc = "copy to clipboard" })
+sane.keymap("n", "<leader>cc", "<cmd>%CopyToClipboard<CR>", { desc = "copy to system clipboard" })
+sane.keymap("x", "<leader>cc", copy_visual_selection_to_clipboard, { desc = "copy to system clipboard" })
 
 -- diagnostics
 -- widely accepted, according to `gpt-4`
@@ -215,9 +215,6 @@ vim.filetype.add({
 
 local helpers = require("helpers")
 
-vim.keymap.set("n", "<leader>fo", function()
-  helpers.ShowFormatterOverview()
-end, { desc = "Show Formatter Overview" })
 sane.keymap("n", "<leader>gf", function()
   helpers.FormatBufferWithoutSaving()
 end, { desc = "format buffer without saving" })

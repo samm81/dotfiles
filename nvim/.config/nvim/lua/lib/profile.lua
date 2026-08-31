@@ -9,7 +9,7 @@ function M.enable()
     return
   end
 
-  local uv = vim.uv or vim.loop
+  local uv = vim.uv
   local started_at = uv.hrtime()
   local data = {
     scenario = vim.env.NVIM_PROFILE_SCENARIO or "unknown",
