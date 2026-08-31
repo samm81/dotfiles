@@ -17,4 +17,4 @@ _darcs
 ^/COPYING
 
 # These repositories provide skill sources; they are not home-directory entries.
-^/(agent-config|agent-skill|caveman|chatgpt-skills|humanizer|skills)$
+^/vendor$
