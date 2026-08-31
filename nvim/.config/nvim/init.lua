@@ -87,6 +87,33 @@ local function flash_line_range(line1, line2, hl_group, timeout)
   end, timeout or 150)
 end
 
+local function flash_visual_region(pos1, pos2, selection_type, hl_group, timeout)
+  local bufnr = vim.api.nvim_get_current_buf()
+  local region = vim.fn.getregionpos(pos1, pos2, {
+    type = selection_type,
+    eol = true,
+  })
+
+  vim.api.nvim_buf_clear_namespace(bufnr, copy_flash_ns, 0, -1)
+  for _, segment in ipairs(region) do
+    local start_pos, end_pos = segment[1], segment[2]
+    local line = vim.api.nvim_buf_get_lines(bufnr, start_pos[2] - 1, start_pos[2], true)[1] or ""
+    local start_col = math.max(0, start_pos[3] - 1)
+    local end_col = math.max(start_col, end_pos[3] - 1)
+    end_col = end_col + #vim.fn.matchstr(line:sub(end_col + 1), "^.")
+
+    if end_col > start_col then
+      vim.api.nvim_buf_add_highlight(bufnr, copy_flash_ns, hl_group, start_pos[2] - 1, start_col, end_col)
+    end
+  end
+
+  vim.defer_fn(function()
+    if vim.api.nvim_buf_is_valid(bufnr) then
+      vim.api.nvim_buf_clear_namespace(bufnr, copy_flash_ns, 0, -1)
+    end
+  end, timeout or 150)
+end
+
 local function copy_text_to_clipboard(text)
   if vim.fn.executable("wl-copy") == 0 then
     vim.notify("wl-copy not found", vim.log.levels.ERROR)
@@ -112,8 +139,10 @@ local function copy_line_range_to_clipboard(line1, line2)
 end
 
 local function copy_visual_selection_to_clipboard()
+  local selection_start = vim.fn.getpos("v")
+  local selection_end = vim.fn.getpos(".")
   local selection_type = vim.fn.mode()
-  local selection_lines = vim.fn.getregion(vim.fn.getpos("v"), vim.fn.getpos("."), {
+  local selection_lines = vim.fn.getregion(selection_start, selection_end, {
     type = selection_type,
   })
   local selection = table.concat(selection_lines, "\n")
@@ -125,7 +154,7 @@ local function copy_visual_selection_to_clipboard()
     return
   end
 
-  flash_line_range(vim.fn.line("v"), vim.fn.line("."), "ClipboardCopyFlash", 150)
+  flash_visual_region(selection_start, selection_end, selection_type, "ClipboardCopyFlash", 150)
   vim.api.nvim_feedkeys(vim.keycode("<Esc>"), "nx", false)
 end
 
