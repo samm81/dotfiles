@@ -14,6 +14,13 @@
 
 all AGENTS.md files should be kept up to date when making changes to the repo.
 
+## stow packages
+
+- organize top-level packages around complete GNU Stow setup units
+- include supporting files from other configuration namespaces when the setup
+  needs them
+- read `stow X` as “set up everything needed for X”, not “configure only X”
+
 ## tools
 
 - `ast-grep` is installed. for any code search that requires understanding of syntax or code structure, you should default to using `ast-grep --lang [language] -p '<pattern>'` . adjust the --lang flag as needed for the specific programming language. avoid using text-only search tools unless a plain-text search is explicitly requested.
