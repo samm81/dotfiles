@@ -31,3 +31,6 @@
 [submodule "agents/vendor/ponytail"]
 	path = agents/vendor/ponytail
 	url = git@github.com:DietrichGebert/ponytail.git
+[submodule "agents/vendor/cc-skills-golang"]
+	path = agents/vendor/cc-skills-golang
+	url = https://github.com/samber/cc-skills-golang.git
