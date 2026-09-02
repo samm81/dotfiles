@@ -1,4 +1,7 @@
 $include /etc/inputrc
 set editing-mode vi
 set show-all-if-ambiguous on
+set completion-query-items 0
+set page-completions off
 TAB: menu-complete
+"\e[Z": menu-complete-backward
