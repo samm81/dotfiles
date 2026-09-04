@@ -27,6 +27,7 @@ nvim
 - **`<leader>ve`:** find and open a file from the Neovim configuration.
 - **`<leader>cc`:** copy the whole buffer or exact visual selection to the system clipboard.
 - **`<leader>gf` / `:Format`:** format the current buffer without saving.
+- **`<leader>vv`:** paste an image from the system clipboard with `img-clip.nvim`; save it in the current directory with a timestamp filename.
 - **`<leader>de`:** use `<leader>de` to open diagnostics.
 - **`[d` and `]d`:** move through diagnostic locations.
 - **`[e` and `]e`:** move through error diagnostics only.
@@ -54,4 +55,4 @@ use `--headless` for lower-level timing. results go to `${XDG_STATE_HOME:-$HOME/
 
 - **Neovim:** 0.11 or newer.
 - **GNU Stow:** link the configuration into `~/.config/nvim`.
-- **external tools:** keep language servers and formatters on `PATH`; install `wl-copy` for clipboard support and `zprint` for `.edn` formatting.
+- **external tools:** keep language servers and formatters on `PATH`; install `wl-clipboard` for clipboard and image pasting support and `zprint` for `.edn` formatting.
