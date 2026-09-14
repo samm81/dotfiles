@@ -210,6 +210,11 @@ Use familiar names when they fit the project:
 - `install` — install artifacts when the project needs it;
 - `deploy/<env>` or `release` — explicit consequential operations.
 
+When a target name expresses hierarchy or a namespace, always prefer `/` over
+`-` unless a concrete compatibility or tooling constraint requires the
+hyphenated form. For example, use `upload/scanner` rather than
+`upload-scanner`.
+
 Do not add targets merely because they are conventional. The Makefile should expose the operations this repository actually needs.
 
 Be careful with `check: format lint test`: if `format` modifies files, then `check` is not a non-destructive CI check. Prefer a formatting check mode when available.
