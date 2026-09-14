@@ -30,7 +30,7 @@ personal neovim configuration built around `lazy.nvim`, fast in-buffer workflows
 ## Rules
 
 - [architecture](.agents/rules/architecture.md) — configuration entrypoints and module layout
-- [editor workflows](.agents/rules/editor-workflows.md) — keymaps, formatting, LSP, filetype behavior, and image pasting
+- [editor workflows](.agents/rules/editor-workflows.md) — keymaps, formatting, LSP, filetype behavior
 - [tooling and documentation](.agents/rules/tooling-and-documentation.md) — external binaries, XDG behavior, and docs upkeep
 
 ## Verification
