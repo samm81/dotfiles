@@ -111,8 +111,19 @@ Do not use a prerequisite list to imply left-to-right execution. GNU Make may ru
 Use `.PHONY` for actions that do not represent files:
 
 ```make
-.PHONY: build test lint clean deploy
+.PHONY: lint
+lint:
+	./scripts/lint.sh
+
+.PHONY: clean
+clean:
+	./scripts/clean.sh
 ```
+
+Place each `.PHONY: target` immediately above that target's rule. Keep the
+declaration local instead of collecting unrelated action targets into one
+list; the rule then documents its own semantics where a reader needs them.
+Apply this to aggregate targets and leaf targets alike.
 
 Do not mark real generated files phony. Doing so defeats Make's timestamp model and forces unnecessary rebuilds.
 
@@ -228,6 +239,25 @@ make build
 make test
 make check
 ```
+
+A target name is a promise about scope. A developer running `make format`
+reasonably expects all repository formatting to be handled, and `make check`
+should run every configured non-destructive check. Never let a broad name
+silently mean only one subset. If complete coverage is unavailable, say so in
+the help text and print a runtime warning that names the uncovered file types
+or checks.
+
+Expose precise subtargets such as `format/shell`, `format/caddy`, `lint/yaml`,
+or `validate/compose`, then make broad targets fan out to them with Make
+prerequisites. Apply the same rule to every public aggregate, including
+`lint`, `validate`, and `check`. Keep subtargets independently runnable and
+honest about what they cover. Do not add a formatter merely to make `format`
+appear comprehensive; make the gap visible until one is actually configured.
+
+When an aggregate combines mutating and read-only actions, separate them:
+`format` may change files, while `format/check` and `check` must not. Check
+that each advertised subtarget is reachable from its aggregate, and that
+documented omissions are visible when the aggregate runs.
 
 Avoid reproducing the same workflow separately in CI YAML, README commands, and agent instructions when they can all call Make instead.
 
