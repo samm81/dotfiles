@@ -6,5 +6,7 @@ vim/.vim/spell/
 foot/.config/foot/themes
 sway/.config/sway/config
 foot/.config/foot/foot.ini
-runit/**/supervise
 nvim/.config/nvim/lazy-lock.json
+
+**/*service*/**/supervise
+/sway/service-sway/move-lockouts/last-run.timefile
