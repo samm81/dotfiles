@@ -6,3 +6,4 @@
 - keep LSP mappings on the `gr*` prefix when adding or adjusting them.
 - optimize for in-buffer workflows; manual formatting must not require saving.
 - use `<leader>vv` to paste images from the system clipboard with `img-clip.nvim`, saving them in the current directory with timestamp filenames.
+- use `<leader>vo` and `<leader>vm` to paste clipboard URLs with fetched titles as org and markdown links.

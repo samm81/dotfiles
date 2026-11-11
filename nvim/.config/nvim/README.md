@@ -28,6 +28,7 @@ nvim
 - **`<leader>cc`:** copy the whole buffer or exact visual selection to the system clipboard.
 - **`<leader>gf` / `:Format`:** format the current buffer without saving.
 - **`<leader>vv`:** paste an image from the system clipboard with `img-clip.nvim`; save it in the current directory with a timestamp filename.
+- **`<leader>vo` / `<leader>vm`:** paste a clipboard URL with its fetched page title as an org / markdown link.
 - **markdown images:** render local and remote images inline with `image.nvim` through the sixel backend.
 - **`<leader>de`:** use `<leader>de` to open diagnostics.
 - **`[d` and `]d`:** move through diagnostic locations.
@@ -56,5 +57,5 @@ use `--headless` for lower-level timing. results go to `${XDG_STATE_HOME:-$HOME/
 
 - **Neovim:** 0.11 or newer.
 - **GNU Stow:** link the configuration into `~/.config/nvim`.
-- **external tools:** keep language servers and formatters on `PATH`; install `wl-clipboard` for clipboard and image pasting, ImageMagick with SIXEL support for markdown image rendering, and `zprint` for `.edn` formatting.
+- **external tools:** keep language servers and formatters on `PATH`; install `curl` and Python 3 for titled links, `wl-clipboard` for clipboard and image pasting, ImageMagick with SIXEL support for markdown image rendering, and `zprint` for `.edn` formatting.
 - **tmux:** enable passthrough with `set -gq allow-passthrough on` for sixel output.

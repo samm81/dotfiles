@@ -173,6 +173,12 @@ end)
 
 sane.keymap("n", "<leader>cc", "<cmd>%CopyToClipboard<CR>", { desc = "copy to system clipboard" })
 sane.keymap("x", "<leader>cc", copy_visual_selection_to_clipboard, { desc = "copy to system clipboard" })
+sane.keymap("n", "<leader>vo", function()
+  require("lib.link_paste").paste("org")
+end, { desc = "paste titled org link" })
+sane.keymap("n", "<leader>vm", function()
+  require("lib.link_paste").paste("markdown")
+end, { desc = "paste titled markdown link" })
 
 -- diagnostics
 -- widely accepted, according to `gpt-4`
